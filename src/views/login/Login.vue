@@ -1,10 +1,11 @@
+// 用户登录
 <template>
   <div>
     <label>账户：</label>
-    <input type="text" v-model="customer.username" />
+    <input type="text" v-model="user.username" />
     <br />
     <label>密码：</label>
-    <input type="password" v-model="customer.password" />
+    <input type="password" v-model="user.password" />
     <br />
     <input type="button" value="登录" @click="login" />
   </div>
@@ -14,16 +15,16 @@
 import { login } from "@/api/login.js";
 
 export default {
-  name: "CustomerLogin",
+  name: "Login",
   data: () => ({
-    customer: {
+    user: {
       username: null,
       password: null
     }
   }),
   methods: {
     login: function() {
-      login(this.customer);
+      login(this.user);
     }
   }
 };
