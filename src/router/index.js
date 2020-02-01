@@ -6,16 +6,23 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "",
-    name: "",
-    redirect: "/homepage"
+    redirect: "/customerlogin"
   },
   {
-    path: "/homepage",
-    name: "homepage",
+    path: "/customerlogin",
+    name: "customerlogin",
     meta: {
-      title: "首页"
+      title: "用户登录"
     },
-    component: () => import("@/views/homepage/Login.vue")
+    component: () => import("@/views/login/CustomerLogin.vue")
+  },
+  {
+    path: "/customer",
+    name: "customer",
+    meta: {
+      title: "欢迎使用！"
+    },
+    component: () => import("@/views/customer/Customer.vue")
   }
 ];
 
