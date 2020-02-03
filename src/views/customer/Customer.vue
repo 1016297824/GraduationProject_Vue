@@ -1,11 +1,15 @@
+// 顾客页面
 <template>
-  <div>
-    CUSTOMER
+  <div class="container">
+    <navbar />
   </div>
 </template>
 
 <script>
 export default {
-  name: "Customer"
+  name: "Customer",
+  components: {
+    navbar: () => import("@/views/customer/components/Navbar")
+  }
 };
 </script>
