@@ -1,6 +1,9 @@
 // 用户登录
 <template>
   <div>
+    <!-- 导航栏 -->
+    <navbar />
+
     <label>账户：</label>
     <input type="text" v-model="user.username" />
     <br />
@@ -26,6 +29,9 @@ export default {
     login: function() {
       login(this.user);
     }
+  },
+  components: {
+    navbar: () => import("@/components/LoginNavbar")
   }
 };
 </script>

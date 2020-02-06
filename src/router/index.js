@@ -6,6 +6,7 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "",
+    name: "",
     redirect: "/login"
   },
   {
@@ -14,7 +15,7 @@ const routes = [
     meta: {
       title: "用户登录"
     },
-    component: () => import("@/views/login/Login.vue")
+    component: () => import("@/views/login/Login")
   },
   {
     path: "/customer",
@@ -22,7 +23,17 @@ const routes = [
     meta: {
       title: "欢迎使用！"
     },
-    component: () => import("@/views/customer/Customer.vue")
+    component: () => import("@/views/customer/Customer"),
+    children: [
+      {
+        path: "reserve",
+        name: "reserve",
+        meta: {
+          title: "欢迎使用！"
+        },
+        component: () => import("@/views/customer/Reserve")
+      }
+    ]
   },
   {
     path: "/supermanager",
@@ -30,7 +41,7 @@ const routes = [
     meta: {
       title: "欢迎使用！"
     },
-    component: () => import("@/views/supermanager/SuperManager.vue")
+    component: () => import("@/views/supermanager/SuperManager")
   },
   {
     path: "/manager",
@@ -38,7 +49,7 @@ const routes = [
     meta: {
       title: "欢迎使用！"
     },
-    component: () => import("@/views/manager/Manager.vue")
+    component: () => import("@/views/manager/Manager")
   },
   {
     path: "/staff",
@@ -46,7 +57,7 @@ const routes = [
     meta: {
       title: "欢迎使用！"
     },
-    component: () => import("@/views/staff/Staff.vue")
+    component: () => import("@/views/staff/Staff")
   }
 ];
 

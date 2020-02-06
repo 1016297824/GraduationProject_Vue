@@ -1,6 +1,6 @@
 // vue.config.js
 module.exports = {
-  publicPath: "./",
+  publicPath: "/",
   devServer: {
     // 设置默认端口
     port: 8081,

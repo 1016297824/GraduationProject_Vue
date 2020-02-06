@@ -1,12 +1,12 @@
+// 顾客预定
 <template>
   <div>
-    SuperManager
-    <router-view></router-view>
+    Reserve
   </div>
 </template>
 
 <script>
 export default {
-  name: "SuperManager"
+  name: "Reserve"
 };
 </script>

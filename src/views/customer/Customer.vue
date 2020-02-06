@@ -1,7 +1,8 @@
 // 顾客页面
 <template>
-  <div class="container">
+  <div>
     <navbar />
+    <router-view />
   </div>
 </template>
 
@@ -9,7 +10,7 @@
 export default {
   name: "Customer",
   components: {
-    navbar: () => import("@/views/customer/components/Navbar")
+    navbar: () => import("@/components/CustomerNavbar")
   }
 };
 </script>
