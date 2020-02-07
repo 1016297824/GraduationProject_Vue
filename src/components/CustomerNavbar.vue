@@ -8,13 +8,19 @@
       </span>
       <ul class="nav justify-content-end">
         <li class="nav-item">
-          <a class="nav-link" href="#" style="color:#FFFFFF"> 预定 </a>
+          <a class="nav-link" href="reserve" style="color:#FFFFFF">
+            预定
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" style="color:#FFFFFF"> 点餐 </a>
+          <a class="nav-link" href="order" style="color:#FFFFFF">
+            点餐
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" style="color:#FFFFFF"> 采购 </a>
+          <a class="nav-link" href="purchase" style="color:#FFFFFF">
+            采购
+          </a>
         </li>
         <li class="nav-item dropdown">
           <a
@@ -37,7 +43,7 @@
             </li>
             <div class="dropdown-divider"></div>
             <li>
-              <a class="dropdown-item" href="login"> 退出登录 </a>
+              <a class="dropdown-item" href="#" @click="loginOut"> 退出登录 </a>
             </li>
           </ul>
         </li>
@@ -51,6 +57,11 @@ export default {
   name: "CustomerNavbar",
   data: () => ({
     cname: sessionStorage.getItem("cname")
-  })
+  }),
+  methods: {
+    loginOut: function() {
+      this.$router.replace("/login");
+    }
+  }
 };
 </script>

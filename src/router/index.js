@@ -29,9 +29,25 @@ const routes = [
         path: "reserve",
         name: "reserve",
         meta: {
-          title: "欢迎使用！"
+          title: "预定！"
         },
         component: () => import("@/views/customer/Reserve")
+      },
+      {
+        path: "order",
+        name: "order",
+        meta: {
+          title: "点餐"
+        },
+        component: () => import("@/views/customer/Order")
+      },
+      {
+        path: "purchase",
+        name: "purchase",
+        meta: {
+          title: "采购"
+        },
+        component: () => import("@/views/customer/Purchase")
       }
     ]
   },
