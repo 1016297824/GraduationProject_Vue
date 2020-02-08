@@ -22,3 +22,10 @@ export function login(user) {
     }
   });
 }
+
+// 注册
+export function register(customer) {
+  axios.post("/register", customer).then(response => {
+    alert(response.data.message);
+  });
+}

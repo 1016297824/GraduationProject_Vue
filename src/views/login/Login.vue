@@ -30,6 +30,7 @@
                       type="text"
                       class="form-control"
                       v-model="user.username"
+                      @keyup="writeUsername"
                     />
                     <p style="color: red;">
                       {{ usernameMessage }}
@@ -41,6 +42,7 @@
                       type="password"
                       class="form-control"
                       v-model="user.password"
+                      @keyup="writePassword"
                     />
                     <p style="color: red;">
                       {{ passwordMessage }}
@@ -54,7 +56,7 @@
                       @click="login"
                     />
                     <span class="col-lg-8">
-                      <a href="#">
+                      <a href="/register">
                         没有账号？/注册
                       </a>
                     </span>
@@ -102,12 +104,17 @@ export default {
         this.passwordMessage = null;
         login(this.user);
       }
+    },
+    writeUsername: function() {
+      this.usernameMessage = null;
+    },
+    writePassword: function() {
+      this.passwordMessage = null;
     }
   },
   components: {
-    LoginNavbar: () => import("@/components/LoginNavbar"),
+    loginNavbar: () => import("@/components/LoginNavbar"),
     footerNavbar: () => import("@/components/FooterNavbar")
-  },
-  mounted() {}
+  }
 };
 </script>
