@@ -5,13 +5,13 @@ export function login(user) {
   axios.post("/login", user).then(response => {
     let token = response.headers["token"];
     let role = response.headers["role"];
-    let cname = response.headers["cname"];
+    let username = response.headers["username"];
     if (token != null) {
       sessionStorage.setItem("token", token);
     }
 
     if (role == "Customer") {
-      sessionStorage.setItem("cname", cname);
+      sessionStorage.setItem("username", username);
       window.location.href = "/customer/reserve";
     } else if (role == "SuperManager") {
       window.location.href = "/supermanager";

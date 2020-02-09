@@ -31,7 +31,7 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
-            <span> {{ cname }} </span>
+            <span> {{ username }} </span>
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
             <li>
@@ -55,7 +55,7 @@
 export default {
   name: "CustomerNavbar",
   data: () => ({
-    cname: sessionStorage.getItem("cname")
+    username: sessionStorage.getItem("username")
   }),
   methods: {
     loginOut: function() {
