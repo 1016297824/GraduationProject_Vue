@@ -72,13 +72,13 @@
       </div>
     </div>
 
-    <!-- 底部 -->
+    <!-- 页脚 -->
     <footerNavbar />
   </div>
 </template>
 
 <script>
-import { login } from "@/api/login.js";
+import { login } from "@/api/login";
 
 export default {
   name: "Login",

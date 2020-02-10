@@ -5,7 +5,23 @@
     <div class="row">
       <div class="col-lg-12">
         <div class="col-lg-8 m-auto">
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
           <form action="">
+            <div class="form-group text-left">
+              <label for="" class="font-weight-bold">我的订单</label>
+              <input
+                type="button"
+                class="btn btn-primary "
+                style="float:right"
+                value="添加"
+                @click="addReserve"
+              />
+            </div>
+            <hr />
             <table class="table table-borderless">
               <thead>
                 <tr>
@@ -25,11 +41,7 @@
                   <td>{{ re.endTime }}</td>
                   <td>{{ re.insertTime }}</td>
                   <td>
-                    <input
-                      type="button"
-                      value="取消订单"
-                      class="btn btn-primary"
-                    />
+                    <input type="button" value="取消订单" class="btn" />
                   </td>
                 </tr>
               </tbody>
@@ -38,8 +50,6 @@
         </div>
       </div>
     </div>
-
-    <!-- 弹出模块：桌位 -->
   </div>
 </template>
 
@@ -48,6 +58,11 @@ export default {
   name: "Reserve",
   data: () => ({
     reserve: null
-  })
+  }),
+  methods: {
+    addReserve: function() {
+      this.$router.push("reserveAdd");
+    }
+  }
 };
 </script>

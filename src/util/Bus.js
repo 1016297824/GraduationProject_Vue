@@ -3,6 +3,7 @@ export default new Vue({
   data: () => ({
     e: "execption",
     username: "username",
-    customer: "customer"
+    customer: "customer",
+    diningTableList: "diningTableList"
   })
 });
