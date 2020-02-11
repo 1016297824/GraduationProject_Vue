@@ -1,8 +1,8 @@
 import axios from "@/util/MyAxios";
 
 // 登录
-export function login(user) {
-  axios.post("/login", user).then(response => {
+export function login(userBody) {
+  axios.post("/login", userBody).then(response => {
     let token = response.headers["token"];
     let role = response.headers["role"];
     let username = response.headers["username"];

@@ -5,7 +5,6 @@ export default new Vue({
     username: "username",
     customer: "customer",
     diningTableList: "diningTableList",
-    page: "page",
-    pageList: "pageList"
+    pageBody: "pageBody"
   })
 });
