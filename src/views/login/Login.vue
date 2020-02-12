@@ -29,7 +29,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="user.username"
+                      v-model="userBody.username"
                       @keyup="writeUsername"
                     />
                     <p style="color: red;">
@@ -41,7 +41,7 @@
                     <input
                       type="password"
                       class="form-control"
-                      v-model="user.password"
+                      v-model="userBody.password"
                       @keyup="writePassword"
                     />
                     <p style="color: red;">
@@ -92,17 +92,17 @@ export default {
   }),
   methods: {
     login: function() {
-      if (this.user.username == "" || this.user.password == "") {
-        if (this.user.username == "") {
+      if (this.userBody.username == "" || this.userBody.password == "") {
+        if (this.userBody.username == "") {
           this.usernameMessage = "请输入用户名！";
         }
-        if (this.user.password == "") {
+        if (this.userBody.password == "") {
           this.passwordMessage = "请输入密码！";
         }
       } else {
         this.usernameMessage = null;
         this.passwordMessage = null;
-        login(this.user);
+        login(this.userBody);
       }
     },
     writeUsername: function() {

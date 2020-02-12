@@ -17,7 +17,7 @@
                     <label for="" class="font-weight-bold">选择时间</label>
                     <input
                       type="button"
-                      class="btn offset-lg-2"
+                      class="btn offset-lg-3"
                       style="float:right"
                       value="返回"
                       @click="back"
@@ -25,17 +25,20 @@
                   </div>
                 </div>
                 <br />
-                <div>
-                  <span>开始时间：</span>
-                  <el-date-picker
-                    v-model="pageBody.startTime"
-                    type="datetime"
-                    format="yyyy-MM-dd HH:00"
-                    placeholder="选择日期时间"
-                    @change="startTimeChange"
-                  >
-                  </el-date-picker>
-                  <!-- {{ pageBody.startTime }} -->
+                <div class="row">
+                  <div class="col-lg-8">
+                    <span>开始时间：</span>
+                    <el-date-picker
+                      v-model="pageBody.startTime"
+                      type="datetime"
+                      format="yyyy-MM-dd HH:00"
+                      placeholder="选择日期时间"
+                      :picker-options="pickerOptionsStartTime"
+                      @change="TimeChange"
+                    >
+                    </el-date-picker>
+                    <!-- {{ pageBody.startTime }} -->
+                  </div>
                 </div>
                 <br />
                 <span>结束时间：</span>
@@ -44,8 +47,11 @@
                   type="datetime"
                   format="yyyy-MM-dd HH:00"
                   placeholder="选择日期时间"
+                  :picker-options="pickerOptionsEndTime"
+                  @change="TimeChange"
                 >
                 </el-date-picker>
+                <!-- {{ pageBody.endTime }} -->
                 <!-- {{ pageBody.endTime | formatDate }} -->
               </div>
               <table class="table table-borderless">
@@ -120,21 +126,40 @@
 
 <script>
 import bus from "@/util/Bus";
+import moment from "moment";
 import { formatDate } from "@/assets/js/date";
 import { initDiningTable, doPage } from "@/api/customer";
 
 export default {
   name: "ReserveAdd",
-  data: () => ({
-    diningTableList: null,
-    pageBody: {
-      page: null,
-      pages: null,
-      pageList: null,
-      startTime: null,
-      endTime: null
-    }
-  }),
+  data() {
+    return {
+      diningTableList: null,
+      pageBody: {
+        page: null,
+        pages: null,
+        pageList: null,
+        startTime: null,
+        endTime: null
+      },
+      pickerOptionsStartTime: {
+        disabledDate: time => {
+          return time.getTime() < Date.now() - 8.64e7;
+        }
+      },
+      pickerOptionsEndTime: {
+        disabledDate: time => {
+          if (this.pageBody.startTime) {
+            return (
+              time.getTime() <
+              new Date(this.pageBody.startTime).getTime() -
+                1 * 24 * 60 * 60 * 1000 //可以选择同一天
+            );
+          }
+        }
+      }
+    };
+  },
   methods: {
     doPage(page) {
       this.pageBody.page = page;
@@ -143,36 +168,38 @@ export default {
     back() {
       this.$router.push("reserve");
     },
-    initTime() {
-      let newTime1 = new Date();
-      let newTime2 = new Date();
-      newTime1.setMinutes(0);
-      newTime1.setSeconds(0);
-      this.pageBody.startTime = newTime1;
-      newTime2.setMinutes(0);
-      newTime2.setSeconds(0);
-      newTime2.setHours(newTime1.getHours() + 2);
-      this.pageBody.endTime = newTime2;
-    },
-    startTimeChange() {
-      alert("schange");
+    TimeChange() {
+      this.pageBody.startTime = new Date(this.pageBody.startTime);
+      this.pageBody.endTime = new Date(this.pageBody.endTime);
+      if (
+        this.pageBody.startTime.getTime() >= this.pageBody.endTime.getTime()
+      ) {
+        alert("zk");
+      }
+      this.pageBody.startTime = moment(this.pageBody.startTime)
+        .utcOffset(480)
+        .format("YYYY-MM-DD HH:mm:ss");
+      this.pageBody.endTime = moment(this.pageBody.endTime)
+        .utcOffset(480)
+        .format("YYYY-MM-DD HH:mm:ss");
     }
   },
   filters: {
     formatDate(time) {
       var date = new Date(time);
-      return formatDate(date, "yyyy-MM-dd hh : mm : ss");
+      return formatDate(date, "yyyy-MM-dd hh : 00 : 00");
     }
   },
   created() {
-    this.initTime();
-    initDiningTable();
     bus.$on(bus.diningTableList, data => {
       this.diningTableList = data;
     });
     bus.$on(bus.pageBody, data => {
       this.pageBody = data;
     });
+  },
+  mounted() {
+    initDiningTable();
   },
   beforeDestroy() {
     bus.$off(bus.diningTableList);
