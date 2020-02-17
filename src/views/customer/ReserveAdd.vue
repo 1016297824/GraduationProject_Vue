@@ -34,7 +34,7 @@
                       format="yyyy-MM-dd HH:00"
                       placeholder="选择日期时间"
                       :picker-options="pickerOptionsStartTime"
-                      @change="TimeChange"
+                      @change="startTimeChange"
                     >
                     </el-date-picker>
                     <!-- {{ pageBody.startTime }} -->
@@ -48,7 +48,7 @@
                   format="yyyy-MM-dd HH:00"
                   placeholder="选择日期时间"
                   :picker-options="pickerOptionsEndTime"
-                  @change="TimeChange"
+                  @change="endTimeChange"
                 >
                 </el-date-picker>
                 <!-- {{ pageBody.endTime }} -->
@@ -71,6 +71,7 @@
                         type="button"
                         value="预定"
                         class="btn btn-primary"
+                        @click="reserveAdd(dt)"
                       />
                     </td>
                   </tr>
@@ -128,7 +129,7 @@
 import bus from "@/util/Bus";
 import moment from "moment";
 import { formatDate } from "@/assets/js/date";
-import { initDiningTable, doPage } from "@/api/customer";
+import { initDiningTable, doPage, reserveAdd } from "@/api/customer";
 
 export default {
   name: "ReserveAdd",
@@ -144,7 +145,10 @@ export default {
       },
       pickerOptionsStartTime: {
         disabledDate: time => {
-          return time.getTime() < Date.now() - 8.64e7;
+          return (
+            time.getTime() < Date.now() - 8.64e7 ||
+            time.getTime() > Date.now() + 6 * 8.64e7
+          );
         }
       },
       pickerOptionsEndTime: {
@@ -152,8 +156,9 @@ export default {
           if (this.pageBody.startTime) {
             return (
               time.getTime() <
-              new Date(this.pageBody.startTime).getTime() -
-                1 * 24 * 60 * 60 * 1000 //可以选择同一天
+                new Date(this.pageBody.startTime).getTime() - 8.64e7 ||
+              time.getTime() >
+                new Date(this.pageBody.startTime).getTime() + 6 * 8.64e7
             );
           }
         }
@@ -165,16 +170,28 @@ export default {
       this.pageBody.page = page;
       doPage(this.pageBody);
     },
+    reserveAdd(dt) {
+      let con = confirm(
+        `确认预定：${dt.id}号桌\n时间：${this.pageBody.startTime}至${this.pageBody.endTime}`
+      );
+      if (con == true) {
+        this.pageBody.page = 1;
+        reserveAdd(dt, this.pageBody);
+      } else {
+        alert("已取消！");
+      }
+    },
     back() {
       this.$router.push("reserve");
     },
-    TimeChange() {
+    startTimeChange() {
       this.pageBody.startTime = new Date(this.pageBody.startTime);
       this.pageBody.endTime = new Date(this.pageBody.endTime);
       if (
         this.pageBody.startTime.getTime() >= this.pageBody.endTime.getTime()
       ) {
-        alert("zk");
+        let newEndTime = new Date(this.pageBody.startTime);
+        this.pageBody.endTime = newEndTime.setHours(newEndTime.getHours() + 1);
       }
       this.pageBody.startTime = moment(this.pageBody.startTime)
         .utcOffset(480)
@@ -182,6 +199,33 @@ export default {
       this.pageBody.endTime = moment(this.pageBody.endTime)
         .utcOffset(480)
         .format("YYYY-MM-DD HH:mm:ss");
+      this.doPage(1);
+    },
+    endTimeChange() {
+      let nowDate = new Date();
+      this.pageBody.startTime = new Date(this.pageBody.startTime);
+      this.pageBody.endTime = new Date(this.pageBody.endTime);
+      nowDate.setHours(1);
+      nowDate.setMinutes(0);
+      nowDate.setSeconds(0);
+      if (nowDate.getTime() > this.pageBody.endTime.getTime()) {
+        this.pageBody.endTime.setHours(1);
+      }
+      if (
+        this.pageBody.startTime.getTime() >= this.pageBody.endTime.getTime()
+      ) {
+        let newStartTime = new Date(this.pageBody.endTime);
+        this.pageBody.startTime = newStartTime.setHours(
+          newStartTime.getHours() - 1
+        );
+      }
+      this.pageBody.startTime = moment(this.pageBody.startTime)
+        .utcOffset(480)
+        .format("YYYY-MM-DD HH:mm:ss");
+      this.pageBody.endTime = moment(this.pageBody.endTime)
+        .utcOffset(480)
+        .format("YYYY-MM-DD HH:mm:ss");
+      this.doPage(1);
     }
   },
   filters: {

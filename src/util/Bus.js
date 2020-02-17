@@ -1,9 +1,10 @@
 import Vue from "vue";
 export default new Vue({
   data: () => ({
-    e: "execption",
+    error: "execption",
     username: "username",
     customer: "customer",
+    reserveList: "reserveList",
     diningTableList: "diningTableList",
     pageBody: "pageBody"
   })

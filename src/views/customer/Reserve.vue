@@ -34,14 +34,31 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(re, index) in reserve" :key="index">
-                  <td>{{ re.no }}</td>
-                  <td>{{ re.diningTable.id }}</td>
-                  <td>{{ re.startTime }}</td>
-                  <td>{{ re.endTime }}</td>
-                  <td>{{ re.insertTime }}</td>
+                <tr v-for="(reserve, index) in reserveList" :key="index">
+                  <td>{{ reserve.no }}</td>
+                  <td>{{ reserve.diningTable.id }}</td>
+                  <td
+                    style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
+                  >
+                    {{ reserve.startTime | formatDate }}
+                  </td>
+                  <td
+                    style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
+                  >
+                    {{ reserve.endTime | formatDate }}
+                  </td>
+                  <td
+                    style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
+                  >
+                    {{ reserve.insertTime | formatDate }}
+                  </td>
                   <td>
-                    <input type="button" value="取消订单" class="btn" />
+                    <input
+                      type="button"
+                      value="取消订单"
+                      class="btn"
+                      @click="deleteReserve(reserve.no)"
+                    />
                   </td>
                 </tr>
               </tbody>
@@ -54,15 +71,39 @@
 </template>
 
 <script>
+import bus from "@/util/Bus";
+import { formatDate } from "@/assets/js/date";
+import { getReserve, deleteReserve } from "@/api/customer";
+
 export default {
   name: "Reserve",
   data: () => ({
-    reserve: null
+    reserveList: null
   }),
   methods: {
     addReserve: function() {
       this.$router.push("reserveAdd");
+    },
+    deleteReserve(no) {
+      deleteReserve(no);
     }
+  },
+  filters: {
+    formatDate(time) {
+      var date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd hh : mm");
+    }
+  },
+  created() {
+    bus.$on(bus.reserveList, data => {
+      this.reserveList = data;
+    });
+  },
+  mounted() {
+    getReserve();
+  },
+  beforeDestroy() {
+    bus.$off(bus.reserveList);
   }
 };
 </script>

@@ -2,11 +2,12 @@ import axios from "axios";
 import bus from "@/util/Bus";
 
 axios.defaults.baseURL = "/api";
+axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use(
-  function(req) {
-    req.headers.token = sessionStorage.getItem("token");
-    return req;
+  function(request) {
+    request.headers.token = sessionStorage.getItem("token");
+    return request;
   },
   function(error) {
     return Promise.reject(error);
@@ -18,7 +19,7 @@ axios.interceptors.response.use(
     return response;
   },
   function(error) {
-    bus.$emit(bus.e, error.response.data.message);
+    bus.$emit(bus.error, error.response.data.message);
     return Promise.reject(error);
   }
 );
