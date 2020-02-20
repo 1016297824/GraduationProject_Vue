@@ -6,6 +6,7 @@ export function getReserve() {
   axios.get("/customer/reserve/getReserve").then(response => {
     setTimeout(() => {
       bus.$emit(bus.reserveList, response.data.reserveList);
+      bus.$emit(bus.reserveLists, response.data.reserveLists);
     }, 200);
   });
 }

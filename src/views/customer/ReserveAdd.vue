@@ -24,7 +24,6 @@
                     />
                   </div>
                 </div>
-                <br />
                 <div class="row">
                   <div class="col-lg-8">
                     <span>开始时间：</span>
@@ -235,6 +234,7 @@ export default {
     }
   },
   created() {
+    initDiningTable();
     bus.$on(bus.diningTableList, data => {
       this.diningTableList = data;
     });
@@ -242,9 +242,7 @@ export default {
       this.pageBody = data;
     });
   },
-  mounted() {
-    initDiningTable();
-  },
+  mounted() {},
   beforeDestroy() {
     bus.$off(bus.diningTableList);
     bus.$off(bus.pageBody);

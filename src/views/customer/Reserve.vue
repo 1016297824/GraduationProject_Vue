@@ -25,8 +25,16 @@
             <table class="table table-borderless">
               <thead>
                 <tr>
-                  <th>订单号</th>
-                  <th>桌位</th>
+                  <th
+                    style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
+                  >
+                    订单号
+                  </th>
+                  <th
+                    style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
+                  >
+                    桌位
+                  </th>
                   <th>开始时间</th>
                   <th>结束时间</th>
                   <th>下单时间</th>
@@ -35,8 +43,12 @@
               </thead>
               <tbody>
                 <tr v-for="(reserve, index) in reserveList" :key="index">
-                  <td>{{ reserve.no }}</td>
-                  <td>{{ reserve.diningTable.id }}</td>
+                  <td>
+                    {{ reserve.no }}
+                  </td>
+                  <td>
+                    {{ reserve.diningTable.id }}
+                  </td>
                   <td
                     style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
                   >
@@ -85,7 +97,10 @@ export default {
       this.$router.push("reserveAdd");
     },
     deleteReserve(no) {
-      deleteReserve(no);
+      let con = confirm(`取消订单：\n订单号：${no}`);
+      if (con == true) {
+        deleteReserve(no);
+      }
     }
   },
   filters: {
