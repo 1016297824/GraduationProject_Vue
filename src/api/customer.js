@@ -11,6 +11,7 @@ export function getReserve() {
   });
 }
 
+// 删除订单
 export function deleteReserve(no) {
   axios.post(`/customer/reserve/deleteReserve/${no}`).then(response => {
     setTimeout(() => {
@@ -29,7 +30,7 @@ export function initDiningTable() {
   });
 }
 
-// 分页
+// 订单分页
 export function doPage(pageBody) {
   axios.post("/customer/reserveAdd/doPage", pageBody).then(response => {
     setTimeout(() => {

@@ -8,33 +8,37 @@
           <br />
           <br />
           <br />
-          <div class="form-group text-left">
-            <label for="" class="font-weight-bold">已有订单</label>
-            <a href="/customer/reserveAdd" style="float:right">
-              没有订单，去添加
-            </a>
-          </div>
-          <hr />
-          <br />
-          <div
-            class="row"
-            v-for="(reserveList, index) in reserveLists"
-            :key="index"
-          >
+          <form>
+            <div class="form-group text-left">
+              <label for="" class="font-weight-bold">已有订单</label>
+              <a href="/customer/reserveAdd" style="float:right">
+                没有订单，去添加
+              </a>
+            </div>
+            <hr />
+            <br />
             <div
-              class="col-lg-4 text-center"
-              v-for="(reserve, index) in reserveList"
+              class="row"
+              v-for="(reserveList, index) in reserveLists"
               :key="index"
             >
-              <img
-                :alt="'订单号：' + reserve.no"
-                :title="'订单号：' + reserve.no"
-                src="@/assets/imgs/diningtable.jpg"
-                class="img-fluid"
-              />
-              {{ reserve.diningTable.id + "号桌" }}
+              <div
+                class="col-lg-4 text-center"
+                v-for="(reserve, index) in reserveList"
+                :key="index"
+              >
+                <img
+                  style="cursor:pointer"
+                  :alt="'订单号：' + reserve.no"
+                  :title="'订单号：' + reserve.no"
+                  src="@/assets/imgs/diningtable.jpg"
+                  class="img-fluid"
+                  @click="orderAdd(reserve.no)"
+                />
+                {{ reserve.diningTable.id + "号桌" }}
+              </div>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
@@ -54,8 +58,13 @@ export default {
     addReserve: function() {
       this.$router.push("reserveAdd");
     },
-    test() {
-      console.log(this.reserveLists);
+    orderAdd(no) {
+      this.$router.push({
+        path: "orderAdd",
+        query: {
+          no: no
+        }
+      });
     }
   },
   created() {

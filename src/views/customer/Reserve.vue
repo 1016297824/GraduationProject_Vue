@@ -15,7 +15,7 @@
               <label for="" class="font-weight-bold">我的订单</label>
               <input
                 type="button"
-                class="btn btn-primary "
+                class="btn btn-primary"
                 style="float:right"
                 value="添加"
                 @click="addReserve"
