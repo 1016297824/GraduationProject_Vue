@@ -71,9 +71,61 @@
             </button>
           </div>
           <div class="modal-body">
-            <a href="#">
-              <span class="iconfont icon-xuanzhongduigou"></span>
-            </a>
+            <div class="panel panel-default">
+              <div class="panel-body" id="pageProduct">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th style="text-align: center;">選択</th>
+                      <th style="text-align: center;">商品コード</th>
+                      <th style="text-align: center;">商品名</th>
+                      <th style="text-align: center;">単価</th>
+                      <th style="text-align: center;">在庫数</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+                <nav aria-label="Page navigation">
+                  <ul class="pagination">
+                    <li class="page-item">
+                      <a
+                        class="page-link"
+                        href="#"
+                        aria-label="Previous"
+                        @click="doPage(1)"
+                      >
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                      </a>
+                    </li>
+                    <li
+                      v-for="(page, index) in pageBody1.pageList"
+                      :key="index"
+                      :class="
+                        pageBody1.page == page
+                          ? 'page-item active'
+                          : 'page-item'
+                      "
+                    >
+                      <a class="page-link" href="#" @click="doPage(page)">{{
+                        page
+                      }}</a>
+                    </li>
+                    <li class="page-item">
+                      <a
+                        class="page-link"
+                        href="#"
+                        aria-label="Next"
+                        @click="doPage(pageBody1.pages)"
+                      >
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
             <button
@@ -92,13 +144,51 @@
 </template>
 
 <script>
+import bus from "@/util/Bus";
+import { getOrdering } from "@/api/customer";
+
 export default {
   name: "OrderAdd",
   data: () => ({
-    no: null
+    no: null,
+    pageBody1: {
+      page: null,
+      pages: null,
+      pageList: null
+    },
+    isOrdered: null,
+    menuList1: null,
+    menuList: null,
+    orderingList: null
   }),
+  methods: {
+    doPage() {}
+  },
   created() {
     this.no = this.$route.query.no;
+    getOrdering(this.no);
+    bus.$on(bus.isOrdered, data => {
+      this.isOrdered = data;
+    });
+    bus.$on(bus.pageBody1, data => {
+      this.pageBody1 = data;
+    });
+    bus.$on(bus.orderingList, data => {
+      this.orderingList = data;
+    });
+    bus.$on(bus.menuList1, data => {
+      this.menuList1 = data;
+    });
+    bus.$on(bus.menuList, data => {
+      this.menuList = data;
+    });
+  },
+  beforeDestroy() {
+    bus.$off(bus.isOrdered);
+    bus.$off(bus.pageBody1);
+    bus.$off(bus.orderingList);
+    bus.$off(bus.menuList1);
+    bus.$off(bus.menuList);
   }
 };
 </script>

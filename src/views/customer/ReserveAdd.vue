@@ -90,14 +90,14 @@
                     </a>
                   </li>
                   <li
-                    v-for="(pl, index) in pageBody.pageList"
+                    v-for="(page, index) in pageBody.pageList"
                     :key="index"
                     :class="
-                      pageBody.page == pl ? 'page-item active' : 'page-item'
+                      pageBody.page == page ? 'page-item active' : 'page-item'
                     "
                   >
-                    <a class="page-link" href="#" @click="doPage(pl)">{{
-                      pl
+                    <a class="page-link" href="#" @click="doPage(page)">{{
+                      page
                     }}</a>
                   </li>
                   <li class="page-item">
@@ -132,38 +132,36 @@ import { initDiningTable, doPage, reserveAdd } from "@/api/customer";
 
 export default {
   name: "ReserveAdd",
-  data() {
-    return {
-      diningTableList: null,
-      pageBody: {
-        page: null,
-        pages: null,
-        pageList: null,
-        startTime: null,
-        endTime: null
-      },
-      pickerOptionsStartTime: {
-        disabledDate: time => {
+  data: () => ({
+    diningTableList: null,
+    pageBody: {
+      page: null,
+      pages: null,
+      pageList: null,
+      startTime: null,
+      endTime: null
+    },
+    pickerOptionsStartTime: {
+      disabledDate: time => {
+        return (
+          time.getTime() < Date.now() - 8.64e7 ||
+          time.getTime() > Date.now() + 6 * 8.64e7
+        );
+      }
+    },
+    pickerOptionsEndTime: {
+      disabledDate: time => {
+        if (this.pageBody.startTime) {
           return (
-            time.getTime() < Date.now() - 8.64e7 ||
-            time.getTime() > Date.now() + 6 * 8.64e7
+            time.getTime() <
+              new Date(this.pageBody.startTime).getTime() - 8.64e7 ||
+            time.getTime() >
+              new Date(this.pageBody.startTime).getTime() + 6 * 8.64e7
           );
         }
-      },
-      pickerOptionsEndTime: {
-        disabledDate: time => {
-          if (this.pageBody.startTime) {
-            return (
-              time.getTime() <
-                new Date(this.pageBody.startTime).getTime() - 8.64e7 ||
-              time.getTime() >
-                new Date(this.pageBody.startTime).getTime() + 6 * 8.64e7
-            );
-          }
-        }
       }
-    };
-  },
+    }
+  }),
   methods: {
     doPage(page) {
       this.pageBody.page = page;

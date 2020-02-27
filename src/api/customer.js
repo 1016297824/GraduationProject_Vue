@@ -51,3 +51,16 @@ export function reserveAdd(diningTable, pageBody) {
       }, 200);
     });
 }
+
+// 获得订单信息
+export function getOrdering(no) {
+  axios.get(`/customer/getOrdering/${no}`).then(response => {
+    setTimeout(() => {
+      bus.$emit(bus.isOrdered, response.data.isOrdered);
+      bus.$emit(bus.pageBody1, response.data.pageBody1);
+      bus.$emit(bus.orderingList, response.data.orderingList);
+      bus.$emit(bus.menuList1, response.data.menuList1);
+      bus.$emit(bus.menuList, response.data.menuList);
+    }, 200);
+  });
+}

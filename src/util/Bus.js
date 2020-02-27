@@ -7,6 +7,11 @@ export default new Vue({
     reserveList: "reserveList",
     reserveLists: "reserveLists",
     diningTableList: "diningTableList",
-    pageBody: "pageBody"
+    pageBody: "pageBody",
+    isOrdered: "isOrdered",
+    pageBody1: "pageBody1",
+    orderingList: "orderingList",
+    menuList1: "menuList1",
+    menuList: "menuList"
   })
 });
