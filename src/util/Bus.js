@@ -12,6 +12,7 @@ export default new Vue({
     pageBody1: "pageBody1",
     orderingList: "orderingList",
     menuList1: "menuList1",
-    menuList: "menuList"
+    menuList: "menuList",
+    reserve: "reserve"
   })
 });

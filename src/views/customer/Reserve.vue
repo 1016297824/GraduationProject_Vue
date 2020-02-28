@@ -22,17 +22,14 @@
               />
             </div>
             <hr />
+            <br />
             <table class="table table-borderless">
               <thead>
                 <tr>
-                  <th
-                    style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
-                  >
+                  <th class="text-truncate">
                     订单号
                   </th>
-                  <th
-                    style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
-                  >
+                  <th class="text-truncate">
                     桌位
                   </th>
                   <th>开始时间</th>
@@ -49,19 +46,13 @@
                   <td>
                     {{ reserve.diningTable.id }}
                   </td>
-                  <td
-                    style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
-                  >
+                  <td class="text-truncate">
                     {{ reserve.startTime | formatDate }}
                   </td>
-                  <td
-                    style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
-                  >
+                  <td class="text-truncate">
                     {{ reserve.endTime | formatDate }}
                   </td>
-                  <td
-                    style="overflow: hidden;text-overflow: ellipsis;white-space: nowrap;"
-                  >
+                  <td class="text-truncate">
                     {{ reserve.insertTime | formatDate }}
                   </td>
                   <td>

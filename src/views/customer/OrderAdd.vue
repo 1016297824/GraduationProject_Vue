@@ -18,31 +18,81 @@
                 style="float:right"
                 data-toggle="modal"
                 data-target="#order"
+                :disabled="isOrdered"
+                @click="initModel"
               />
             </div>
             <hr />
             <br />
-            <!-- <div
-              class="row"
-              v-for="(reserveList, index) in reserveLists"
-              :key="index"
-            >
-              <div
-                class="col-lg-4 text-center"
-                v-for="(reserve, index) in reserveList"
-                :key="index"
-              >
-                <img
-                  style="cursor:pointer"
-                  :alt="'订单号：' + reserve.no"
-                  :title="'订单号：' + reserve.no"
-                  src="@/assets/imgs/diningtable.jpg"
-                  class="img-fluid"
-                  @click="orderAdd(reserve.no)"
+            <table class="table table-borderless">
+              <thead>
+                <tr>
+                  <th style="text-align: center;" class="text-truncate">
+                    菜名
+                  </th>
+                  <th style="text-align: center;" class="text-truncate">
+                    份数
+                  </th>
+                  <th style="text-align: center;" class="text-truncate">
+                    单价
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(ordering, index) in orderingList" :key="index">
+                  <td class="text-truncate text-center">
+                    {{ ordering.menu.name }}
+                  </td>
+                  <td
+                    class="text-truncate text-center"
+                    style="text-align: center;"
+                  >
+                    <a
+                      href="#"
+                      @click="decreaseCount1(index)"
+                      v-show="!isOrdered"
+                    >
+                      <span class="iconfont icon-icon-test1"></span>
+                    </a>
+                    {{ ordering.count }}
+                    <a href="#" @click="addCount1(index)" v-show="!isOrdered">
+                      <span class="iconfont icon-icon-test2"></span>
+                    </a>
+                  </td>
+                  <td class="text-truncate text-center">
+                    {{ ordering.menu.price | numFilter }}
+                    {{ ordering.menu.unite + "/份" }}
+                  </td>
+                </tr>
+                <tr>
+                  <td></td>
+                  <td
+                    class="text-center font-weight-bold"
+                    v-show="orderingList.length != 0"
+                  >
+                    合计
+                  </td>
+                  <td
+                    v-show="orderingList.length != 0"
+                    class="text-center font-weight-bold"
+                  >
+                    {{ totalPrice | numFilter }} {{ "元" }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="row">
+              <div class="col-lg-12" style="text-align:center">
+                <input
+                  type="button"
+                  class="btn btn-primary"
+                  value="提交"
+                  :disabled="orderingList.length == 0"
+                  v-show="!isOrdered"
+                  @click="addOrdering"
                 />
-                {{ reserve.diningTable.id + "号桌" }}
               </div>
-            </div> -->
+            </div>
           </form>
         </div>
       </div>
@@ -76,14 +126,47 @@
                 <table class="table table-bordered">
                   <thead>
                     <tr>
-                      <th style="text-align: center;">選択</th>
-                      <th style="text-align: center;">商品コード</th>
-                      <th style="text-align: center;">商品名</th>
-                      <th style="text-align: center;">単価</th>
-                      <th style="text-align: center;">在庫数</th>
+                      <th style="text-align: center;" class="text-truncate">
+                        选项
+                      </th>
+                      <th
+                        style="text-align: center;"
+                        class="text-truncate"
+                        width="113"
+                      >
+                        图片
+                      </th>
+                      <th style="text-align: center;" width="187">菜名</th>
+                      <th style="text-align: center;" width="112">单价</th>
+                      <th style="text-align: center;">类型</th>
                     </tr>
                   </thead>
-                  <tbody></tbody>
+                  <tbody>
+                    <tr v-for="(menu, index) in menuList1" :key="index">
+                      <td class="m-auto">
+                        <a href="#" @click="getMenu(menu)">
+                          <span class="iconfont icon-xuanzhongduigou"></span>
+                        </a>
+                      </td>
+                      <td>
+                        <img
+                          :src="
+                            require('@/assets/imgs/menu/' + menu.id + '.jpg')
+                          "
+                          class="img-fluid"
+                        />
+                      </td>
+                      <td class="text-truncate">
+                        {{ menu.name }}
+                      </td>
+                      <td class="text-truncate">
+                        {{ menu.price | numFilter }}{{ menu.unite + "/份" }}
+                      </td>
+                      <td class="text-truncate">
+                        {{ menu.type }}
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
                 <nav aria-label="Page navigation">
                   <ul class="pagination">
@@ -107,9 +190,9 @@
                           : 'page-item'
                       "
                     >
-                      <a class="page-link" href="#" @click="doPage(page)">{{
-                        page
-                      }}</a>
+                      <a class="page-link" href="#" @click="doPage(page)">
+                        {{ page }}
+                      </a>
                     </li>
                     <li class="page-item">
                       <a
@@ -128,14 +211,35 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Close
-            </button>
-            <button type="button" class="btn btn-primary">Save changes</button>
+            <div class="col-lg-7" align="left">
+              <div class="input-group">
+                <span class="input-group-addon">菜名</span>
+                <input
+                  type="text"
+                  class="form-control"
+                  readonly
+                  v-model="menu.name"
+                />
+              </div>
+            </div>
+            <div class="col-lg-3" align="center">
+              <a href="#" @click="decreaseCount">
+                <span class="iconfont icon-icon-test1"></span>
+              </a>
+              {{ count }}
+              <a href="#" @click="addCount">
+                <span class="iconfont icon-icon-test2"></span>
+              </a>
+            </div>
+            <div class="col-lg-2" align="right">
+              <button
+                type="button"
+                class="btn btn-primary btn-sm"
+                @click="addMenu"
+              >
+                确认
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -145,24 +249,167 @@
 
 <script>
 import bus from "@/util/Bus";
-import { getOrdering } from "@/api/customer";
+import { getOrdering, addOrdering } from "@/api/customer";
+import $ from "jquery";
+// import { cutOutNum } from "@/assets/js/cutOutNum";
 
 export default {
   name: "OrderAdd",
   data: () => ({
     no: null,
+    count: 1,
     pageBody1: {
       page: null,
       pages: null,
-      pageList: null
+      pageList: []
     },
     isOrdered: null,
-    menuList1: null,
-    menuList: null,
-    orderingList: null
+    menu: {
+      id: null,
+      name: null,
+      price: null,
+      unite: null,
+      type: null
+    },
+    menuList1: [],
+    menuList: [],
+    ordering: {
+      id: null,
+      count: null,
+      menu: null,
+      reserve: null
+    },
+    orderingList: []
   }),
   methods: {
-    doPage() {}
+    initModel() {
+      this.count = 1;
+      this.menu.name = "";
+      this.doPage(1);
+    },
+    getMenu(menu) {
+      this.menu = JSON.parse(JSON.stringify(menu));
+    },
+    addCount() {
+      this.count++;
+    },
+    decreaseCount() {
+      if (this.count != 1) {
+        this.count--;
+      }
+    },
+    addCount1(index) {
+      this.orderingList[index].count++;
+    },
+    decreaseCount1(index) {
+      this.orderingList[index].count--;
+      if (this.orderingList[index].count == 0) {
+        this.$delete(this.orderingList, index);
+      }
+    },
+    addMenu() {
+      if (this.menu.name != "") {
+        let result = false;
+        for (let i = 0; i < this.orderingList.length; i++) {
+          if (this.menu.name == this.orderingList[i].menu.name) {
+            result = true;
+          }
+        }
+        if (result == true) {
+          alert("已添加这个菜品！");
+        } else {
+          this.ordering.count = this.count;
+          this.ordering.menu = this.menu;
+          this.orderingList.push(JSON.parse(JSON.stringify(this.ordering)));
+          $("#order").modal("hide");
+        }
+      } else {
+        alert("请选菜！");
+      }
+    },
+    addOrdering() {
+      let con = confirm("是否提交?\n注意：提交后不可更改！");
+      if (con == true) {
+        addOrdering(this.orderingList);
+      } else {
+        alert("已取消！");
+      }
+    },
+    doPage(page) {
+      this.menuList1 = [];
+      if (this.pageBody1.pages <= 5) {
+        if (this.pageBody1.pages == page) {
+          for (let i = (page - 1) * 5; i < this.menuList.length(); i++) {
+            this.menuList1.push(this.menuList[i]);
+          }
+        } else {
+          for (let i = (page - 1) * 5; i < page * 5; i++) {
+            this.menuList1.push(this.menuList[i]);
+          }
+        }
+      } else {
+        this.pageBody1.pageList = [];
+        if (page > this.pageBody1.pages - 2) {
+          for (
+            let i = this.pageBody1.pages - 5;
+            i < this.pageBody1.pages;
+            i++
+          ) {
+            this.pageBody1.pageList.push(i + 1);
+          }
+          if (this.pageBody1.pages == page) {
+            for (let i = (page - 1) * 5; i < this.menuList.length; i++) {
+              this.menuList1.push(this.menuList[i]);
+            }
+          } else {
+            for (let i = (page - 1) * 5; i < page * 5; i++) {
+              this.menuList1.push(this.menuList[i]);
+            }
+          }
+        } else if (page <= 2) {
+          for (let i = 0; i < 5; i++) {
+            this.pageBody1.pageList.push(i + 1);
+          }
+          for (let i = (page - 1) * 5; i < page * 5; i++) {
+            this.menuList1.push(this.menuList[i]);
+          }
+        } else {
+          for (let i = page - 2; i <= page + 2; i++) {
+            this.pageBody1.pageList.push(i);
+          }
+          for (let i = (page - 1) * 5; i < page * 5; i++) {
+            this.menuList1.push(this.menuList[i]);
+          }
+        }
+      }
+      this.pageBody1.page = page;
+    }
+  },
+  computed: {
+    totalPrice: function() {
+      let totalPrice = 0;
+      if (this.orderingList.length != 0) {
+        for (let i = 0; i < this.orderingList.length; i++) {
+          totalPrice +=
+            this.orderingList[i].count * this.orderingList[i].menu.price;
+        }
+        return totalPrice;
+      } else {
+        return null;
+      }
+    }
+  },
+  filters: {
+    numFilter(value) {
+      let realVal = "";
+      if (!isNaN(value) && value !== "") {
+        // 截取当前数据到小数点后两位
+        realVal = parseFloat(value).toFixed(2);
+      } else {
+        realVal = "--";
+      }
+      return realVal;
+    }
   },
   created() {
     this.no = this.$route.query.no;
@@ -182,6 +429,9 @@ export default {
     bus.$on(bus.menuList, data => {
       this.menuList = data;
     });
+    bus.$on(bus.reserve, data => {
+      this.ordering.reserve = data;
+    });
   },
   beforeDestroy() {
     bus.$off(bus.isOrdered);
@@ -189,6 +439,7 @@ export default {
     bus.$off(bus.orderingList);
     bus.$off(bus.menuList1);
     bus.$off(bus.menuList);
+    bus.$off(bus.reserve);
   }
 };
 </script>

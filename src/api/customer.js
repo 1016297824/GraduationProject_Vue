@@ -52,7 +52,7 @@ export function reserveAdd(diningTable, pageBody) {
     });
 }
 
-// 获得订单信息
+// 获得点餐信息
 export function getOrdering(no) {
   axios.get(`/customer/getOrdering/${no}`).then(response => {
     setTimeout(() => {
@@ -61,6 +61,17 @@ export function getOrdering(no) {
       bus.$emit(bus.orderingList, response.data.orderingList);
       bus.$emit(bus.menuList1, response.data.menuList1);
       bus.$emit(bus.menuList, response.data.menuList);
+      bus.$emit(bus.reserve, response.data.reserve);
+    }, 200);
+  });
+}
+
+// 添加点餐信息
+export function addOrdering(no, orderingList) {
+  axios.post("/customer/addOrdering", orderingList).then(response => {
+    setTimeout(() => {
+      alert(response.data.message);
+      getOrdering(no);
     }, 200);
   });
 }
