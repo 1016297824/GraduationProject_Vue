@@ -1,3 +1,4 @@
+// 添加点餐信息
 <template>
   <div class="container">
     <div class="row">
@@ -244,6 +245,9 @@
         </div>
       </div>
     </div>
+    <br />
+    <br />
+    <br />
   </div>
 </template>
 
@@ -330,7 +334,7 @@ export default {
     addOrdering() {
       let con = confirm("是否提交?\n注意：提交后不可更改！");
       if (con == true) {
-        addOrdering(this.orderingList);
+        addOrdering(this.no, this.orderingList);
       } else {
         alert("已取消！");
       }

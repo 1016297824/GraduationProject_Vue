@@ -75,3 +75,12 @@ export function addOrdering(no, orderingList) {
     }, 200);
   });
 }
+
+// 修改密码
+export function changePassword(userBody1) {
+  axios.post("/customer/changePassword", userBody1).then(response => {
+    setTimeout(() => {
+      alert(response.data.message);
+    }, 200);
+  });
+}

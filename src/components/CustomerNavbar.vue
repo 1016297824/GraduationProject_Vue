@@ -35,10 +35,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
             <li>
-              <a class="dropdown-item" href="#"> 个人信息 </a>
-            </li>
-            <li>
-              <a class="dropdown-item" href="#"> 修改密码 </a>
+              <a class="dropdown-item" href="password"> 修改密码 </a>
             </li>
             <div class="dropdown-divider"></div>
             <li>

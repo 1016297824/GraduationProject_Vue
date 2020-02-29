@@ -1,3 +1,4 @@
+// 点餐界面
 <template>
   <div class="container">
     <div class="row">
@@ -42,6 +43,9 @@
         </div>
       </div>
     </div>
+    <br />
+    <br />
+    <br />
   </div>
 </template>
 

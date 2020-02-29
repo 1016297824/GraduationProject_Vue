@@ -5,12 +5,12 @@
 import bus from "@/util/Bus";
 export default {
   created() {
-    bus.$on(bus.e, data => {
+    bus.$on(bus.error, data => {
       alert(data);
     });
   },
   beforeDestroy() {
-    bus.$off(bus.e);
+    bus.$off(bus.error);
   }
 };
 </script>

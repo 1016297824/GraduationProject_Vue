@@ -22,6 +22,16 @@
                   <input
                     type="text"
                     class="form-control"
+                    style="position:fixed;bottom:-9999px;"
+                  />
+                  <input
+                    type="password"
+                    class="form-control"
+                    style="position:fixed;bottom:-9999px;"
+                  />
+                  <input
+                    type="text"
+                    class="form-control"
                     v-model="customer.username"
                     @keyup="writeUsername"
                   />
@@ -130,8 +140,6 @@ export default {
       } else if (this.customer.password != this.password1) {
         this.password1Message = "两次输入密码不一致，请再次确认！";
       } else {
-        console.log("zk");
-
         register(this.customer);
       }
     },

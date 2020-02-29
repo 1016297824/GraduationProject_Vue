@@ -72,6 +72,14 @@ const routes = [
           title: "采购"
         },
         component: () => import("@/views/customer/Purchase")
+      },
+      {
+        path: "Password",
+        name: "Password",
+        meta: {
+          title: "修改密码"
+        },
+        component: () => import("@/views/customer/Password")
       }
     ]
   },
