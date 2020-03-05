@@ -2,7 +2,7 @@
 <template>
   <div>
     <!-- 导航栏 -->
-    <navbar />
+    <customerNavbar />
 
     <!-- 子路由 -->
     <router-view />
@@ -16,7 +16,7 @@
 export default {
   name: "Customer",
   components: {
-    navbar: () => import("@/components/CustomerNavbar"),
+    customerNavbar: () => import("@/components/CustomerNavbar"),
     footerNavbar: () => import("@/components/FooterNavbar")
   }
 };

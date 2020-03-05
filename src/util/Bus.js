@@ -11,8 +11,10 @@ export default new Vue({
     isOrdered: "isOrdered",
     pageBody1: "pageBody1",
     orderingList: "orderingList",
-    menuList1: "menuList1",
     menuList: "menuList",
-    reserve: "reserve"
+    menuList1: "menuList1",
+    reserve: "reserve",
+    staffList: "staffList",
+    staffList1: "staffList1"
   })
 });

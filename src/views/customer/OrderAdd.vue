@@ -343,7 +343,7 @@ export default {
       this.menuList1 = [];
       if (this.pageBody1.pages <= 5) {
         if (this.pageBody1.pages == page) {
-          for (let i = (page - 1) * 5; i < this.menuList.length(); i++) {
+          for (let i = (page - 1) * 5; i < this.menuList.length; i++) {
             this.menuList1.push(this.menuList[i]);
           }
         } else {

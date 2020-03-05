@@ -89,7 +89,17 @@ const routes = [
     meta: {
       title: "欢迎使用！"
     },
-    component: () => import("@/views/supermanager/SuperManager")
+    component: () => import("@/views/supermanager/SuperManager"),
+    children: [
+      {
+        path: "showStaff",
+        name: "ShowStaff",
+        meta: {
+          title: "欢迎使用！"
+        },
+        component: () => import("@/views/supermanager/ShowStaff")
+      }
+    ]
   },
   {
     path: "/manager",
