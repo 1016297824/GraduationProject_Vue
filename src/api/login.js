@@ -18,7 +18,7 @@ export function login(userBody) {
     if (role == "Customer") {
       window.location.href = "/customer/reserve";
     } else if (role == "SuperManager") {
-      window.location.href = "/supermanager/showStaff";
+      window.location.href = "/supermanager/staffShow";
     } else if (role == "Manager") {
       window.location.href = "/manager";
     } else if (role == "Staff") {

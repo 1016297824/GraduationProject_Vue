@@ -13,8 +13,15 @@
             <form action="">
               <div class="form-group text-left">
                 <div class="row">
-                  <div class="col-lg-8">
-                    <label for="" class="font-weight-bold">选择时间</label>
+                  <div class="col-lg-10">
+                    <label for="" class="font-weight-bold">员工信息</label>
+                    <input
+                      type="button"
+                      class="btn btn-primary"
+                      style="float:right"
+                      value="添加员工"
+                      @click="addStaff"
+                    />
                   </div>
                 </div>
               </div>
@@ -41,8 +48,16 @@
                         type="button"
                         :value="staff.position == null ? '任职' : '调任'"
                         class="btn btn-primary"
+                        data-toggle="modal"
+                        data-target="#position"
+                        @click="chooseStaff(staff)"
                       />{{ &nbsp; }}
-                      <input type="button" value="解雇" class="btn" />
+                      <input
+                        type="button"
+                        value="解雇"
+                        class="btn"
+                        @click="deleteStaff(staff.name, staff.username)"
+                      />
                     </td>
                   </tr>
                 </tbody>
@@ -89,6 +104,64 @@
         </div>
       </div>
     </div>
+
+    <!-- model -->
+    <div
+      class="modal fade"
+      id="position"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">任职</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="form-group text-left">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      选择职位
+                      <select class="form-control" v-model="position">
+                        <option
+                          v-for="(position, index) in positionList"
+                          :key="index"
+                          :value="position"
+                        >
+                          {{ position.name }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="col-lg-12" style="text-align:right">
+              <input
+                type="button"
+                value="任职"
+                class="btn btn-primary"
+                @click="takeOffice"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <br />
     <br />
     <br />
@@ -97,10 +170,11 @@
 
 <script>
 import bus from "@/util/Bus";
-import { getStaff } from "@/api/supermanager";
+import { getStaff, deleteStaff, takeOffice } from "@/api/supermanager";
+import $ from "jquery";
 
 export default {
-  name: "ShowStaff",
+  name: "StaffShow",
   data: () => ({
     staffList: [],
     staffList1: [],
@@ -108,9 +182,38 @@ export default {
       page: null,
       pages: null,
       pageList: []
-    }
+    },
+    positionList: [],
+    staff: null,
+    position: null
   }),
   methods: {
+    deleteStaff(name, username) {
+      let con = confirm(`是否解雇员工：${name}\n工号：${username}`);
+      if (con == true) {
+        deleteStaff(username);
+      } else {
+        alert("已取消！");
+      }
+    },
+    addStaff() {
+      this.$router.push("staffAdd");
+    },
+    takeOffice() {
+      if (
+        this.staff.position != null &&
+        this.staff.position.name == this.position.name
+      ) {
+        alert("已是此职位！");
+      } else {
+        takeOffice(this.staff, this.position.id);
+        $("#position").modal("hide");
+        this.position = null;
+      }
+    },
+    chooseStaff(staff) {
+      this.staff = staff;
+    },
     doPage(page) {
       this.staffList1 = [];
       if (this.pageBody1.pages <= 5) {
@@ -172,11 +275,15 @@ export default {
     bus.$on(bus.pageBody1, data => {
       this.pageBody1 = data;
     });
+    bus.$on(bus.positionList, data => {
+      this.positionList = data;
+    });
   },
   beforeDestroy() {
     bus.$off(bus.staffList);
     bus.$off(bus.staffList1);
     bus.$off(bus.pageBody1);
+    bus.$off(bus.positionList);
   }
 };
 </script>

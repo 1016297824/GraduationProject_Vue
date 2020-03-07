@@ -15,6 +15,7 @@ export default new Vue({
     menuList1: "menuList1",
     reserve: "reserve",
     staffList: "staffList",
-    staffList1: "staffList1"
+    staffList1: "staffList1",
+    positionList: "positionList"
   })
 });
