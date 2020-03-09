@@ -113,7 +113,7 @@ export default {
     }
   },
   components: {
-    loginNavbar: () => import("@/components/LoginNavbar"),
+    loginNavbar: () => import("@/components/Header/LoginNavbar"),
     footerNavbar: () => import("@/components/FooterNavbar")
   }
 };

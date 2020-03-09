@@ -16,7 +16,7 @@
 export default {
   name: "Customer",
   components: {
-    customerNavbar: () => import("@/components/CustomerNavbar"),
+    customerNavbar: () => import("@/components/Header/CustomerNavbar"),
     footerNavbar: () => import("@/components/FooterNavbar")
   }
 };

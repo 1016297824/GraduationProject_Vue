@@ -110,12 +110,21 @@ const routes = [
     ]
   },
   {
-    path: "/manager",
-    name: "manager",
+    path: "/farmManager",
+    name: "farmManager",
     meta: {
       title: "欢迎使用！"
     },
-    component: () => import("@/views/manager/Manager")
+    component: () => import("@/views/manager/FarmManager/FarmManager")
+  },
+  {
+    path: "/restaurantManager",
+    name: "restaurantManager",
+    meta: {
+      title: "欢迎使用！"
+    },
+    component: () =>
+      import("@/views/manager/RestaurantManager/RestaurantManager")
   },
   {
     path: "/staff",

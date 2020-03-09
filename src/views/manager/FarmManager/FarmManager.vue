@@ -1,11 +1,11 @@
 <template>
   <div>
-    Manager
+    FarmManager
   </div>
 </template>
 
 <script>
 export default {
-  name: "Manager"
+  name: "FarmManager"
 };
 </script>
