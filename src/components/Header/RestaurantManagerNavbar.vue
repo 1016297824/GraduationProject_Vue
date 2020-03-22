@@ -8,8 +8,18 @@
       </span>
       <ul class="nav justify-content-end">
         <li class="nav-item">
-          <a class="nav-link text-light" href="staffShow">
+          <a class="nav-link text-light" href="staffShow2">
             员工管理
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="attendance2">
+            考勤管理
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="reportForm2">
+            报表打印
           </a>
         </li>
         <li class="nav-item dropdown">

@@ -35,7 +35,7 @@
                   <th>开始时间</th>
                   <th>结束时间</th>
                   <th>下单时间</th>
-                  <th></th>
+                  <!-- <th></th> -->
                 </tr>
               </thead>
               <tbody>
@@ -55,14 +55,14 @@
                   <td class="text-truncate">
                     {{ reserve.insertTime | formatDate }}
                   </td>
-                  <td>
+                  <!-- <td>
                     <input
                       type="button"
                       value="取消订单"
                       class="btn"
                       @click="deleteReserve(reserve.no)"
                     />
-                  </td>
+                  </td> -->
                 </tr>
               </tbody>
             </table>

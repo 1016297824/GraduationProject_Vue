@@ -115,7 +115,41 @@ const routes = [
     meta: {
       title: "欢迎使用！"
     },
-    component: () => import("@/views/manager/FarmManager/FarmManager")
+    component: () => import("@/views/manager/farmManager/FarmManager"),
+    children: [
+      {
+        path: "staffShow1",
+        name: "staffShow1",
+        meta: {
+          title: "员工管理！"
+        },
+        component: () => import("@/views/manager/farmManager/StaffShow1")
+      },
+      {
+        path: "staffAdd1",
+        name: "staffAdd1",
+        meta: {
+          title: "添加员工！"
+        },
+        component: () => import("@/views/manager/farmManager/StaffAdd1")
+      },
+      {
+        path: "attendance1",
+        name: "attendance1",
+        meta: {
+          title: "考勤管理！"
+        },
+        component: () => import("@/views/manager/farmManager/Attendance1")
+      },
+      {
+        path: "reportForm1",
+        name: "reportForm1",
+        meta: {
+          title: "报表打印！"
+        },
+        component: () => import("@/views/manager/farmManager/ReportForm1")
+      }
+    ]
   },
   {
     path: "/restaurantManager",
@@ -124,7 +158,41 @@ const routes = [
       title: "欢迎使用！"
     },
     component: () =>
-      import("@/views/manager/RestaurantManager/RestaurantManager")
+      import("@/views/manager/restaurantManager/RestaurantManager"),
+    children: [
+      {
+        path: "staffShow2",
+        name: "staffShow2",
+        meta: {
+          title: "员工管理！"
+        },
+        component: () => import("@/views/manager/restaurantManager/StaffShow2")
+      },
+      {
+        path: "staffAdd2",
+        name: "staffAdd2",
+        meta: {
+          title: "添加员工！"
+        },
+        component: () => import("@/views/manager/restaurantManager/StaffAdd2")
+      },
+      {
+        path: "attendance2",
+        name: "attendance2",
+        meta: {
+          title: "考勤管理！"
+        },
+        component: () => import("@/views/manager/restaurantManager/Attendance2")
+      },
+      {
+        path: "reportForm2",
+        name: "reportForm2",
+        meta: {
+          title: "报表打印！"
+        },
+        component: () => import("@/views/manager/restaurantManager/ReportForm2")
+      }
+    ]
   },
   {
     path: "/staff",

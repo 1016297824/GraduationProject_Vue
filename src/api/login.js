@@ -20,9 +20,9 @@ export function login(userBody) {
     } else if (role == "SuperManager") {
       window.location.href = "/supermanager/staffShow";
     } else if (role == "FarmManager") {
-      window.location.href = "/farmManager";
+      window.location.href = "/farmManager/staffShow1";
     } else if (role == "RestaurantManager") {
-      window.location.href = "/restaurantManager";
+      window.location.href = "/restaurantManager/staffShow2";
     } else if (role == "Staff") {
       window.location.href = "/staff";
     }
