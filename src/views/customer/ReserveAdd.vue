@@ -15,6 +15,7 @@
                 <div class="row">
                   <div class="col-lg-8">
                     <label for="" class="font-weight-bold">选择时间</label>
+                    <span>(9:00~21:00)</span>
                     <input
                       type="button"
                       class="btn offset-lg-3"
@@ -24,13 +25,14 @@
                     />
                   </div>
                 </div>
+                <br />
                 <div class="row">
                   <div class="col-lg-8">
                     <span>开始时间：</span>
                     <el-date-picker
                       v-model="pageBody.startTime"
                       type="datetime"
-                      format="yyyy-MM-dd HH:00"
+                      format="yyyy-MM-dd HH:mm"
                       placeholder="选择日期时间"
                       :picker-options="pickerOptionsStartTime"
                       @change="startTimeChange"
@@ -151,14 +153,10 @@ export default {
     },
     pickerOptionsEndTime: {
       disabledDate: time => {
-        if (this.pageBody.startTime) {
-          return (
-            time.getTime() <
-              new Date(this.pageBody.startTime).getTime() - 8.64e7 ||
-            time.getTime() >
-              new Date(this.pageBody.startTime).getTime() + 6 * 8.64e7
-          );
-        }
+        return (
+          time.getTime() < Date.now() - 8.64e7 ||
+          time.getTime() > Date.now() + 6 * 8.64e7
+        );
       }
     }
   }),
@@ -169,27 +167,47 @@ export default {
     },
     reserveAdd(dt) {
       let con = confirm(
-        `确认预定：${dt.id}号桌\n时间：${this.pageBody.startTime}至${this.pageBody.endTime}`
+        `确认预定：${dt.id}号桌\n时间：${this.pageBody.startTime}至${this.pageBody.endTime}\n注意：预定后取消需联系工作人员`
       );
       if (con == true) {
         this.pageBody.page = 1;
         reserveAdd(dt, this.pageBody);
-      } else {
-        alert("已取消！");
       }
     },
     back() {
       this.$router.push("reserve");
     },
     startTimeChange() {
+      let newDate1 = new Date();
+      let newDate2 = new Date();
       this.pageBody.startTime = new Date(this.pageBody.startTime);
       this.pageBody.endTime = new Date(this.pageBody.endTime);
+      newDate1.setHours(9);
+      newDate1.setMinutes(0);
+      newDate1.setSeconds(0);
+      newDate1.setMilliseconds(0);
+      newDate2.setHours(21);
+      newDate2.setMinutes(0);
+      newDate2.setSeconds(0);
+      newDate2.setMilliseconds(0);
+      if (newDate1.getTime() > this.pageBody.startTime.getTime()) {
+        this.pageBody.startTime.setHours(9);
+      }
+      if (newDate2.getTime() <= this.pageBody.startTime.getTime()) {
+        this.pageBody.startTime.setHours(20);
+      }
       if (
         this.pageBody.startTime.getTime() >= this.pageBody.endTime.getTime()
       ) {
         let newEndTime = new Date(this.pageBody.startTime);
         this.pageBody.endTime = newEndTime.setHours(newEndTime.getHours() + 1);
       }
+      this.pageBody.startTime.setMinutes(0);
+      this.pageBody.startTime.setSeconds(0);
+      this.pageBody.startTime.setMilliseconds(0);
+      this.pageBody.endTime.setMinutes(0);
+      this.pageBody.endTime.setSeconds(0);
+      this.pageBody.endTime.setMilliseconds(0);
       this.pageBody.startTime = moment(this.pageBody.startTime)
         .utcOffset(480)
         .format("YYYY-MM-DD HH:mm:ss");
@@ -199,14 +217,23 @@ export default {
       this.doPage(1);
     },
     endTimeChange() {
-      let nowDate = new Date();
+      let newDate1 = new Date();
+      let newDate2 = new Date();
       this.pageBody.startTime = new Date(this.pageBody.startTime);
       this.pageBody.endTime = new Date(this.pageBody.endTime);
-      nowDate.setHours(1);
-      nowDate.setMinutes(0);
-      nowDate.setSeconds(0);
-      if (nowDate.getTime() > this.pageBody.endTime.getTime()) {
-        this.pageBody.endTime.setHours(1);
+      newDate1.setHours(9);
+      newDate1.setMinutes(0);
+      newDate1.setSeconds(0);
+      newDate1.setMilliseconds(0);
+      newDate2.setHours(21);
+      newDate2.setMinutes(0);
+      newDate2.setSeconds(0);
+      newDate2.setMilliseconds(0);
+      if (newDate1.getTime() >= this.pageBody.endTime.getTime()) {
+        this.pageBody.endTime.setHours(10);
+      }
+      if (newDate2.getTime() < this.pageBody.endTime.getTime()) {
+        this.pageBody.endTime.setHours(21);
       }
       if (
         this.pageBody.startTime.getTime() >= this.pageBody.endTime.getTime()
@@ -216,6 +243,12 @@ export default {
           newStartTime.getHours() - 1
         );
       }
+      this.pageBody.startTime.setMinutes(0);
+      this.pageBody.startTime.setSeconds(0);
+      this.pageBody.startTime.setMilliseconds(0);
+      this.pageBody.endTime.setMinutes(0);
+      this.pageBody.endTime.setSeconds(0);
+      this.pageBody.endTime.setMilliseconds(0);
       this.pageBody.startTime = moment(this.pageBody.startTime)
         .utcOffset(480)
         .format("YYYY-MM-DD HH:mm:ss");

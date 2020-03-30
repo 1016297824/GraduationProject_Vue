@@ -335,8 +335,6 @@ export default {
       let con = confirm("是否提交?\n注意：提交后不可更改！");
       if (con == true) {
         addOrdering(this.no, this.orderingList);
-      } else {
-        alert("已取消！");
       }
     },
     doPage(page) {

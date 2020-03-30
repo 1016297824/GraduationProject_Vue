@@ -74,8 +74,8 @@ const routes = [
         component: () => import("@/views/customer/Purchase")
       },
       {
-        path: "Password",
-        name: "Password",
+        path: "password",
+        name: "password",
         meta: {
           title: "修改密码"
         },
@@ -106,6 +106,30 @@ const routes = [
           title: "添加员工！"
         },
         component: () => import("@/views/supermanager/StaffAdd")
+      },
+      {
+        path: "attendance",
+        name: "attendance",
+        meta: {
+          title: "考勤管理！"
+        },
+        component: () => import("@/views/supermanager/Attendance")
+      },
+      {
+        path: "reportForm",
+        name: "reportForm",
+        meta: {
+          title: "报表打印！"
+        },
+        component: () => import("@/views/supermanager/ReportForm")
+      },
+      {
+        path: "passwordSupermanager",
+        name: "passwordSupermanager",
+        meta: {
+          title: "修改密码！"
+        },
+        component: () => import("@/views/supermanager/PasswordSupermanager")
       }
     ]
   },
@@ -148,6 +172,15 @@ const routes = [
           title: "报表打印！"
         },
         component: () => import("@/views/manager/farmManager/ReportForm1")
+      },
+      {
+        path: "passwordFarmManager",
+        name: "passwordFarmManager",
+        meta: {
+          title: "修改密码！"
+        },
+        component: () =>
+          import("@/views/manager/farmManager/PasswordFarmManager")
       }
     ]
   },
@@ -191,6 +224,15 @@ const routes = [
           title: "报表打印！"
         },
         component: () => import("@/views/manager/restaurantManager/ReportForm2")
+      },
+      {
+        path: "passwordRestaurantManager",
+        name: "passwordRestaurantManager",
+        meta: {
+          title: "修改密码！"
+        },
+        component: () =>
+          import("@/views/manager/restaurantManager/PasswordRestaurantManager")
       }
     ]
   },

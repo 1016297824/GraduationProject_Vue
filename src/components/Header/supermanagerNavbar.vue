@@ -12,6 +12,16 @@
             员工管理
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="attendance">
+            考勤管理
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-light" href="reportForm">
+            报表打印
+          </a>
+        </li>
         <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle text-white"
@@ -24,6 +34,12 @@
             <span> {{ username }} </span>
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
+            <li>
+              <a class="dropdown-item" href="passwordSupermanager">
+                修改密码
+              </a>
+            </li>
+            <div class="dropdown-divider"></div>
             <li>
               <a class="dropdown-item" href="#" @click="loginOut"> 退出登录 </a>
             </li>

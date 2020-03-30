@@ -43,3 +43,12 @@ export function takeOffice(staff, id) {
     }, 200);
   });
 }
+
+// 修改密码
+export function changePassword(userBody1) {
+  axios.post("superManager/changePassword", userBody1).then(response => {
+    setTimeout(() => {
+      alert(response.data.message);
+    }, 200);
+  });
+}

@@ -35,6 +35,12 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
             <li>
+              <a class="dropdown-item" href="passwordRestaurantManager">
+                修改密码
+              </a>
+            </li>
+            <div class="dropdown-divider"></div>
+            <li>
               <a class="dropdown-item" href="#" @click="loginOut"> 退出登录 </a>
             </li>
           </ul>

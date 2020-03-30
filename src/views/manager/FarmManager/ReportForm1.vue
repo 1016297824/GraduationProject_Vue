@@ -1,11 +1,11 @@
 <template>
   <div>
-    reportForm
+    reportForm1
   </div>
 </template>
 
 <script>
 export default {
-  name: "ReportForm"
+  name: "ReportForm1"
 };
 </script>
