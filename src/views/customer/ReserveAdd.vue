@@ -3,120 +3,122 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12">
-        <div class="col-lg-12">
-          <div class="col-lg-8 m-auto">
-            <br />
-            <br />
-            <br />
-            <br />
-            <br />
-            <form action="">
-              <div class="form-group text-left">
-                <div class="row">
-                  <div class="col-lg-8">
-                    <label for="" class="font-weight-bold">选择时间</label>
-                    <span>(9:00~21:00)</span>
+        <div class="col-lg-8 m-auto">
+          <br />
+          <br />
+          <br />
+          <br />
+          <br />
+          <form action="">
+            <div class="form-group text-left">
+              <div class="row">
+                <div class="col-lg-8">
+                  <label for="" class="font-weight-bold">选择时间</label>
+                  <span>(9:00~21:00)</span>
+                  <input
+                    type="button"
+                    class="btn offset-lg-3"
+                    style="float:right"
+                    value="返回"
+                    @click="back"
+                  />
+                </div>
+              </div>
+              <br />
+              <div class="row">
+                <div class="col-lg-8">
+                  <span>开始时间：</span>
+                  <el-date-picker
+                    v-model="pageBody.startTime"
+                    type="datetime"
+                    format="yyyy-MM-dd HH:mm"
+                    placeholder="选择日期时间"
+                    :picker-options="pickerOptionsStartTime"
+                    @change="startTimeChange"
+                  >
+                  </el-date-picker>
+                  <!-- {{ pageBody.startTime }} -->
+                </div>
+              </div>
+              <br />
+              <span>结束时间：</span>
+              <el-date-picker
+                v-model="pageBody.endTime"
+                type="datetime"
+                format="yyyy-MM-dd HH:00"
+                placeholder="选择日期时间"
+                :picker-options="pickerOptionsEndTime"
+                @change="endTimeChange"
+              >
+              </el-date-picker>
+              <!-- {{ pageBody.endTime }} -->
+              <!-- {{ pageBody.endTime | formatDate }} -->
+            </div>
+            <table class="table table-borderless">
+              <thead>
+                <tr>
+                  <th class="text-truncate">
+                    餐桌号
+                  </th>
+                  <th class="text-truncate">
+                    类型
+                  </th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(dt, index) in diningTableList" :key="index">
+                  <td class="text-truncate">{{ dt.id }}</td>
+                  <td class="text-truncate">{{ dt.type }}</td>
+                  <td>
                     <input
                       type="button"
-                      class="btn offset-lg-3"
-                      style="float:right"
-                      value="返回"
-                      @click="back"
+                      value="预定"
+                      class="btn btn-primary"
+                      @click="reserveAdd(dt)"
                     />
-                  </div>
-                </div>
-                <br />
-                <div class="row">
-                  <div class="col-lg-8">
-                    <span>开始时间：</span>
-                    <el-date-picker
-                      v-model="pageBody.startTime"
-                      type="datetime"
-                      format="yyyy-MM-dd HH:mm"
-                      placeholder="选择日期时间"
-                      :picker-options="pickerOptionsStartTime"
-                      @change="startTimeChange"
-                    >
-                    </el-date-picker>
-                    <!-- {{ pageBody.startTime }} -->
-                  </div>
-                </div>
-                <br />
-                <span>结束时间：</span>
-                <el-date-picker
-                  v-model="pageBody.endTime"
-                  type="datetime"
-                  format="yyyy-MM-dd HH:00"
-                  placeholder="选择日期时间"
-                  :picker-options="pickerOptionsEndTime"
-                  @change="endTimeChange"
-                >
-                </el-date-picker>
-                <!-- {{ pageBody.endTime }} -->
-                <!-- {{ pageBody.endTime | formatDate }} -->
-              </div>
-              <table class="table table-borderless">
-                <thead>
-                  <tr>
-                    <th>餐桌号</th>
-                    <th>类型</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(dt, index) in diningTableList" :key="index">
-                    <td>{{ dt.id }}</td>
-                    <td>{{ dt.type }}</td>
-                    <td>
-                      <input
-                        type="button"
-                        value="预定"
-                        class="btn btn-primary"
-                        @click="reserveAdd(dt)"
-                      />
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <nav aria-label="Page navigation">
-                <ul class="pagination">
-                  <li class="page-item">
-                    <a
-                      class="page-link"
-                      href="#"
-                      aria-label="Previous"
-                      @click="doPage(1)"
-                    >
-                      <span aria-hidden="true">&laquo;</span>
-                      <span class="sr-only">Previous</span>
-                    </a>
-                  </li>
-                  <li
-                    v-for="(page, index) in pageBody.pageList"
-                    :key="index"
-                    :class="
-                      pageBody.page == page ? 'page-item active' : 'page-item'
-                    "
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <nav aria-label="Page navigation">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a
+                    class="page-link"
+                    href="#"
+                    aria-label="Previous"
+                    @click="doPage(1)"
                   >
-                    <a class="page-link" href="#" @click="doPage(page)">{{
-                      page
-                    }}</a>
-                  </li>
-                  <li class="page-item">
-                    <a
-                      class="page-link"
-                      href="#"
-                      aria-label="Next"
-                      @click="doPage(pageBody.pages)"
-                    >
-                      <span aria-hidden="true">&raquo;</span>
-                      <span class="sr-only">Next</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            </form>
-          </div>
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                </li>
+                <li
+                  v-for="(page, index) in pageBody.pageList"
+                  :key="index"
+                  :class="
+                    pageBody.page == page ? 'page-item active' : 'page-item'
+                  "
+                >
+                  <a class="page-link" href="#" @click="doPage(page)">{{
+                    page
+                  }}</a>
+                </li>
+                <li class="page-item">
+                  <a
+                    class="page-link"
+                    href="#"
+                    aria-label="Next"
+                    @click="doPage(pageBody.pages)"
+                  >
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+          </form>
         </div>
       </div>
     </div>
@@ -178,10 +180,18 @@ export default {
       this.$router.push("reserve");
     },
     startTimeChange() {
-      let newDate1 = new Date();
-      let newDate2 = new Date();
       this.pageBody.startTime = new Date(this.pageBody.startTime);
       this.pageBody.endTime = new Date(this.pageBody.endTime);
+      if (
+        this.pageBody.startTime.getTime() >= this.pageBody.endTime.getTime()
+      ) {
+        let newEndTime = new Date(this.pageBody.startTime);
+        this.pageBody.endTime = new Date(
+          newEndTime.getTime() + 1 * 60 * 60 * 1000
+        );
+      }
+      let newDate1 = new Date(this.pageBody.startTime);
+      let newDate2 = new Date(this.pageBody.endTime);
       newDate1.setHours(9);
       newDate1.setMinutes(0);
       newDate1.setSeconds(0);
@@ -192,19 +202,17 @@ export default {
       newDate2.setMilliseconds(0);
       if (newDate1.getTime() > this.pageBody.startTime.getTime()) {
         this.pageBody.startTime.setHours(9);
+        this.pageBody.endTime.setHours(10);
       }
       if (newDate2.getTime() <= this.pageBody.startTime.getTime()) {
         this.pageBody.startTime.setHours(20);
+        this.pageBody.endTime.setHours(21);
       }
-      if (
-        this.pageBody.startTime.getTime() >= this.pageBody.endTime.getTime()
-      ) {
-        let newEndTime = new Date(this.pageBody.startTime);
-        this.pageBody.endTime = newEndTime.setHours(newEndTime.getHours() + 1);
-      }
+      this.pageBody.startTime.setHours(21);
       this.pageBody.startTime.setMinutes(0);
       this.pageBody.startTime.setSeconds(0);
       this.pageBody.startTime.setMilliseconds(0);
+      this.pageBody.endTime.setHours(21);
       this.pageBody.endTime.setMinutes(0);
       this.pageBody.endTime.setSeconds(0);
       this.pageBody.endTime.setMilliseconds(0);
@@ -217,10 +225,18 @@ export default {
       this.doPage(1);
     },
     endTimeChange() {
-      let newDate1 = new Date();
-      let newDate2 = new Date();
       this.pageBody.startTime = new Date(this.pageBody.startTime);
       this.pageBody.endTime = new Date(this.pageBody.endTime);
+      if (
+        this.pageBody.startTime.getTime() >= this.pageBody.endTime.getTime()
+      ) {
+        let newStartTime = new Date(this.pageBody.endTime);
+        this.pageBody.startTime = new Date(
+          newStartTime.getTime() - 1 * 60 * 60 * 1000
+        );
+      }
+      let newDate1 = new Date(this.pageBody.startTime);
+      let newDate2 = new Date(this.pageBody.endTime);
       newDate1.setHours(9);
       newDate1.setMinutes(0);
       newDate1.setSeconds(0);
@@ -230,22 +246,18 @@ export default {
       newDate2.setSeconds(0);
       newDate2.setMilliseconds(0);
       if (newDate1.getTime() >= this.pageBody.endTime.getTime()) {
+        this.pageBody.startTime.setHours(9);
         this.pageBody.endTime.setHours(10);
       }
       if (newDate2.getTime() < this.pageBody.endTime.getTime()) {
+        this.pageBody.startTime.setHours(20);
         this.pageBody.endTime.setHours(21);
       }
-      if (
-        this.pageBody.startTime.getTime() >= this.pageBody.endTime.getTime()
-      ) {
-        let newStartTime = new Date(this.pageBody.endTime);
-        this.pageBody.startTime = newStartTime.setHours(
-          newStartTime.getHours() - 1
-        );
-      }
+      this.pageBody.startTime.setHours(21);
       this.pageBody.startTime.setMinutes(0);
       this.pageBody.startTime.setSeconds(0);
       this.pageBody.startTime.setMilliseconds(0);
+      this.pageBody.endTime.setHours(21);
       this.pageBody.endTime.setMinutes(0);
       this.pageBody.endTime.setSeconds(0);
       this.pageBody.endTime.setMilliseconds(0);

@@ -52,3 +52,37 @@ export function changePassword(userBody1) {
     }, 200);
   });
 }
+
+// 初始化考勤信息
+export function initAttendance() {
+  axios.get("restaurantManager/initAttendance").then(response => {
+    setTimeout(() => {
+      bus.$emit(bus.attendanceList, response.data.attendanceList);
+      bus.$emit(bus.attendanceList1, response.data.attendanceList1);
+      bus.$emit(bus.pageBody1, response.data.pageBody1);
+    }, 200);
+  });
+}
+
+// 选择日期，获得考勤信息
+export function chooseDate(choosedDate) {
+  axios.post("restaurantManager/chooseDate", choosedDate).then(response => {
+    setTimeout(() => {
+      bus.$emit(bus.attendanceList, response.data.attendanceList);
+      bus.$emit(bus.attendanceList1, response.data.attendanceList1);
+      bus.$emit(bus.pageBody1, response.data.pageBody1);
+    }, 200);
+  });
+}
+
+// 提交考勤信息
+export function updateAttendance(attendanceList, choosedDate) {
+  axios
+    .post("restaurantManager/updateAttendance", attendanceList)
+    .then(response => {
+      setTimeout(() => {
+        alert(response.data.message);
+        chooseDate(choosedDate);
+      }, 200);
+    });
+}

@@ -26,33 +26,39 @@
             <table class="table table-borderless">
               <thead>
                 <tr>
-                  <th class="text-truncate">
+                  <th style="text-align: center;" class="text-truncate">
                     订单号
                   </th>
-                  <th class="text-truncate">
+                  <th style="text-align: center;" class="text-truncate">
                     桌位
                   </th>
-                  <th>开始时间</th>
-                  <th>结束时间</th>
-                  <th>下单时间</th>
+                  <th style="text-align: center;" class="text-truncate">
+                    开始时间
+                  </th>
+                  <th style="text-align: center;" class="text-truncate">
+                    结束时间
+                  </th>
+                  <th style="text-align: center;" class="text-truncate">
+                    下单时间
+                  </th>
                   <!-- <th></th> -->
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="(reserve, index) in reserveList" :key="index">
-                  <td>
+                  <td style="text-align: center;" class="text-truncate">
                     {{ reserve.no }}
                   </td>
-                  <td>
+                  <td style="text-align: center;" class="text-truncate">
                     {{ reserve.diningTable.id }}
                   </td>
-                  <td class="text-truncate">
+                  <td style="text-align: center;" class="text-truncate">
                     {{ reserve.startTime | formatDate }}
                   </td>
-                  <td class="text-truncate">
+                  <td style="text-align: center;" class="text-truncate">
                     {{ reserve.endTime | formatDate }}
                   </td>
-                  <td class="text-truncate">
+                  <td style="text-align: center;" class="text-truncate">
                     {{ reserve.insertTime | formatDate }}
                   </td>
                   <!-- <td>

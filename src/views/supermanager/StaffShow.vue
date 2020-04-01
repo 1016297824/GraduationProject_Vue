@@ -28,17 +28,27 @@
               <table class="table table-borderless">
                 <thead>
                   <tr>
-                    <th>工号</th>
-                    <th>姓名</th>
-                    <th>职务</th>
-                    <th></th>
+                    <th style="text-align: center;" class="text-truncate">
+                      工号
+                    </th>
+                    <th style="text-align: center;" class="text-truncate">
+                      姓名
+                    </th>
+                    <th style="text-align: center;" class="text-truncate">
+                      职务
+                    </th>
+                    <th style="text-align: center;" class="text-truncate"></th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="(staff, index) in staffList1" :key="index">
-                    <td>{{ staff.username }}</td>
-                    <td>{{ staff.name }}</td>
-                    <td>
+                    <td style="text-align: center;" class="text-truncate">
+                      {{ staff.username }}
+                    </td>
+                    <td style="text-align: center;" class="text-truncate">
+                      {{ staff.name }}
+                    </td>
+                    <td style="text-align: center;" class="text-truncate">
                       {{
                         staff.position == null ? "未分配" : staff.position.name
                       }}
@@ -192,8 +202,6 @@ export default {
       let con = confirm(`是否解雇员工：${name}\n工号：${username}`);
       if (con == true) {
         deleteStaff(username);
-      } else {
-        alert("已取消！");
       }
     },
     addStaff() {

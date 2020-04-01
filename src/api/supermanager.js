@@ -1,6 +1,7 @@
 import axios from "@/util/MyAxios";
 import bus from "@/util/Bus";
 import { setTimeout } from "core-js";
+// import Qs from "qs";
 
 // 获得员工信息
 export function getStaff() {
@@ -49,6 +50,38 @@ export function changePassword(userBody1) {
   axios.post("superManager/changePassword", userBody1).then(response => {
     setTimeout(() => {
       alert(response.data.message);
+    }, 200);
+  });
+}
+
+// 初始化考勤信息
+export function initAttendance() {
+  axios.get("superManager/initAttendance").then(response => {
+    setTimeout(() => {
+      bus.$emit(bus.attendanceList, response.data.attendanceList);
+      bus.$emit(bus.attendanceList1, response.data.attendanceList1);
+      bus.$emit(bus.pageBody1, response.data.pageBody1);
+    }, 200);
+  });
+}
+
+// 选择日期，获得考勤信息
+export function chooseDate(choosedDate) {
+  axios.post("superManager/chooseDate", choosedDate).then(response => {
+    setTimeout(() => {
+      bus.$emit(bus.attendanceList, response.data.attendanceList);
+      bus.$emit(bus.attendanceList1, response.data.attendanceList1);
+      bus.$emit(bus.pageBody1, response.data.pageBody1);
+    }, 200);
+  });
+}
+
+// 提交考勤信息
+export function updateAttendance(attendanceList, choosedDate) {
+  axios.post("superManager/updateAttendance", attendanceList).then(response => {
+    setTimeout(() => {
+      alert(response.data.message);
+      chooseDate(choosedDate);
     }, 200);
   });
 }
