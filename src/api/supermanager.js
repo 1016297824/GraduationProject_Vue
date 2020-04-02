@@ -85,3 +85,9 @@ export function updateAttendance(attendanceList, choosedDate) {
     }, 200);
   });
 }
+
+export function outExcel() {
+  axios.get("superManager/outExcel").then(response => {
+    response;
+  });
+}

@@ -1,11 +1,18 @@
 <template>
   <div>
-    reportForm
+    <input type="button" value="导出" @click="outExcel" />
   </div>
 </template>
 
 <script>
+import { outExcel } from "@/api/supermanager.js";
+
 export default {
-  name: "ReportForm"
+  name: "ReportForm",
+  methods: {
+    outExcel() {
+      outExcel();
+    }
+  }
 };
 </script>
