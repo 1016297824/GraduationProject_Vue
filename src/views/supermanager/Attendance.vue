@@ -149,6 +149,8 @@ export default {
   }),
   methods: {
     updateAttendance() {
+      console.log(this.choosedDate);
+
       let con = confirm(`是否提交更改？`);
       if (con == true) {
         updateAttendance(this.attendanceList, this.choosedDate);

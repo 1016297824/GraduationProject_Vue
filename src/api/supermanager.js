@@ -86,8 +86,41 @@ export function updateAttendance(attendanceList, choosedDate) {
   });
 }
 
-export function outExcel() {
-  axios.get("superManager/outExcel").then(response => {
-    response;
-  });
+export function downloadExcel(choosedDate) {
+  axios
+    .post("superManager/downloadExcel", choosedDate, { responseType: "blob" })
+    .then(response => {
+      // if (!response) {
+      //   this.$notify.error({ title: "操作失败", message: "文件下载失败" });
+      // }
+      // let filename = response.headers["content-disposition"];
+      // const url = window.URL.createObjectURL(response.data);
+      // const link = document.createElement("a");
+      // link.style.display = "none";
+      // link.href = url;
+      // link.setAttribute("download", filename);
+      // document.body.appendChild(link);
+      // link.click();
+
+      // let filename = response.headers["content-disposition"].split("=")[1];
+      // const link = document.createElement("a");
+      // const blob = new Blob([response.data], {
+      //   type: "application/vnd.ms-excel"
+      // });
+      // link.style.display = "none";
+      // link.href = URL.createObjectURL(blob);
+      // link.setAttribute("download", filename);
+      // document.body.appendChild(link);
+      // link.click();
+      // document.body.removeChild(link);
+
+      let getDate = response.headers["content-disposition"];
+      // let fileName = response.headers["content-disposition"].split("=")[1];
+      let fileName = "考勤信息(" + getDate + ").xls";
+      let objectUrl = URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.download = fileName;
+      link.href = objectUrl;
+      link.click();
+    });
 }
