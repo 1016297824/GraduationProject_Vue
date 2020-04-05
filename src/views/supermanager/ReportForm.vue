@@ -31,7 +31,7 @@
                           class="btn btn-primary"
                           style="float:right"
                           value="导出"
-                          @click="downloadExcel"
+                          @click="downloadAttendanceExcel"
                         />
                       </div>
                     </div>
@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { downloadExcel } from "@/api/supermanager.js";
+import { downloadAttendanceExcel } from "@/api/supermanager.js";
 
 export default {
   name: "ReportForm",
@@ -56,8 +56,8 @@ export default {
     choosedDate: new Date()
   }),
   methods: {
-    downloadExcel() {
-      downloadExcel(this.choosedDate);
+    downloadAttendanceExcel() {
+      downloadAttendanceExcel(this.choosedDate);
     }
   }
 };

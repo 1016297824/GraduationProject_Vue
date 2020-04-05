@@ -86,9 +86,12 @@ export function updateAttendance(attendanceList, choosedDate) {
   });
 }
 
-export function downloadExcel(choosedDate) {
+// 导出考勤Excel
+export function downloadAttendanceExcel(choosedDate) {
   axios
-    .post("superManager/downloadExcel", choosedDate, { responseType: "blob" })
+    .post("superManager/downloadAttendanceExcel", choosedDate, {
+      responseType: "blob"
+    })
     .then(response => {
       // if (!response) {
       //   this.$notify.error({ title: "操作失败", message: "文件下载失败" });

@@ -86,3 +86,20 @@ export function updateAttendance(attendanceList, choosedDate) {
       }, 200);
     });
 }
+
+// 导出考勤Excel
+export function downloadAttendanceExcel(choosedDate) {
+  axios
+    .post("restaurantManager/downloadAttendanceExcel", choosedDate, {
+      responseType: "blob"
+    })
+    .then(response => {
+      let getDate = response.headers["content-disposition"];
+      let fileName = "考勤信息(" + getDate + ").xls";
+      let objectUrl = URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.download = fileName;
+      link.href = objectUrl;
+      link.click();
+    });
+}
