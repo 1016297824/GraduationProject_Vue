@@ -95,7 +95,7 @@ const routes = [
         path: "staffShow",
         name: "staffShow",
         meta: {
-          title: "欢迎使用！"
+          title: "员工管理"
         },
         component: () => import("@/views/supermanager/StaffShow")
       },
@@ -103,7 +103,7 @@ const routes = [
         path: "staffAdd",
         name: "staffAdd",
         meta: {
-          title: "添加员工！"
+          title: "添加员工"
         },
         component: () => import("@/views/supermanager/StaffAdd")
       },
@@ -111,7 +111,7 @@ const routes = [
         path: "attendance",
         name: "attendance",
         meta: {
-          title: "考勤管理！"
+          title: "考勤管理"
         },
         component: () => import("@/views/supermanager/Attendance")
       },
@@ -119,7 +119,7 @@ const routes = [
         path: "reportForm",
         name: "reportForm",
         meta: {
-          title: "报表打印！"
+          title: "报表打印"
         },
         component: () => import("@/views/supermanager/ReportForm")
       },
@@ -127,7 +127,7 @@ const routes = [
         path: "passwordSupermanager",
         name: "passwordSupermanager",
         meta: {
-          title: "修改密码！"
+          title: "修改密码"
         },
         component: () => import("@/views/supermanager/PasswordSupermanager")
       }
@@ -137,7 +137,7 @@ const routes = [
     path: "/farmManager",
     name: "farmManager",
     meta: {
-      title: "欢迎使用！"
+      title: "欢迎使用"
     },
     component: () => import("@/views/manager/farmManager/FarmManager"),
     children: [
@@ -145,7 +145,7 @@ const routes = [
         path: "staffShow1",
         name: "staffShow1",
         meta: {
-          title: "员工管理！"
+          title: "员工管理"
         },
         component: () => import("@/views/manager/farmManager/StaffShow1")
       },
@@ -153,7 +153,7 @@ const routes = [
         path: "staffAdd1",
         name: "staffAdd1",
         meta: {
-          title: "添加员工！"
+          title: "添加员工"
         },
         component: () => import("@/views/manager/farmManager/StaffAdd1")
       },
@@ -161,7 +161,7 @@ const routes = [
         path: "attendance1",
         name: "attendance1",
         meta: {
-          title: "考勤管理！"
+          title: "考勤管理"
         },
         component: () => import("@/views/manager/farmManager/Attendance1")
       },
@@ -169,7 +169,7 @@ const routes = [
         path: "reportForm1",
         name: "reportForm1",
         meta: {
-          title: "报表打印！"
+          title: "报表打印"
         },
         component: () => import("@/views/manager/farmManager/ReportForm1")
       },
@@ -177,7 +177,7 @@ const routes = [
         path: "passwordFarmManager",
         name: "passwordFarmManager",
         meta: {
-          title: "修改密码！"
+          title: "修改密码"
         },
         component: () =>
           import("@/views/manager/farmManager/PasswordFarmManager")
@@ -188,7 +188,7 @@ const routes = [
     path: "/restaurantManager",
     name: "restaurantManager",
     meta: {
-      title: "欢迎使用！"
+      title: "欢迎使用"
     },
     component: () =>
       import("@/views/manager/restaurantManager/RestaurantManager"),
@@ -197,7 +197,7 @@ const routes = [
         path: "staffShow2",
         name: "staffShow2",
         meta: {
-          title: "员工管理！"
+          title: "员工管理"
         },
         component: () => import("@/views/manager/restaurantManager/StaffShow2")
       },
@@ -205,7 +205,7 @@ const routes = [
         path: "staffAdd2",
         name: "staffAdd2",
         meta: {
-          title: "添加员工！"
+          title: "添加员工"
         },
         component: () => import("@/views/manager/restaurantManager/StaffAdd2")
       },
@@ -213,7 +213,7 @@ const routes = [
         path: "attendance2",
         name: "attendance2",
         meta: {
-          title: "考勤管理！"
+          title: "考勤管理"
         },
         component: () => import("@/views/manager/restaurantManager/Attendance2")
       },
@@ -221,7 +221,7 @@ const routes = [
         path: "reportForm2",
         name: "reportForm2",
         meta: {
-          title: "报表打印！"
+          title: "报表打印"
         },
         component: () => import("@/views/manager/restaurantManager/ReportForm2")
       },
@@ -229,7 +229,7 @@ const routes = [
         path: "passwordRestaurantManager",
         name: "passwordRestaurantManager",
         meta: {
-          title: "修改密码！"
+          title: "修改密码"
         },
         component: () =>
           import("@/views/manager/restaurantManager/PasswordRestaurantManager")
@@ -237,12 +237,24 @@ const routes = [
     ]
   },
   {
-    path: "/staff",
-    name: "staff",
+    path: "/restaurantStaff",
+    name: "restaurantStaff",
     meta: {
-      title: "欢迎使用！"
+      title: "欢迎使用"
     },
-    component: () => import("@/views/staff/Staff")
+    component: () =>
+      import("@/views/staff/restaurantStaff/RestaurantStaff.vue"),
+    children: [
+      {
+        path: "settleAccounts",
+        name: "settleAccounts",
+        meta: {
+          title: "结账"
+        },
+        component: () =>
+          import("@/views/staff/restaurantStaff/SettleAccounts.vue")
+      }
+    ]
   }
 ];
 
@@ -252,7 +264,7 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  document.title = to.matched[0].meta.title;
+  document.title = to.matched[to.matched.length - 1].meta.title;
   next();
 });
 

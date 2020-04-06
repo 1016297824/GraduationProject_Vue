@@ -208,11 +208,9 @@ export default {
         this.pageBody.startTime.setHours(20);
         this.pageBody.endTime.setHours(21);
       }
-      this.pageBody.startTime.setHours(21);
       this.pageBody.startTime.setMinutes(0);
       this.pageBody.startTime.setSeconds(0);
       this.pageBody.startTime.setMilliseconds(0);
-      this.pageBody.endTime.setHours(21);
       this.pageBody.endTime.setMinutes(0);
       this.pageBody.endTime.setSeconds(0);
       this.pageBody.endTime.setMilliseconds(0);
@@ -253,11 +251,9 @@ export default {
         this.pageBody.startTime.setHours(20);
         this.pageBody.endTime.setHours(21);
       }
-      this.pageBody.startTime.setHours(21);
       this.pageBody.startTime.setMinutes(0);
       this.pageBody.startTime.setSeconds(0);
       this.pageBody.startTime.setMilliseconds(0);
-      this.pageBody.endTime.setHours(21);
       this.pageBody.endTime.setMinutes(0);
       this.pageBody.endTime.setSeconds(0);
       this.pageBody.endTime.setMilliseconds(0);
