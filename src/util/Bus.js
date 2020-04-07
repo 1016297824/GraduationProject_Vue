@@ -18,6 +18,7 @@ export default new Vue({
     staffList1: "staffList1",
     positionList: "positionList",
     attendanceList: "attendanceList",
-    attendanceList1: "attendanceList1"
+    attendanceList1: "attendanceList1",
+    repair: "repair"
   })
 });

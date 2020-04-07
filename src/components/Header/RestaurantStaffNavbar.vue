@@ -13,13 +13,8 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-light" href="attendance2">
-            考勤管理
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-light" href="reportForm2">
-            报表打印
+          <a class="nav-link text-light" href="repair">
+            报修报损
           </a>
         </li>
         <li class="nav-item dropdown">
@@ -35,7 +30,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
             <li>
-              <a class="dropdown-item" href="passwordRestaurantManager">
+              <a class="dropdown-item" href="passwordRestaurantStaff">
                 修改密码
               </a>
             </li>

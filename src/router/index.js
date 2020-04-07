@@ -260,8 +260,16 @@ const routes = [
         meta: {
           title: "报修报损"
         },
+        component: () => import("@/views/staff/restaurantStaff/Repair")
+      },
+      {
+        path: "passwordRestaurantStaff",
+        name: "passwordRestaurantStaff",
+        meta: {
+          title: "修改密码"
+        },
         component: () =>
-          import("@/views/staff/restaurantStaff/SettleAccounts.vue")
+          import("@/views/staff/restaurantStaff/PasswordRestaurantStaff")
       }
     ]
   }

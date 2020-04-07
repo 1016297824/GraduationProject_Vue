@@ -53,3 +53,24 @@ export function settleAccounts(no) {
     getReserve();
   });
 }
+
+// 提交报修报损信息
+export function submitRepair(repair) {
+  axios.post("/restaurantStaff/submitRepair", repair).then(response => {
+    setTimeout(() => {
+      if (response.data.message != "") {
+        alert(response.data.message);
+      }
+      bus.$emit(bus.repair, response.data.repair);
+    }, 200);
+  });
+}
+
+// 修改密码
+export function changePassword(userBody1) {
+  axios.post("restaurantStaff/changePassword", userBody1).then(response => {
+    setTimeout(() => {
+      alert(response.data.message);
+    }, 200);
+  });
+}
