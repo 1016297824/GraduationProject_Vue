@@ -253,6 +253,15 @@ const routes = [
         },
         component: () =>
           import("@/views/staff/restaurantStaff/SettleAccounts.vue")
+      },
+      {
+        path: "repair",
+        name: "repair",
+        meta: {
+          title: "报修报损"
+        },
+        component: () =>
+          import("@/views/staff/restaurantStaff/SettleAccounts.vue")
       }
     ]
   }
