@@ -226,6 +226,15 @@ const routes = [
         component: () => import("@/views/manager/restaurantManager/ReportForm2")
       },
       {
+        path: "repairComplete",
+        name: "repairComplete",
+        meta: {
+          title: "报修报损"
+        },
+        component: () =>
+          import("@/views/manager/restaurantManager/RepairComplete")
+      },
+      {
         path: "passwordRestaurantManager",
         name: "passwordRestaurantManager",
         meta: {

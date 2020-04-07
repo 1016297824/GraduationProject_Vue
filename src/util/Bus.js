@@ -19,6 +19,7 @@ export default new Vue({
     positionList: "positionList",
     attendanceList: "attendanceList",
     attendanceList1: "attendanceList1",
-    repair: "repair"
+    repair: "repair",
+    repairList: "repairList"
   })
 });

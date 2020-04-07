@@ -18,6 +18,11 @@
           </a>
         </li>
         <li class="nav-item">
+          <a class="nav-link text-light" href="repairComplete">
+            报修报损
+          </a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link text-light" href="reportForm2">
             报表打印
           </a>

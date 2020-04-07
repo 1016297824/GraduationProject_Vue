@@ -26,7 +26,7 @@ export function addStaff(staff) {
 
 // 解雇员工
 export function deleteStaff(username) {
-  axios.post(`restaurantManager/deleteStaff/${username}`).then(response => {
+  axios.post(`/restaurantManager/deleteStaff/${username}`).then(response => {
     setTimeout(() => {
       alert(response.data.message);
       getStaff();
@@ -36,7 +36,7 @@ export function deleteStaff(username) {
 
 // 任职员工
 export function takeOffice(staff, id) {
-  axios.post(`restaurantManager/takeOffice/${id}`, staff).then(response => {
+  axios.post(`/restaurantManager/takeOffice/${id}`, staff).then(response => {
     setTimeout(() => {
       alert(response.data.message);
       getStaff();
@@ -46,7 +46,7 @@ export function takeOffice(staff, id) {
 
 // 修改密码
 export function changePassword(userBody1) {
-  axios.post("restaurantManager/changePassword", userBody1).then(response => {
+  axios.post("/restaurantManager/changePassword", userBody1).then(response => {
     setTimeout(() => {
       alert(response.data.message);
     }, 200);
@@ -55,7 +55,7 @@ export function changePassword(userBody1) {
 
 // 初始化考勤信息
 export function initAttendance() {
-  axios.get("restaurantManager/initAttendance").then(response => {
+  axios.get("/restaurantManager/initAttendance").then(response => {
     setTimeout(() => {
       bus.$emit(bus.attendanceList, response.data.attendanceList);
       bus.$emit(bus.attendanceList1, response.data.attendanceList1);
@@ -66,7 +66,7 @@ export function initAttendance() {
 
 // 选择日期，获得考勤信息
 export function chooseDate(choosedDate) {
-  axios.post("restaurantManager/chooseDate", choosedDate).then(response => {
+  axios.post("/restaurantManager/chooseDate", choosedDate).then(response => {
     setTimeout(() => {
       bus.$emit(bus.attendanceList, response.data.attendanceList);
       bus.$emit(bus.attendanceList1, response.data.attendanceList1);
@@ -78,7 +78,7 @@ export function chooseDate(choosedDate) {
 // 提交考勤信息
 export function updateAttendance(attendanceList, choosedDate) {
   axios
-    .post("restaurantManager/updateAttendance", attendanceList)
+    .post("/restaurantManager/updateAttendance", attendanceList)
     .then(response => {
       setTimeout(() => {
         alert(response.data.message);
@@ -90,7 +90,7 @@ export function updateAttendance(attendanceList, choosedDate) {
 // 导出考勤Excel
 export function downloadAttendanceExcel(choosedDate) {
   axios
-    .post("restaurantManager/downloadAttendanceExcel", choosedDate, {
+    .post("/restaurantManager/downloadAttendanceExcel", choosedDate, {
       responseType: "blob"
     })
     .then(response => {
@@ -102,4 +102,48 @@ export function downloadAttendanceExcel(choosedDate) {
       link.href = objectUrl;
       link.click();
     });
+}
+
+// 获得所有未完成报修报损信息
+export function getRepair() {
+  axios.get("/restaurantManager/getRepair").then(response => {
+    setTimeout(() => {
+      bus.$emit(bus.repairList, response.data.repairList);
+      bus.$emit(bus.pageBody1, response.data.pageBody1);
+    }, 200);
+  });
+}
+
+// 报修报损分页
+export function doPage(pageBody1) {
+  axios.post("/restaurantManager/doPage", pageBody1).then(response => {
+    setTimeout(() => {
+      bus.$emit(bus.repairList, response.data.repairList);
+      bus.$emit(bus.pageBody1, response.data.pageBody1);
+    }, 200);
+  });
+}
+
+// 删除报修报损信息
+export function deleteRepair(repair) {
+  axios.post("/restaurantManager/deleteRepair", repair).then(response => {
+    setTimeout(() => {
+      if (response.data.message != "") {
+        alert(response.data.message);
+      }
+    }, 200);
+    getRepair();
+  });
+}
+
+// 完成报修报损
+export function completeRepair(repair) {
+  axios.post("/restaurantManager/completeRepair", repair).then(response => {
+    setTimeout(() => {
+      if (response.data.message != "") {
+        alert(response.data.message);
+      }
+    }, 200);
+    getRepair();
+  });
 }
