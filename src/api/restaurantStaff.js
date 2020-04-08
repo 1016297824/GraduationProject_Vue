@@ -74,3 +74,47 @@ export function changePassword(userBody1) {
     }, 200);
   });
 }
+
+// 获得所有未完成报修报损信息
+export function getRepair() {
+  axios.get("/restaurantStaff/getRepair").then(response => {
+    setTimeout(() => {
+      bus.$emit(bus.repairList, response.data.repairList);
+      bus.$emit(bus.pageBody1, response.data.pageBody1);
+    }, 200);
+  });
+}
+
+// 报修报损分页
+export function doPage1(pageBody1) {
+  axios.post("/restaurantStaff/doPage1", pageBody1).then(response => {
+    setTimeout(() => {
+      bus.$emit(bus.repairList, response.data.repairList);
+      bus.$emit(bus.pageBody1, response.data.pageBody1);
+    }, 200);
+  });
+}
+
+// 删除报修报损信息
+export function deleteRepair(repair) {
+  axios.post("/restaurantStaff/deleteRepair", repair).then(response => {
+    setTimeout(() => {
+      if (response.data.message != "") {
+        alert(response.data.message);
+      }
+    }, 200);
+    getRepair();
+  });
+}
+
+// 完成报修报损
+export function completeRepair(repair) {
+  axios.post("/restaurantStaff/completeRepair", repair).then(response => {
+    setTimeout(() => {
+      if (response.data.message != "") {
+        alert(response.data.message);
+      }
+    }, 200);
+    getRepair();
+  });
+}

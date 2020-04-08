@@ -26,6 +26,29 @@
             aria-haspopup="true"
             aria-expanded="false"
           >
+            <span> 报修报损 </span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li>
+              <a class="dropdown-item" href="repair">
+                上报
+              </a>
+            </li>
+            <div class="dropdown-divider"></div>
+            <li>
+              <a class="dropdown-item" href="repairComplete"> 采购 </a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle text-white"
+            data-toggle="dropdown"
+            href="#"
+            role="button"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
             <span> {{ username }} </span>
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
@@ -47,7 +70,7 @@
 
 <script>
 export default {
-  name: "SupermanagerNavbar",
+  name: "RestaurantStaffNavbar",
   data: () => ({
     username: sessionStorage.getItem("username")
   }),

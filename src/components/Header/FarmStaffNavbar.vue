@@ -8,8 +8,8 @@
       </span>
       <ul class="nav justify-content-end">
         <li class="nav-item">
-          <a class="nav-link text-light" href="staffShow1">
-            员工管理
+          <a class="nav-link text-light" href="productShow">
+            产品管理
           </a>
         </li>
         <li class="nav-item">
@@ -52,7 +52,7 @@
 
 <script>
 export default {
-  name: "SupermanagerNavbar",
+  name: "FarmStaffNavbar",
   data: () => ({
     username: sessionStorage.getItem("username")
   }),

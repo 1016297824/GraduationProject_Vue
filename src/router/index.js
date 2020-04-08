@@ -226,15 +226,6 @@ const routes = [
         component: () => import("@/views/manager/restaurantManager/ReportForm2")
       },
       {
-        path: "repairComplete",
-        name: "repairComplete",
-        meta: {
-          title: "报修报损"
-        },
-        component: () =>
-          import("@/views/manager/restaurantManager/RepairComplete")
-      },
-      {
         path: "passwordRestaurantManager",
         name: "passwordRestaurantManager",
         meta: {
@@ -267,9 +258,17 @@ const routes = [
         path: "repair",
         name: "repair",
         meta: {
-          title: "报修报损"
+          title: "上报"
         },
         component: () => import("@/views/staff/restaurantStaff/Repair")
+      },
+      {
+        path: "repairComplete",
+        name: "repairComplete",
+        meta: {
+          title: "采购"
+        },
+        component: () => import("@/views/staff/restaurantStaff/RepairComplete")
       },
       {
         path: "passwordRestaurantStaff",
@@ -279,6 +278,24 @@ const routes = [
         },
         component: () =>
           import("@/views/staff/restaurantStaff/PasswordRestaurantStaff")
+      }
+    ]
+  },
+  {
+    path: "/farmStaff",
+    name: "farmStaff",
+    meta: {
+      title: "欢迎使用"
+    },
+    component: () => import("@/views/staff/farmStaff/FarmStaff"),
+    children: [
+      {
+        path: "productShow",
+        name: "productShow",
+        meta: {
+          title: "产品管理"
+        },
+        component: () => import("@/views/staff/farmStaff/ProductShow.vue")
       }
     ]
   }

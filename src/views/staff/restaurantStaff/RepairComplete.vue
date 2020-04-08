@@ -198,10 +198,10 @@ import bus from "@/util/Bus";
 import { formatDate } from "@/assets/js/date";
 import {
   getRepair,
-  doPage,
+  doPage1,
   deleteRepair,
   completeRepair
-} from "@/api/restaurantManager.js";
+} from "@/api/restaurantStaff.js";
 
 export default {
   name: "SettleAccounts",
@@ -225,7 +225,7 @@ export default {
   methods: {
     doPage(page) {
       this.pageBody1.page = page;
-      doPage(this.pageBody1);
+      doPage1(this.pageBody1);
     },
     deleteRepair(repair) {
       let con = confirm(`是否取消：\n编号：${repair.id}`);

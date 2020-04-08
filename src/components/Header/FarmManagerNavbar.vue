@@ -52,7 +52,7 @@
 
 <script>
 export default {
-  name: "SupermanagerNavbar",
+  name: "FarmManagerNavbar",
   data: () => ({
     username: sessionStorage.getItem("username")
   }),

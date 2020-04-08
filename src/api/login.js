@@ -23,11 +23,9 @@ export function login(userBody) {
       window.location.href = "/farmManager/staffShow1";
     } else if (role == "RestaurantManager") {
       window.location.href = "/restaurantManager/staffShow2";
-    }
-    // else if (role == "RestaurantStaff") {
-    //   window.location.href = "/restaurantStaff/settleAccounts";
-    // }
-    else if (role == "RestaurantStaff") {
+    } else if (role == "FarmStaff") {
+      window.location.href = "/farmStaff/productShow";
+    } else if (role == "RestaurantStaff") {
       window.location.href = "/restaurantStaff/settleAccounts";
     }
   });
