@@ -9,7 +9,7 @@
       <ul class="nav justify-content-end">
         <li class="nav-item">
           <a class="nav-link text-light" href="productShow">
-            产品管理
+            农产品管理
           </a>
         </li>
         <li class="nav-item">
@@ -35,7 +35,7 @@
           </a>
           <ul class="dropdown-menu dropdown-menu-right">
             <li>
-              <a class="dropdown-item" href="passwordFarmManager">
+              <a class="dropdown-item" href="passwordFarmStaff">
                 修改密码
               </a>
             </li>

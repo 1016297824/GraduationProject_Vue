@@ -12,11 +12,6 @@
             结账
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-light" href="repair">
-            报修报损
-          </a>
-        </li>
         <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle text-white"

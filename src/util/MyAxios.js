@@ -3,6 +3,7 @@ import bus from "@/util/Bus";
 
 axios.defaults.baseURL = "/api";
 axios.defaults.withCredentials = true;
+axios.defaults.headers["Content-Type"] = "application/json;charset=UTF-8";
 
 axios.interceptors.request.use(
   function(request) {

@@ -8,8 +8,6 @@
             <br />
             <br />
             <br />
-            <br />
-            <br />
             <form action="">
               <div class="form-group text-left">
                 <div class="row">
@@ -33,53 +31,70 @@
                           </option>
                         </select>
                       </div>
-                      <div class="col-lg-7"></div>
+                      <div class="col-lg-7">
+                        <input
+                          type="button"
+                          class="btn btn-primary"
+                          style="float:right"
+                          value="添加产品"
+                          data-toggle="modal"
+                          data-target="#product"
+                          @click="addProduct"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+              <hr />
+              <br />
               <table class="table table-borderless">
                 <thead>
                   <tr>
                     <th style="text-align: center;" class="text-truncate">
-                      工号
+                      农产品名
                     </th>
                     <th style="text-align: center;" class="text-truncate">
-                      姓名
+                      库存
                     </th>
                     <th style="text-align: center;" class="text-truncate">
-                      职务
+                      安全库存
                     </th>
+                    <th style="text-align: center;" class="text-truncate"></th>
                     <th style="text-align: center;" class="text-truncate"></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(staff, index) in staffList1" :key="index">
+                  <tr v-for="(product, index) in productList" :key="index">
                     <td style="text-align: center;" class="text-truncate">
-                      {{ staff.username }}
+                      {{ product.name }}
                     </td>
                     <td style="text-align: center;" class="text-truncate">
-                      {{ staff.name }}
+                      {{ product.amount + product.unit }}
                     </td>
                     <td style="text-align: center;" class="text-truncate">
-                      {{
-                        staff.position == null ? "未分配" : staff.position.name
-                      }}
+                      {{ product.safeAmount + product.unit }}
+                    </td>
+                    <td
+                      style="text-align: center;color:red"
+                      class="text-truncate"
+                    >
+                      {{ product.amount > product.safeAmount ? null : "缺货" }}
                     </td>
                     <td>
                       <input
                         type="button"
-                        :value="staff.position == null ? '任职' : '调任'"
+                        value="修改"
                         class="btn btn-primary"
                         data-toggle="modal"
-                        data-target="#position"
-                        @click="chooseStaff(staff)"
+                        data-target="#product"
+                        @click="modifyProduct(product)"
                       />{{ &nbsp; }}
                       <input
                         type="button"
-                        value="解雇"
+                        value="删除"
                         class="btn"
-                        @click="deleteStaff(staff.name, staff.username)"
+                        @click="deleteProduct(product)"
                       />
                     </td>
                   </tr>
@@ -131,7 +146,7 @@
     <!-- model -->
     <div
       class="modal fade"
-      id="position"
+      id="product"
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalCenterTitle"
@@ -140,7 +155,7 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">任职</h5>
+            <h5 class="modal-title" id="exampleModalLongTitle">添加产品</h5>
             <button
               type="button"
               class="close"
@@ -156,16 +171,117 @@
                 <div class="form-group text-left">
                   <div class="row">
                     <div class="col-lg-12">
-                      选择职位
-                      <select class="form-control" v-model="position">
-                        <option
-                          v-for="(position, index) in positionList"
-                          :key="index"
-                          :value="position"
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            农产品类型
+                          </span>
+                        </div>
+                        <select
+                          class="form-control"
+                          v-model="product.productType"
+                          @change="changeProductType"
+                          :disabled="modelType == '修改' ? true : false"
                         >
-                          {{ position.name }}
-                        </option>
-                      </select>
+                          <option
+                            v-for="(productType, index) in productTypeList"
+                            :key="index"
+                            :value="productType"
+                          >
+                            {{ productType }}
+                          </option>
+                        </select>
+                      </div>
+                      <p style="color: red;">
+                        {{ typeMessage }}
+                      </p>
+                      <br />
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            农产品名
+                          </span>
+                        </div>
+                        <input
+                          v-model="product.name"
+                          :disabled="modelType == '修改' ? true : false"
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                          @keyup="nameWrite"
+                        />
+                      </div>
+                      <p style="color: red;">
+                        {{ nameMessage }}
+                      </p>
+                      <br />
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            库存
+                          </span>
+                        </div>
+                        <input
+                          v-model="product.amount"
+                          :disabled="modelType == '修改' ? true : false"
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                          @keyup="amountWrite"
+                        />
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            安全库存
+                          </span>
+                        </div>
+                        <input
+                          v-model="product.safeAmount"
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                          @keyup="amountWrite"
+                        />
+                      </div>
+                      <p style="color: red;">
+                        {{ amountMessage }}
+                      </p>
+                      <br />
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            单位
+                          </span>
+                        </div>
+                        <input
+                          v-model="product.unit"
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                          @keyup="unitWrite"
+                        />
+                      </div>
+                      <p style="color: red;">
+                        {{ unitMessage }}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -173,12 +289,12 @@
             </div>
           </div>
           <div class="modal-footer">
-            <div class="col-lg-12" style="text-align:right">
+            <div class="col-lg-12" style="text-align:center">
               <input
                 type="button"
-                value="任职"
+                :value="modelType"
                 class="btn btn-primary"
-                @click="takeOffice"
+                @click="doModel"
               />
             </div>
           </div>
@@ -193,7 +309,13 @@
 
 <script>
 import bus from "@/util/Bus";
-import { getStaff, deleteStaff, takeOffice } from "@/api/supermanager";
+import {
+  initProduct,
+  doPage,
+  addProduct,
+  deleteProduct,
+  modifyProduct
+} from "@/api/farmStaff.js";
 import $ from "jquery";
 
 export default {
@@ -201,115 +323,108 @@ export default {
   data: () => ({
     productType: "家禽",
     productTypeList: ["家禽", "鱼类", "果蔬"],
-    staffList: [],
-    staffList1: [],
+    productList: [],
     pageBody1: {
       page: null,
       pages: null,
       pageList: []
     },
-    positionList: [],
-    staff: null,
-    position: null
+    modelType: null,
+    product: {
+      productType: null,
+      name: null,
+      amount: null,
+      safeAmount: null,
+      unit: null
+    },
+    typeMessage: null,
+    nameMessage: null,
+    amountMessage: null,
+    unitMessage: null
   }),
   methods: {
     changeProductType() {
-      console.log(this.productType);
-    },
-    deleteStaff(name, username) {
-      let con = confirm(`是否解雇员工：${name}\n工号：${username}`);
-      if (con == true) {
-        deleteStaff(username);
-      }
-    },
-    addStaff() {
-      this.$router.push("staffAdd");
-    },
-    takeOffice() {
-      if (
-        this.staff.position != null &&
-        this.staff.position.name == this.position.name
-      ) {
-        alert("已是此职位！");
-      } else {
-        takeOffice(this.staff, this.position.id);
-        $("#position").modal("hide");
-        this.position = null;
-      }
-    },
-    chooseStaff(staff) {
-      this.staff = staff;
+      this.typeMessage = null;
+      initProduct(this.productType);
     },
     doPage(page) {
-      this.staffList1 = [];
-      if (this.pageBody1.pages <= 5) {
-        if (this.pageBody1.pages == page) {
-          for (let i = (page - 1) * 5; i < this.staffList.length; i++) {
-            this.staffList1.push(this.staffList[i]);
-          }
-        } else {
-          for (let i = (page - 1) * 5; i < page * 5; i++) {
-            this.staffList1.push(this.staffList[i]);
-          }
+      this.pageBody1.page = page;
+      doPage(this.pageBody1, this.productType);
+    },
+    addProduct() {
+      this.modelType = "添加";
+      this.product.productType = null;
+      this.product.name = null;
+      this.product.amount = null;
+      this.product.safeAmount = null;
+      this.product.unit = null;
+    },
+    modifyProduct(product) {
+      this.product = product;
+      this.modelType = "修改";
+    },
+    doModel() {
+      if (
+        (this.product.productType == null) |
+        (this.product.name == null) |
+        (this.product.amount == null) |
+        (this.product.safeAmount == null) |
+        (this.product.unit == null)
+      ) {
+        if (this.product.productType == null) {
+          this.typeMessage = "请选择农产品类型！";
+        }
+        if (this.product.name == null) {
+          this.nameMessage = "请输入农产品名！";
+        }
+        if (this.product.amount == null || this.product.safeAmount == null) {
+          this.amountMessage = "请输入库存或安全库存！";
+        }
+        if (this.product.unit == null) {
+          this.unitMessage = "请输入单位！";
         }
       } else {
-        this.pageBody1.pageList = [];
-        if (page > this.pageBody1.pages - 2) {
-          for (
-            let i = this.pageBody1.pages - 5;
-            i < this.pageBody1.pages;
-            i++
-          ) {
-            this.pageBody1.pageList.push(i + 1);
-          }
-          if (this.pageBody1.pages == page) {
-            for (let i = (page - 1) * 5; i < this.staffList.length; i++) {
-              this.staffList1.push(this.staffList[i]);
-            }
-          } else {
-            for (let i = (page - 1) * 5; i < page * 5; i++) {
-              this.staffList1.push(this.staffList[i]);
-            }
-          }
-        } else if (page <= 2) {
-          for (let i = 0; i < 5; i++) {
-            this.pageBody1.pageList.push(i + 1);
-          }
-          for (let i = (page - 1) * 5; i < page * 5; i++) {
-            this.staffList1.push(this.staffList[i]);
-          }
+        var re = /^(0|\+?[1-9][0-9]*)$/;
+        if (!re.test(this.product.amount)) {
+          this.amountMessage = "请输入正整数！";
         } else {
-          for (let i = page - 2; i <= page + 2; i++) {
-            this.pageBody1.pageList.push(i);
-          }
-          for (let i = (page - 1) * 5; i < page * 5; i++) {
-            this.staffList1.push(this.staffList[i]);
+          if (this.modelType == "添加") {
+            addProduct(this.product);
+            $("#product").modal("hide");
+            this.productType = this.product.productType;
+          } else if (this.modelType == "修改") {
+            modifyProduct(this.product);
+            $("#product").modal("hide");
+            this.productType = this.product.productType;
           }
         }
       }
-      this.pageBody1.page = page;
+    },
+    nameWrite() {
+      this.nameMessage = null;
+    },
+    amountWrite() {
+      this.amountMessage = null;
+    },
+    unitWrite() {
+      this.unitMessage = null;
+    },
+    deleteProduct(product) {
+      deleteProduct(product);
     }
   },
   created() {
-    getStaff();
-    bus.$on(bus.staffList, data => {
-      this.staffList = data;
-    });
-    bus.$on(bus.staffList1, data => {
-      this.staffList1 = data;
+    initProduct(this.productType);
+    bus.$on(bus.productList, data => {
+      this.productList = data;
     });
     bus.$on(bus.pageBody1, data => {
       this.pageBody1 = data;
     });
-    bus.$on(bus.positionList, data => {
-      this.positionList = data;
-    });
   },
   beforeDestroy() {
-    bus.$off(bus.staffList);
-    bus.$off(bus.staffList1);
+    bus.$off(bus.productList);
     bus.$off(bus.pageBody1);
-    bus.$off(bus.positionList);
   }
 };
 </script>

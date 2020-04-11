@@ -296,6 +296,14 @@ const routes = [
           title: "产品管理"
         },
         component: () => import("@/views/staff/farmStaff/ProductShow.vue")
+      },
+      {
+        path: "passwordFarmStaff",
+        name: "passwordFarmStaff",
+        meta: {
+          title: "修改密码"
+        },
+        component: () => import("@/views/staff/farmStaff/PasswordFarmStaff")
       }
     ]
   }
