@@ -13,8 +13,8 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-light" href="attendance1">
-            考勤管理
+          <a class="nav-link text-light" href="rawMaterial">
+            原料管理
           </a>
         </li>
         <li class="nav-item">
