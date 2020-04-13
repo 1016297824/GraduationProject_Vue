@@ -99,3 +99,13 @@ export function addPurchase(purchase) {
     initProduct(purchase.product.productType);
   });
 }
+
+// 农产品成熟
+export function produce1(product) {
+  axios.post("farmStaff/produce1", product).then(response => {
+    setTimeout(() => {
+      alert(response.data.message);
+    }, 200);
+    initProduct(product.productType);
+  });
+}

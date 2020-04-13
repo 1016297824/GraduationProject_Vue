@@ -301,9 +301,17 @@ const routes = [
         path: "rawMaterial",
         name: "rawMaterial",
         meta: {
-          title: "原料管理"
+          title: "生产采购"
         },
         component: () => import("@/views/staff/farmStaff/RawMaterial.vue")
+      },
+      {
+        path: "fertilizer",
+        name: "fertilizer",
+        meta: {
+          title: "化肥饲料采购"
+        },
+        component: () => import("@/views/staff/farmStaff/Fertilizer.vue")
       },
       {
         path: "passwordFarmStaff",
