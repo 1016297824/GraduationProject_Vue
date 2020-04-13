@@ -12,10 +12,30 @@
             农产品管理
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link text-light" href="rawMaterial">
-            原料管理
+        <li class="nav-item dropdown">
+          <a
+            class="nav-link dropdown-toggle text-white"
+            data-toggle="dropdown"
+            href="#"
+            role="button"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <span> 采购管理 </span>
           </a>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li>
+              <a class="dropdown-item" href="rawMaterial">
+                生产采购
+              </a>
+            </li>
+            <div class="dropdown-divider"></div>
+            <li>
+              <a class="dropdown-item" href="#">
+                化肥饲料
+              </a>
+            </li>
+          </ul>
         </li>
         <li class="nav-item">
           <a class="nav-link text-light" href="reportForm1">

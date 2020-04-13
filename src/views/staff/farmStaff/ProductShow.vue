@@ -70,10 +70,10 @@
                       {{ product.name }}
                     </td>
                     <td style="text-align: center;" class="text-truncate">
-                      {{ product.amount + product.unit }}
+                      {{ product.amount | numFilter }}{{ product.unit }}
                     </td>
                     <td style="text-align: center;" class="text-truncate">
-                      {{ product.safeAmount + product.unit }}
+                      {{ product.safeAmount | numFilter }}{{ product.unit }}
                     </td>
                     <td
                       style="text-align: center;color:red"
@@ -289,6 +289,22 @@
                         </div>
                         <input
                           v-model="product.unit"
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                          @keyup="unitWrite"
+                        />
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            原料单位
+                          </span>
+                        </div>
+                        <input
+                          v-model="product.baseUnit"
                           type="text"
                           class="form-control"
                           aria-label="Sizing example input"
@@ -547,7 +563,7 @@
                             class="input-group-text"
                             id="inputGroup-sizing-lg"
                           >
-                            生产
+                            生产数量
                           </span>
                         </div>
                         <input
@@ -637,11 +653,13 @@ export default {
     },
     modelType: null,
     product: {
+      id: null,
       productType: null,
       name: null,
       amount: null,
       safeAmount: null,
-      unit: null
+      unit: null,
+      baseUnit: null
     },
     typeMessage: null,
     nameMessage: null,
@@ -662,13 +680,21 @@ export default {
     },
     addProduct() {
       this.modelType = "添加";
+      this.product.id = null;
       this.product.productType = null;
       this.product.name = null;
       this.product.amount = null;
       this.product.safeAmount = null;
       this.product.unit = null;
+      this.product.baseUnit = null;
     },
     modifyProduct(product) {
+      this.typeMessage = null;
+      this.nameMessage = null;
+      this.amountMessage = null;
+      this.amountMessage1 = null;
+      this.amountMessage2 = null;
+      this.unitMessage = null;
       this.product = JSON.parse(JSON.stringify(product));
       this.modelType = "修改";
     },
@@ -678,7 +704,8 @@ export default {
         (this.product.name == null) |
         (this.product.amount == null) |
         (this.product.safeAmount == null) |
-        (this.product.unit == null)
+        (this.product.unit == null) |
+        (this.product.baseUnit == null)
       ) {
         if (this.product.productType == null) {
           this.typeMessage = "请选择农产品类型！";
@@ -689,16 +716,29 @@ export default {
         if (this.product.amount == null || this.product.safeAmount == null) {
           this.amountMessage = "请输入库存或安全库存！";
         }
-        if (this.product.unit == null) {
+        if (this.product.unit == null || this.product.baseUnit == null) {
           this.unitMessage = "请输入单位！";
         }
       } else {
-        var re = /^(0|\+?[1-9][0-9]*)$/;
+        let cn = /^[\u4E00-\u9FA5]$/;
+        let re = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        if (this.productType == "家禽") {
+          re = /^(0|\+?[1-9][0-9]*)$/;
+        }
         if (
           !re.test(this.product.amount) ||
           !re.test(this.product.safeAmount)
         ) {
-          this.amountMessage = "请输入正整数！";
+          if (this.productType == "家禽") {
+            this.amountMessage = "请输入正整数！";
+          } else {
+            this.amountMessage = "请输入正数！";
+          }
+        } else if (
+          !cn.test(this.product.unit) ||
+          !cn.test(this.product.baseUnit)
+        ) {
+          this.unitMessage = "请输入中文！";
         } else {
           if (this.modelType == "添加") {
             addProduct(this.product);
@@ -734,6 +774,12 @@ export default {
       }
     },
     abnormalConsumption(product) {
+      this.typeMessage = null;
+      this.nameMessage = null;
+      this.amountMessage = null;
+      this.amountMessage1 = null;
+      this.amountMessage2 = null;
+      this.unitMessage = null;
       this.product = JSON.parse(JSON.stringify(product));
       this.nowAmount = this.product.amount;
       this.product.amount = null;
@@ -742,9 +788,19 @@ export default {
       if (this.product.amount == null) {
         this.amountMessage1 = "请输入消耗数量！";
       } else {
-        var re = /^(0|\+?[1-9][0-9]*)$/;
-        if (!re.test(this.product.amount)) {
-          this.amountMessage1 = "请输入正整数！";
+        let re = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        if (this.productType == "家禽") {
+          re = /^(0|\+?[1-9][0-9]*)$/;
+        }
+        if (
+          !re.test(this.product.amount) ||
+          !re.test(this.product.safeAmount)
+        ) {
+          if (this.productType == "家禽") {
+            this.amountMessage1 = "请输入正整数！";
+          } else {
+            this.amountMessage1 = "请输入正数！";
+          }
         } else if (this.product.amount > this.nowAmount) {
           this.amountMessage1 = "库存不足！";
         } else {
@@ -755,6 +811,12 @@ export default {
       }
     },
     produce(product) {
+      this.typeMessage = null;
+      this.nameMessage = null;
+      this.amountMessage = null;
+      this.amountMessage1 = null;
+      this.amountMessage2 = null;
+      this.unitMessage = null;
       this.product = JSON.parse(JSON.stringify(product));
       this.product.amount = null;
     },
@@ -762,15 +824,34 @@ export default {
       if (this.product.amount == null) {
         this.amountMessage2 = "请输入生产数量！";
       } else {
-        var re = /^(0|\+?[1-9][0-9]*)$/;
+        let re = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        if (this.productType == "家禽") {
+          re = /^(0|\+?[1-9][0-9]*)$/;
+        }
         if (!re.test(this.product.amount)) {
-          this.amountMessage2 = "请输入正整数！";
+          if (this.productType == "家禽") {
+            this.amountMessage2 = "请输入正整数！";
+          } else {
+            this.amountMessage2 = "请输入正数！";
+          }
         } else {
           produce(this.product);
           $("#produce").modal("hide");
           this.productType = this.product.productType;
         }
       }
+    }
+  },
+  filters: {
+    numFilter(value) {
+      let realVal = "";
+      if (!isNaN(value) && value !== "") {
+        // 截取当前数据到小数点后两位
+        realVal = parseFloat(value).toFixed(2);
+      } else {
+        realVal = "--";
+      }
+      return realVal;
     }
   },
   created() {

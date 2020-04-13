@@ -79,3 +79,23 @@ export function produce(product) {
     initProduct(product.productType);
   });
 }
+
+// 异常消耗(原料)
+export function abnormalConsumption1(product) {
+  axios.post("farmStaff/abnormalConsumption1", product).then(response => {
+    setTimeout(() => {
+      alert(response.data.message);
+    }, 200);
+    initProduct(product.productType);
+  });
+}
+
+// 采购原材料
+export function addPurchase(purchase) {
+  axios.post("farmStaff/addPurchase", purchase).then(response => {
+    setTimeout(() => {
+      alert(response.data.message);
+    }, 200);
+    initProduct(purchase.product.productType);
+  });
+}

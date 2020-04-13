@@ -1,3 +1,4 @@
+// 显示所有产品
 <template>
   <div class="container">
     <div class="row">
@@ -30,17 +31,6 @@
                           </option>
                         </select>
                       </div>
-                      <div class="col-lg-7">
-                        <input
-                          type="button"
-                          class="btn btn-primary"
-                          style="float:right"
-                          value="添加农产品"
-                          data-toggle="modal"
-                          data-target="#product"
-                          @click="addProduct"
-                        />
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -51,15 +41,17 @@
                 <thead>
                   <tr>
                     <th style="text-align: center;" class="text-truncate">
-                      农产品名
+                      {{
+                        productType == "家禽"
+                          ? "幼崽"
+                          : productType == "鱼类"
+                          ? "鱼苗"
+                          : "植株/种子"
+                      }}
                     </th>
                     <th style="text-align: center;" class="text-truncate">
                       库存
                     </th>
-                    <th style="text-align: center;" class="text-truncate">
-                      安全库存
-                    </th>
-                    <th style="text-align: center;" class="text-truncate"></th>
                     <th style="text-align: center;" class="text-truncate"></th>
                   </tr>
                 </thead>
@@ -69,16 +61,11 @@
                       {{ product.name }}
                     </td>
                     <td style="text-align: center;" class="text-truncate">
-                      {{ product.amount + product.unit }}
-                    </td>
-                    <td style="text-align: center;" class="text-truncate">
-                      {{ product.safeAmount + product.unit }}
-                    </td>
-                    <td
-                      style="text-align: center;color:red"
-                      class="text-truncate"
-                    >
-                      {{ product.amount >= product.safeAmount ? null : "缺货" }}
+                      {{
+                        productType == "鱼类"
+                          ? product.amount
+                          : product.baseAmount
+                      }}{{ product.baseUnit }}
                     </td>
                     <td>
                       <!-- <input
@@ -91,11 +78,11 @@
                       /> -->
                       <input
                         type="button"
-                        value="生产"
+                        value="采购"
                         class="btn btn-primary"
                         data-toggle="modal"
-                        data-target="#produce"
-                        @click="produce(product)"
+                        data-target="#purchase"
+                        @click="addPurchase(product)"
                       />
                       {{ &nbsp; }}
                       <input
@@ -104,14 +91,15 @@
                         class="btn btn-primary"
                         data-toggle="modal"
                         data-target="#consumption"
-                        @click="abnormalConsumption(product)"
+                        @click="abnormalConsumption1(product)"
                       />{{ &nbsp; }}
-                      <input
+                      <!-- <input
                         type="button"
                         value="删除"
                         class="btn"
                         @click="deleteProduct(product)"
                       />
+                    </td> -->
                     </td>
                   </tr>
                 </tbody>
@@ -162,165 +150,6 @@
     <!-- model -->
     <div
       class="modal fade"
-      id="product"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalCenterTitle"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">添加农产品</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="panel panel-default">
-              <div class="panel-body">
-                <div class="form-group text-left">
-                  <div class="row">
-                    <div class="col-lg-12">
-                      <div class="input-group input-group-lg">
-                        <div class="input-group-prepend">
-                          <span
-                            class="input-group-text"
-                            id="inputGroup-sizing-lg"
-                          >
-                            农产品类型
-                          </span>
-                        </div>
-                        <select
-                          class="form-control"
-                          v-model="product.productType"
-                          @change="changeProductType"
-                          :disabled="modelType == '修改' ? true : false"
-                        >
-                          <option
-                            v-for="(productType, index) in productTypeList"
-                            :key="index"
-                            :value="productType"
-                          >
-                            {{ productType }}
-                          </option>
-                        </select>
-                      </div>
-                      <p style="color: red;">
-                        {{ typeMessage }}
-                      </p>
-                      <br />
-                      <div class="input-group input-group-lg">
-                        <div class="input-group-prepend">
-                          <span
-                            class="input-group-text"
-                            id="inputGroup-sizing-lg"
-                          >
-                            农产品名
-                          </span>
-                        </div>
-                        <input
-                          v-model="product.name"
-                          :disabled="modelType == '修改' ? true : false"
-                          type="text"
-                          class="form-control"
-                          aria-label="Sizing example input"
-                          aria-describedby="inputGroup-sizing-lg"
-                          @keyup="nameWrite"
-                        />
-                      </div>
-                      <p style="color: red;">
-                        {{ nameMessage }}
-                      </p>
-                      <br />
-                      <div class="input-group input-group-lg">
-                        <div class="input-group-prepend">
-                          <span
-                            class="input-group-text"
-                            id="inputGroup-sizing-lg"
-                          >
-                            库存
-                          </span>
-                        </div>
-                        <input
-                          v-model="product.amount"
-                          :disabled="modelType == '修改' ? true : false"
-                          type="text"
-                          class="form-control"
-                          aria-label="Sizing example input"
-                          aria-describedby="inputGroup-sizing-lg"
-                          @keyup="amountWrite"
-                        />
-                        <div class="input-group-prepend">
-                          <span
-                            class="input-group-text"
-                            id="inputGroup-sizing-lg"
-                          >
-                            安全库存
-                          </span>
-                        </div>
-                        <input
-                          v-model="product.safeAmount"
-                          type="text"
-                          class="form-control"
-                          aria-label="Sizing example input"
-                          aria-describedby="inputGroup-sizing-lg"
-                          @keyup="amountWrite"
-                        />
-                      </div>
-                      <p style="color: red;">
-                        {{ amountMessage }}
-                      </p>
-                      <br />
-                      <div class="input-group input-group-lg">
-                        <div class="input-group-prepend">
-                          <span
-                            class="input-group-text"
-                            id="inputGroup-sizing-lg"
-                          >
-                            单位
-                          </span>
-                        </div>
-                        <input
-                          v-model="product.unit"
-                          type="text"
-                          class="form-control"
-                          aria-label="Sizing example input"
-                          aria-describedby="inputGroup-sizing-lg"
-                          @keyup="unitWrite"
-                        />
-                      </div>
-                      <p style="color: red;">
-                        {{ unitMessage }}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <div class="col-lg-12" style="text-align:center">
-              <input
-                type="button"
-                :value="modelType"
-                class="btn btn-primary"
-                @click="doModel"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- model -->
-    <div
-      class="modal fade"
       id="consumption"
       tabindex="-1"
       role="dialog"
@@ -330,7 +159,7 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">农产品消耗</h5>
+            <h5 class="modal-title" id="exampleModalLongTitle">原料消耗</h5>
             <button
               type="button"
               class="close"
@@ -461,6 +290,179 @@
       </div>
     </div>
 
+    <!-- model -->
+    <div
+      class="modal fade"
+      id="purchase"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">原料采购</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="form-group text-left">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            原料类型
+                          </span>
+                        </div>
+                        <select
+                          class="form-control"
+                          v-model="product.productType"
+                          @change="changeProductType"
+                          disabled
+                        >
+                          <option
+                            v-for="(productType, index) in productTypeList"
+                            :key="index"
+                            :value="productType"
+                          >
+                            {{ productType }}
+                          </option>
+                        </select>
+                      </div>
+                      <p style="color: red;">
+                        {{ typeMessage }}
+                      </p>
+                      <br />
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            农产品名
+                          </span>
+                        </div>
+                        <input
+                          v-model="product.name"
+                          disabled
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                          @keyup="nameWrite"
+                        />
+                      </div>
+                      <p style="color: red;">
+                        {{ nameMessage }}
+                      </p>
+                      <br />
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            采购数量
+                          </span>
+                        </div>
+                        <input
+                          v-model="purchase.amount"
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                          @keyup="amountWrite2"
+                        />
+                      </div>
+                      <p style="color: red;">
+                        {{ amountMessage2 }}
+                      </p>
+                      <br />
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            单位
+                          </span>
+                        </div>
+                        <input
+                          v-model="product.unit"
+                          disabled
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                          @keyup="unitWrite"
+                        />
+                      </div>
+                      <p style="color: red;">
+                        {{ unitMessage }}
+                      </p>
+                      <br />
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            单价
+                          </span>
+                        </div>
+                        <input
+                          v-model="purchase.price"
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                          @keyup="priceWrite"
+                        />
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            元
+                          </span>
+                        </div>
+                      </div>
+                      <p style="color: red;">
+                        {{ priceMessage }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="col-lg-12" style="text-align:center">
+              <input
+                type="button"
+                value="提交"
+                class="btn btn-primary"
+                @click="doModel2"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <br />
     <br />
     <br />
@@ -468,8 +470,178 @@
 </template>
 
 <script>
+import bus from "@/util/Bus";
+import {
+  initProduct,
+  doPage,
+  abnormalConsumption1,
+  addPurchase
+} from "@/api/farmStaff.js";
+import $ from "jquery";
+
 export default {
-  name: "RawMaterial",
-  data: () => ({})
+  name: "ProductShow",
+  data: () => ({
+    productType: "家禽",
+    productTypeList: ["家禽", "鱼类", "果蔬"],
+    productList: [],
+    pageBody1: {
+      page: null,
+      pages: null,
+      pageList: []
+    },
+    modelType: null,
+    product: {
+      productType: null,
+      name: null,
+      amount: null,
+      safeAmount: null,
+      unit: null,
+      baseAmount: null,
+      baseUnit: null
+    },
+    purchase: {
+      amount: null,
+      price: null,
+      product: null
+    },
+    typeMessage: null,
+    nameMessage: null,
+    amountMessage: null,
+    amountMessage1: null,
+    amountMessage2: null,
+    unitMessage: null,
+    nowAmount: null,
+    priceMessage: null
+  }),
+  methods: {
+    changeProductType() {
+      this.typeMessage = null;
+      initProduct(this.productType);
+    },
+    doPage(page) {
+      this.pageBody1.page = page;
+      doPage(this.pageBody1, this.productType);
+    },
+    modifyProduct(product) {
+      this.product = JSON.parse(JSON.stringify(product));
+      this.modelType = "修改";
+    },
+    nameWrite() {
+      this.nameMessage = null;
+    },
+    amountWrite() {
+      this.amountMessage = null;
+    },
+    amountWrite1() {
+      this.amountMessage1 = null;
+    },
+    amountWrite2() {
+      this.amountMessage2 = null;
+    },
+    unitWrite() {
+      this.unitMessage = null;
+    },
+    priceWrite() {
+      this.priceMessage = null;
+    },
+    abnormalConsumption1(product) {
+      this.typeMessage = null;
+      this.nameMessage = null;
+      this.amountMessage = null;
+      this.amountMessage1 = null;
+      this.amountMessage2 = null;
+      this.unitMessage = null;
+      this.priceMessage = null;
+      this.product = JSON.parse(JSON.stringify(product));
+      if (this.productType == "鱼类") {
+        this.nowAmount = this.product.amount;
+      } else {
+        this.nowAmount = this.product.baseAmount;
+      }
+      this.product.amount = null;
+    },
+    doModel1() {
+      if (this.product.amount == null) {
+        this.amountMessage1 = "请输入消耗数量！";
+      } else {
+        var re = /^(0|\+?[1-9][0-9]*)$/;
+        if (this.productType == "鱼类") {
+          re = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        }
+        if (!re.test(this.product.amount)) {
+          if (this.productType == "鱼类") {
+            this.amountMessage1 = "请输入正数！";
+          } else {
+            this.amountMessage1 = "请输入正整数！";
+          }
+        } else if (this.product.amount > this.nowAmount) {
+          this.amountMessage1 = "库存不足！";
+        } else {
+          abnormalConsumption1(this.product);
+          $("#consumption").modal("hide");
+          this.productType = this.product.productType;
+        }
+      }
+    },
+    addPurchase(product) {
+      this.typeMessage = null;
+      this.nameMessage = null;
+      this.amountMessage = null;
+      this.amountMessage1 = null;
+      this.amountMessage2 = null;
+      this.unitMessage = null;
+      this.priceMessage = null;
+      this.product = JSON.parse(JSON.stringify(product));
+      this.purchase.price = null;
+      this.purchase.amount = null;
+    },
+    doModel2() {
+      if ((this.purchase.amount == null) | (this.purchase.price == null)) {
+        if (this.purchase.amount == null) {
+          this.amountMessage2 = "请输入采购数量！";
+        }
+        if (this.purchase.price == null) {
+          this.priceMessage = "请输入采购单价！";
+        }
+      } else {
+        let p = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        let re = /^(0|\+?[1-9][0-9]*)$/;
+        if (this.productType == "鱼类") {
+          re = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        }
+        if (!re.test(this.purchase.amount) | !p.test(this.purchase.price)) {
+          if (!re.test(this.purchase.amount)) {
+            if (this.productType == "鱼类") {
+              this.amountMessage2 = "请输入正数！";
+            } else {
+              this.amountMessage2 = "请输入正整数！";
+            }
+          }
+          if (!p.test(this.purchase.price)) {
+            this.priceMessage = "请输入正数！";
+          }
+        } else {
+          this.purchase.product = this.product;
+          addPurchase(this.purchase);
+          $("#purchase").modal("hide");
+          this.productType = this.product.productType;
+        }
+      }
+    }
+  },
+  created() {
+    initProduct(this.productType);
+    bus.$on(bus.productList, data => {
+      this.productList = data;
+    });
+    bus.$on(bus.pageBody1, data => {
+      this.pageBody1 = data;
+    });
+  },
+  beforeDestroy() {
+    bus.$off(bus.productList);
+    bus.$off(bus.pageBody1);
+  }
 };
 </script>
