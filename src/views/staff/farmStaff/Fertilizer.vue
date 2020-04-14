@@ -1,3 +1,4 @@
+// 饲料肥料
 <template>
   <div class="container">
     <div class="row">
@@ -16,13 +17,18 @@
                         <label for="" class="font-weight-bold">选择类型</label>
                       </div>
                       <div class="col-lg-3">
-                        <select class="form-control" v-model="productType">
+                        <select
+                          class="form-control"
+                          v-model="fertilizerType"
+                          @change="fertilizerTypeChange"
+                        >
                           <option
-                            v-for="(productType, index) in productTypeList"
+                            v-for="(fertilizerType,
+                            index) in fertilizerTypeList"
                             :key="index"
-                            :value="productType"
+                            :value="fertilizerType"
                           >
-                            {{ productType }}
+                            {{ fertilizerType }}
                           </option>
                         </select>
                       </div>
@@ -36,48 +42,39 @@
                 <thead>
                   <tr>
                     <th style="text-align: center;" class="text-truncate">
-                      {{
-                        productType == "家禽"
-                          ? "幼崽"
-                          : productType == "鱼类"
-                          ? "鱼苗"
-                          : "植株/种子"
-                      }}
+                      {{ fertilizerType + "名称" }}
                     </th>
                     <th style="text-align: center;" class="text-truncate">
                       库存
+                    </th>
+                    <th style="text-align: center;" class="text-truncate">
+                      安全库存
                     </th>
                     <th style="text-align: center;" class="text-truncate"></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(product, index) in productList" :key="index">
+                  <tr
+                    v-for="(fertilizer, index) in fertilizerList"
+                    :key="index"
+                  >
                     <td style="text-align: center;" class="text-truncate">
-                      {{ product.name }}
+                      {{ fertilizer.name }}
                     </td>
                     <td style="text-align: center;" class="text-truncate">
-                      {{
-                        productType == "鱼类"
-                          ? product.amount
-                          : product.baseAmount
-                      }}{{ product.baseUnit }}
+                      {{ fertilizer.amount + fertilizer.unit }}
+                    </td>
+                    <td style="text-align: center;" class="text-truncate">
+                      {{ fertilizer.safeAmount + fertilizer.unit }}
                     </td>
                     <td>
-                      <!-- <input
-                        type="button"
-                        value="修改"
-                        class="btn btn-primary"
-                        data-toggle="modal"
-                        data-target="#product"
-                        @click="modifyProduct(product)"
-                      /> -->
                       <input
                         type="button"
                         value="采购"
                         class="btn btn-primary"
                         data-toggle="modal"
                         data-target="#purchase"
-                        @click="addPurchase(product)"
+                        @click="addPurchase(fertilizer)"
                       />
                       {{ &nbsp; }}
                       <input
@@ -86,7 +83,6 @@
                         class="btn btn-primary"
                         data-toggle="modal"
                         data-target="#consumption"
-                        @click="abnormalConsumption1(product)"
                       />{{ &nbsp; }}
                       <input
                         type="button"
@@ -94,15 +90,7 @@
                         class="btn btn-primary"
                         data-toggle="modal"
                         data-target="#produce1"
-                        @click="produce1(product)"
                       />
-                      <!-- <input
-                        type="button"
-                        value="删除"
-                        class="btn"
-                        @click="deleteProduct(product)"
-                      />
-                    </td> -->
                     </td>
                   </tr>
                 </tbody>
@@ -114,7 +102,7 @@
                       class="page-link"
                       href="#"
                       aria-label="Previous"
-                      @click="doPage(1)"
+                      @click="doPage1(1)"
                     >
                       <span aria-hidden="true">&laquo;</span>
                       <span class="sr-only">Previous</span>
@@ -127,7 +115,7 @@
                       pageBody1.page == page ? 'page-item active' : 'page-item'
                     "
                   >
-                    <a class="page-link" href="#" @click="doPage(page)">
+                    <a class="page-link" href="#" @click="doPage1(page)">
                       {{ page }}
                     </a>
                   </li>
@@ -136,7 +124,7 @@
                       class="page-link"
                       href="#"
                       aria-label="Next"
-                      @click="doPage(pageBody1.pages)"
+                      @click="doPage1(pageBody1.pages)"
                     >
                       <span aria-hidden="true">&raquo;</span>
                       <span class="sr-only">Next</span>
@@ -149,6 +137,170 @@
         </div>
       </div>
     </div>
+
+    <!-- model -->
+    <div
+      class="modal fade"
+      id="purchase"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">原料采购</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="form-group text-left">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            原料类型
+                          </span>
+                        </div>
+                        <select
+                          class="form-control"
+                          v-model="fertilizer.fertilizerType"
+                          disabled
+                        >
+                          <option
+                            v-for="(fertilizerType,
+                            index) in fertilizerTypeList"
+                            :key="index"
+                            :value="fertilizerType"
+                          >
+                            {{ fertilizerType }}
+                          </option>
+                        </select>
+                      </div>
+                      <br />
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            农产品名
+                          </span>
+                        </div>
+                        <input
+                          v-model="fertilizer.name"
+                          disabled
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                        />
+                      </div>
+                      <br />
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            采购数量
+                          </span>
+                        </div>
+                        <input
+                          v-model="purchase.amount"
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                          @keyup="amountWrite()"
+                        />
+                      </div>
+                      <p style="color: red;">
+                        {{ amountMessage }}
+                      </p>
+                      <br />
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            单位
+                          </span>
+                        </div>
+                        <input
+                          v-model="fertilizer.unit"
+                          disabled
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                        />
+                      </div>
+                      <br />
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            单价
+                          </span>
+                        </div>
+                        <input
+                          v-model="purchase.price"
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                          @keyup="priceWrite"
+                        />
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            元
+                          </span>
+                        </div>
+                      </div>
+                      <p style="color: red;">
+                        {{ amountMessage }}
+                      </p>
+                      <br />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="col-lg-12" style="text-align:center">
+              <input
+                type="button"
+                value="提交"
+                class="btn btn-primary"
+                @click="purchaseModel"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <br />
     <br />
     <br />
@@ -156,7 +308,96 @@
 </template>
 
 <script>
+import $ from "jquery";
+import bus from "@/util/Bus";
+import { initFertilizer, doPage1, addPurchase1 } from "@/api/farmStaff.js";
+
 export default {
-  name: "Fertilizer"
+  name: "Fertilizer",
+  data: () => ({
+    fertilizerTypeList: ["饲料", "肥料"],
+    fertilizerType: "饲料",
+    fertilizerList: [],
+    fertilizer: {
+      name: null,
+      amount: null,
+      safeAmount: null,
+      unit: null,
+      fertilizerType: null
+    },
+    pageBody1: {
+      page: null,
+      pages: null,
+      pageList: []
+    },
+    purchase: {
+      amount: null,
+      price: null,
+      fertilizer: null
+    },
+    amountMessage: null,
+    priceMessage: null
+  }),
+  methods: {
+    amountWrite() {
+      this.amountMessage = null;
+    },
+    priceWrite() {
+      this.priceMessage = null;
+    },
+    fertilizerTypeChange() {
+      initFertilizer(this.fertilizerType);
+    },
+    doPage1(page) {
+      this.pageBody1.page = page;
+      doPage1(this.pageBody1, this.fertilizerType);
+    },
+    addPurchase(fertilizer) {
+      this.amountMessage = null;
+      this.priceMessage = null;
+      this.fertilizer = JSON.parse(JSON.stringify(fertilizer));
+      this.purchase.price = null;
+      this.purchase.amount = null;
+    },
+    purchaseModel() {
+      if ((this.purchase.amount == null) | (this.purchase.price == null)) {
+        if (this.purchase.amount == null) {
+          this.amountMessage = "请输入采购数量！";
+        }
+        if (this.purchase.price == null) {
+          this.priceMessage = "请输入采购单价！";
+        }
+      } else {
+        let p = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        // let p1 = /^(0|\+?[1-9][0-9]*)$/;
+        if (!p.test(this.purchase.amount) | !p.test(this.purchase.price)) {
+          if (!p.test(this.purchase.amount)) {
+            this.amountMessage = "请输入正数！";
+          }
+          if (!p.test(this.purchase.price)) {
+            this.priceMessage = "请输入正数！";
+          }
+        } else {
+          this.purchase.fertilizer = this.fertilizer;
+          addPurchase1(this.purchase);
+          $("#purchase").modal("hide");
+          this.fertilizerType = this.fertilizer.fertilizerType;
+        }
+      }
+    }
+  },
+  created() {
+    initFertilizer(this.fertilizerType);
+    bus.$on(bus.fertilizerList, data => {
+      this.fertilizerList = data;
+    });
+    bus.$on(bus.pageBody1, data => {
+      this.pageBody1 = data;
+    });
+  },
+  beforeDestroy() {
+    bus.$off(bus.fertilizerList);
+    bus.$off(bus.pageBody1);
+  }
 };
 </script>

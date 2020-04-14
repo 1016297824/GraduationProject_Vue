@@ -109,3 +109,35 @@ export function produce1(product) {
     initProduct(product.productType);
   });
 }
+
+// 初始化饲料化肥表
+export function initFertilizer(fertilizerType) {
+  axios.post("farmStaff/initFertilizer", fertilizerType).then(response => {
+    setTimeout(() => {
+      bus.$emit(bus.fertilizerList, response.data.fertilizerList);
+      bus.$emit(bus.pageBody1, response.data.pageBody1);
+    }, 200);
+  });
+}
+
+// 饲料肥料分页
+export function doPage1(pageBody1, fertilizerType) {
+  axios
+    .post(`/farmStaff/doPage1/${fertilizerType}`, pageBody1)
+    .then(response => {
+      setTimeout(() => {
+        bus.$emit(bus.fertilizerList, response.data.fertilizerList);
+        bus.$emit(bus.pageBody1, response.data.pageBody1);
+      }, 200);
+    });
+}
+
+// 采购饲料肥料
+export function addPurchase1(purchase) {
+  axios.post("farmStaff/addPurchase1", purchase).then(response => {
+    setTimeout(() => {
+      alert(response.data.message);
+    }, 200);
+    initFertilizer(purchase.fertilizer.fertilizerType);
+  });
+}

@@ -70,10 +70,10 @@
                       {{ product.name }}
                     </td>
                     <td style="text-align: center;" class="text-truncate">
-                      {{ product.amount | numFilter }}{{ product.unit }}
+                      {{ product.amount }}{{ product.unit }}
                     </td>
                     <td style="text-align: center;" class="text-truncate">
-                      {{ product.safeAmount | numFilter }}{{ product.unit }}
+                      {{ product.safeAmount }}{{ product.unit }}
                     </td>
                     <td
                       style="text-align: center;color:red"
@@ -840,18 +840,6 @@ export default {
           this.productType = this.product.productType;
         }
       }
-    }
-  },
-  filters: {
-    numFilter(value) {
-      let realVal = "";
-      if (!isNaN(value) && value !== "") {
-        // 截取当前数据到小数点后两位
-        realVal = parseFloat(value).toFixed(2);
-      } else {
-        realVal = "--";
-      }
-      return realVal;
     }
   },
   created() {
