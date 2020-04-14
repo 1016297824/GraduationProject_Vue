@@ -141,3 +141,25 @@ export function addPurchase1(purchase) {
     initFertilizer(purchase.fertilizer.fertilizerType);
   });
 }
+
+// 异常消耗（饲料肥料）
+export function abnormalConsumptionFertilizer(fertilizer) {
+  axios
+    .post("farmStaff/abnormalConsumptionFertilizer", fertilizer)
+    .then(response => {
+      setTimeout(() => {
+        alert(response.data.message);
+      }, 200);
+      initFertilizer(fertilizer.fertilizerType);
+    });
+}
+
+// 农场使用（饲料肥料）
+export function farmUse(fertilizer) {
+  axios.post("farmStaff/farmUse", fertilizer).then(response => {
+    setTimeout(() => {
+      alert(response.data.message);
+    }, 200);
+    initFertilizer(fertilizer.fertilizerType);
+  });
+}

@@ -83,13 +83,15 @@
                         class="btn btn-primary"
                         data-toggle="modal"
                         data-target="#consumption"
+                        @click="abnormalConsumptionFertilizer(fertilizer)"
                       />{{ &nbsp; }}
                       <input
                         type="button"
-                        value="成熟"
+                        value="使用"
                         class="btn btn-primary"
                         data-toggle="modal"
-                        data-target="#produce1"
+                        data-target="#farmUse"
+                        @click="farmUse(fertilizer)"
                       />
                     </td>
                   </tr>
@@ -150,7 +152,9 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">原料采购</h5>
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              {{ fertilizerType + "采购" }}
+            </h5>
             <button
               type="button"
               class="close"
@@ -172,7 +176,7 @@
                             class="input-group-text"
                             id="inputGroup-sizing-lg"
                           >
-                            原料类型
+                            类型
                           </span>
                         </div>
                         <select
@@ -301,6 +305,274 @@
       </div>
     </div>
 
+    <!-- model -->
+    <div
+      class="modal fade"
+      id="consumption"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              {{ fertilizerType + "消耗" }}
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="form-group text-left">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            类型
+                          </span>
+                        </div>
+                        <select
+                          class="form-control"
+                          v-model="fertilizer.fertilizerType"
+                          disabled
+                        >
+                          <option
+                            v-for="(fertilizerType,
+                            index) in fertilizerTypeList"
+                            :key="index"
+                            :value="fertilizerType"
+                          >
+                            {{ fertilizerType }}
+                          </option>
+                        </select>
+                      </div>
+                      <br />
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            {{ fertilizerType + "名" }}
+                          </span>
+                        </div>
+                        <input
+                          v-model="fertilizer.name"
+                          disabled
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                        />
+                      </div>
+                      <br />
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            异常消耗
+                          </span>
+                        </div>
+                        <input
+                          v-model="fertilizer.amount"
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                          @keyup="amountWrite"
+                        />
+                      </div>
+                      <p style="color: red;">
+                        {{ amountMessage }}
+                      </p>
+                      <br />
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            单位
+                          </span>
+                        </div>
+                        <input
+                          v-model="fertilizer.unit"
+                          disabled
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="col-lg-12" style="text-align:center">
+              <input
+                type="button"
+                value="提交"
+                class="btn btn-primary"
+                @click="consumptionModel"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- model -->
+    <div
+      class="modal fade"
+      id="farmUse"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              {{ fertilizerType + "使用" }}
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <div class="form-group text-left">
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            类型
+                          </span>
+                        </div>
+                        <select
+                          class="form-control"
+                          v-model="fertilizer.fertilizerType"
+                          disabled
+                        >
+                          <option
+                            v-for="(fertilizerType,
+                            index) in fertilizerTypeList"
+                            :key="index"
+                            :value="fertilizerType"
+                          >
+                            {{ fertilizerType }}
+                          </option>
+                        </select>
+                      </div>
+                      <br />
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            {{ fertilizerType + "名" }}
+                          </span>
+                        </div>
+                        <input
+                          v-model="fertilizer.name"
+                          disabled
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                        />
+                      </div>
+                      <br />
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            使用数量
+                          </span>
+                        </div>
+                        <input
+                          v-model="fertilizer.amount"
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                          @keyup="amountWrite"
+                        />
+                      </div>
+                      <p style="color: red;">
+                        {{ amountMessage }}
+                      </p>
+                      <br />
+                      <div class="input-group input-group-lg">
+                        <div class="input-group-prepend">
+                          <span
+                            class="input-group-text"
+                            id="inputGroup-sizing-lg"
+                          >
+                            单位
+                          </span>
+                        </div>
+                        <input
+                          v-model="fertilizer.unit"
+                          disabled
+                          type="text"
+                          class="form-control"
+                          aria-label="Sizing example input"
+                          aria-describedby="inputGroup-sizing-lg"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <div class="col-lg-12" style="text-align:center">
+              <input
+                type="button"
+                value="提交"
+                class="btn btn-primary"
+                @click="farmUseModel"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <br />
     <br />
     <br />
@@ -310,7 +582,13 @@
 <script>
 import $ from "jquery";
 import bus from "@/util/Bus";
-import { initFertilizer, doPage1, addPurchase1 } from "@/api/farmStaff.js";
+import {
+  initFertilizer,
+  doPage1,
+  addPurchase1,
+  abnormalConsumptionFertilizer,
+  farmUse
+} from "@/api/farmStaff.js";
 
 export default {
   name: "Fertilizer",
@@ -381,6 +659,44 @@ export default {
           this.purchase.fertilizer = this.fertilizer;
           addPurchase1(this.purchase);
           $("#purchase").modal("hide");
+          this.fertilizerType = this.fertilizer.fertilizerType;
+        }
+      }
+    },
+    abnormalConsumptionFertilizer(fertilizer) {
+      this.amountMessage = null;
+      this.fertilizer = JSON.parse(JSON.stringify(fertilizer));
+      this.fertilizer.amount = null;
+    },
+    consumptionModel() {
+      if (this.fertilizer.amount == null) {
+        this.amountMessage = "请输入消耗数量！";
+      } else {
+        let p = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        if (!p.test(this.fertilizer.amount)) {
+          this.amountMessage = "请输入正数！";
+        } else {
+          abnormalConsumptionFertilizer(this.fertilizer);
+          $("#consumption").modal("hide");
+          this.fertilizerType = this.fertilizer.fertilizerType;
+        }
+      }
+    },
+    farmUse(fertilizer) {
+      this.amountMessage = null;
+      this.fertilizer = JSON.parse(JSON.stringify(fertilizer));
+      this.fertilizer.amount = null;
+    },
+    farmUseModel() {
+      if (this.fertilizer.amount == null) {
+        this.amountMessage = "请输入消耗数量！";
+      } else {
+        let p = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        if (!p.test(this.fertilizer.amount)) {
+          this.amountMessage = "请输入正数！";
+        } else {
+          farmUse(this.fertilizer);
+          $("#farmUse").modal("hide");
           this.fertilizerType = this.fertilizer.fertilizerType;
         }
       }
