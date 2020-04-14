@@ -632,7 +632,7 @@ import {
 import $ from "jquery";
 
 export default {
-  name: "ProductShow",
+  name: "RawMeterial",
   data: () => ({
     productType: "家禽",
     productTypeList: ["家禽", "鱼类", "果蔬"],
