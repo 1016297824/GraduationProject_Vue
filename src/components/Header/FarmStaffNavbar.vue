@@ -35,6 +35,12 @@
                 化肥饲料采购
               </a>
             </li>
+            <div class="dropdown-divider"></div>
+            <li>
+              <a class="dropdown-item" href="restaurantMaterial">
+                餐厅物资采购
+              </a>
+            </li>
           </ul>
         </li>
         <li class="nav-item">

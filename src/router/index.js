@@ -314,6 +314,14 @@ const routes = [
         component: () => import("@/views/staff/farmStaff/Fertilizer.vue")
       },
       {
+        path: "RestaurantMaterial",
+        name: "RestaurantMaterial",
+        meta: {
+          title: "餐厅物资采购"
+        },
+        component: () => import("@/views/staff/farmStaff/RestaurantMaterial")
+      },
+      {
         path: "passwordFarmStaff",
         name: "passwordFarmStaff",
         meta: {

@@ -687,6 +687,12 @@ export default {
       this.product.safeAmount = null;
       this.product.unit = null;
       this.product.baseUnit = null;
+      this.typeMessage = null;
+      this.nameMessage = null;
+      this.amountMessage = null;
+      this.amountMessage1 = null;
+      this.amountMessage2 = null;
+      this.unitMessage = null;
     },
     modifyProduct(product) {
       this.typeMessage = null;
@@ -720,7 +726,7 @@ export default {
           this.unitMessage = "请输入单位！";
         }
       } else {
-        let cn = /^[\u4E00-\u9FA5]$/;
+        let cn = /^[\u4E00-\u9FA5]+$/;
         let re = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
         if (this.productType == "家禽") {
           re = /^(0|\+?[1-9][0-9]*)$/;
@@ -739,6 +745,8 @@ export default {
           !cn.test(this.product.baseUnit)
         ) {
           this.unitMessage = "请输入中文！";
+        } else if (!cn.test(this.product.name)) {
+          this.nameMessage = "请输入中文！";
         } else {
           if (this.modelType == "添加") {
             addProduct(this.product);

@@ -22,6 +22,7 @@ export default new Vue({
     repair: "repair",
     repairList: "repairList",
     productList: "productList",
-    fertilizerList: "fertilizerList"
+    fertilizerList: "fertilizerList",
+    restaurantMaterialList: "restaurantMaterialList"
   })
 });

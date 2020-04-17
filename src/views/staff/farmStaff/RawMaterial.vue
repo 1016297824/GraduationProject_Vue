@@ -698,6 +698,11 @@ export default {
       this.priceMessage = null;
     },
     abnormalConsumption1(product) {
+      if (this.productType == "鱼类") {
+        this.nowAmount = product.amount;
+      } else {
+        this.nowAmount = product.baseAmount;
+      }
       this.typeMessage = null;
       this.nameMessage = null;
       this.amountMessage = null;
@@ -706,11 +711,6 @@ export default {
       this.unitMessage = null;
       this.priceMessage = null;
       this.product = JSON.parse(JSON.stringify(product));
-      if (this.productType == "鱼类") {
-        this.nowAmount = this.product.amount;
-      } else {
-        this.nowAmount = this.product.baseAmount;
-      }
       this.product.amount = null;
     },
     doModel1() {
@@ -782,6 +782,7 @@ export default {
       }
     },
     produce1(product) {
+      this.nowAmount = product.baseAmount;
       this.typeMessage = null;
       this.nameMessage = null;
       this.amountMessage = null;
@@ -805,6 +806,8 @@ export default {
           } else {
             this.amountMessage2 = "请输入正数！";
           }
+        } else if (this.product.amount > this.nowAmount) {
+          this.amountMessage2 = "库存不足！";
         } else {
           produce1(this.product);
           $("#produce1").modal("hide");

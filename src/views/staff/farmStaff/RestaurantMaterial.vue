@@ -1,4 +1,4 @@
-// 饲料肥料
+// 餐厅物资
 <template>
   <div class="container">
     <div class="row">
@@ -14,24 +14,9 @@
                   <div class="col-lg-12">
                     <div class="row">
                       <div class="col-lg-2">
-                        <label for="" class="font-weight-bold">选择类型</label>
+                        <label for="" class="font-weight-bold">餐厅物资</label>
                       </div>
-                      <div class="col-lg-3">
-                        <select
-                          class="form-control"
-                          v-model="fertilizerType"
-                          @change="fertilizerTypeChange"
-                        >
-                          <option
-                            v-for="(fertilizerType,
-                            index) in fertilizerTypeList"
-                            :key="index"
-                            :value="fertilizerType"
-                          >
-                            {{ fertilizerType }}
-                          </option>
-                        </select>
-                      </div>
+                      <div class="col-lg-3"></div>
                       <div class="col-lg-7">
                         <input
                           type="button"
@@ -39,8 +24,8 @@
                           style="float:right"
                           value="新建采购信息"
                           data-toggle="modal"
-                          data-target="#addFertilizer"
-                          @click="addFertilizer"
+                          data-target="#addRestaurantMaterial"
+                          @click="addRestaurantMaterial"
                         />
                       </div>
                     </div>
@@ -53,7 +38,7 @@
                 <thead>
                   <tr>
                     <th style="text-align: center;" class="text-truncate">
-                      {{ fertilizerType + "名称" }}
+                      物资名
                     </th>
                     <th style="text-align: center;" class="text-truncate">
                       库存
@@ -67,24 +52,28 @@
                 </thead>
                 <tbody>
                   <tr
-                    v-for="(fertilizer, index) in fertilizerList"
+                    v-for="(restaurantMaterial,
+                    index) in restaurantMaterialList"
                     :key="index"
                   >
                     <td style="text-align: center;" class="text-truncate">
-                      {{ fertilizer.name }}
+                      {{ restaurantMaterial.name }}
                     </td>
                     <td style="text-align: center;" class="text-truncate">
-                      {{ fertilizer.amount + fertilizer.unit }}
+                      {{ restaurantMaterial.amount + restaurantMaterial.unit }}
                     </td>
                     <td style="text-align: center;" class="text-truncate">
-                      {{ fertilizer.safeAmount + fertilizer.unit }}
+                      {{
+                        restaurantMaterial.safeAmount + restaurantMaterial.unit
+                      }}
                     </td>
                     <td
                       style="text-align: center;color:red"
                       class="text-truncate"
                     >
                       {{
-                        fertilizer.amount > fertilizer.safeAmount
+                        restaurantMaterial.amount >
+                        restaurantMaterial.safeAmount
                           ? null
                           : "缺货"
                       }}
@@ -96,7 +85,7 @@
                         class="btn btn-primary"
                         data-toggle="modal"
                         data-target="#purchase"
-                        @click="addPurchase(fertilizer)"
+                        @click="addPurchase(restaurantMaterial)"
                       />
                       {{ &nbsp; }}
                       <input
@@ -105,7 +94,11 @@
                         class="btn btn-primary"
                         data-toggle="modal"
                         data-target="#consumption"
-                        @click="abnormalConsumptionFertilizer(fertilizer)"
+                        @click="
+                          abnormalConsumptionRestaurantMaterial(
+                            restaurantMaterial
+                          )
+                        "
                       />{{ &nbsp; }}
                       <input
                         type="button"
@@ -113,13 +106,13 @@
                         class="btn btn-primary"
                         data-toggle="modal"
                         data-target="#farmUse"
-                        @click="farmUse(fertilizer)"
+                        @click="farmUse(restaurantMaterial)"
                       />{{ &nbsp; }}
                       <input
                         type="button"
                         value="删除"
                         class="btn"
-                        @click="deleteFertilizer(fertilizer)"
+                        @click="deleteRestaurantMaterial(restaurantMaterial)"
                       />
                     </td>
                   </tr>
@@ -132,7 +125,7 @@
                       class="page-link"
                       href="#"
                       aria-label="Previous"
-                      @click="doPage1(1)"
+                      @click="doPage2(1)"
                     >
                       <span aria-hidden="true">&laquo;</span>
                       <span class="sr-only">Previous</span>
@@ -145,7 +138,7 @@
                       pageBody1.page == page ? 'page-item active' : 'page-item'
                     "
                   >
-                    <a class="page-link" href="#" @click="doPage1(page)">
+                    <a class="page-link" href="#" @click="doPage2(page)">
                       {{ page }}
                     </a>
                   </li>
@@ -154,7 +147,7 @@
                       class="page-link"
                       href="#"
                       aria-label="Next"
-                      @click="doPage1(pageBody1.pages)"
+                      @click="doPage2(pageBody1.pages)"
                     >
                       <span aria-hidden="true">&raquo;</span>
                       <span class="sr-only">Next</span>
@@ -181,7 +174,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLongTitle">
-              {{ fertilizerType + "采购" }}
+              物资采购
             </h5>
             <button
               type="button"
@@ -204,36 +197,11 @@
                             class="input-group-text"
                             id="inputGroup-sizing-lg"
                           >
-                            类型
-                          </span>
-                        </div>
-                        <select
-                          class="form-control"
-                          v-model="fertilizer.fertilizerType"
-                          disabled
-                        >
-                          <option
-                            v-for="(fertilizerType,
-                            index) in fertilizerTypeList"
-                            :key="index"
-                            :value="fertilizerType"
-                          >
-                            {{ fertilizerType }}
-                          </option>
-                        </select>
-                      </div>
-                      <br />
-                      <div class="input-group input-group-lg">
-                        <div class="input-group-prepend">
-                          <span
-                            class="input-group-text"
-                            id="inputGroup-sizing-lg"
-                          >
                             农产品名
                           </span>
                         </div>
                         <input
-                          v-model="fertilizer.name"
+                          v-model="restaurantMaterial.name"
                           disabled
                           type="text"
                           class="form-control"
@@ -274,7 +242,7 @@
                           </span>
                         </div>
                         <input
-                          v-model="fertilizer.unit"
+                          v-model="restaurantMaterial.unit"
                           disabled
                           type="text"
                           class="form-control"
@@ -321,12 +289,7 @@
           </div>
           <div class="modal-footer">
             <div class="col-lg-12" style="text-align:center">
-              <input
-                type="button"
-                value="提交"
-                class="btn btn-primary"
-                @click="purchaseModel"
-              />
+              <input type="button" value="提交" class="btn btn-primary" />
             </div>
           </div>
         </div>
@@ -346,7 +309,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLongTitle">
-              {{ fertilizerType + "消耗" }}
+              物资消耗
             </h5>
             <button
               type="button"
@@ -369,36 +332,11 @@
                             class="input-group-text"
                             id="inputGroup-sizing-lg"
                           >
-                            类型
-                          </span>
-                        </div>
-                        <select
-                          class="form-control"
-                          v-model="fertilizer.fertilizerType"
-                          disabled
-                        >
-                          <option
-                            v-for="(fertilizerType,
-                            index) in fertilizerTypeList"
-                            :key="index"
-                            :value="fertilizerType"
-                          >
-                            {{ fertilizerType }}
-                          </option>
-                        </select>
-                      </div>
-                      <br />
-                      <div class="input-group input-group-lg">
-                        <div class="input-group-prepend">
-                          <span
-                            class="input-group-text"
-                            id="inputGroup-sizing-lg"
-                          >
-                            {{ fertilizerType + "名" }}
+                            物资名
                           </span>
                         </div>
                         <input
-                          v-model="fertilizer.name"
+                          v-model="restaurantMaterial.name"
                           disabled
                           type="text"
                           class="form-control"
@@ -417,7 +355,7 @@
                           </span>
                         </div>
                         <input
-                          v-model="fertilizer.amount"
+                          v-model="restaurantMaterial.amount"
                           type="text"
                           class="form-control"
                           aria-label="Sizing example input"
@@ -439,7 +377,7 @@
                           </span>
                         </div>
                         <input
-                          v-model="fertilizer.unit"
+                          v-model="restaurantMaterial.unit"
                           disabled
                           type="text"
                           class="form-control"
@@ -455,12 +393,7 @@
           </div>
           <div class="modal-footer">
             <div class="col-lg-12" style="text-align:center">
-              <input
-                type="button"
-                value="提交"
-                class="btn btn-primary"
-                @click="consumptionModel"
-              />
+              <input type="button" value="提交" class="btn btn-primary" />
             </div>
           </div>
         </div>
@@ -480,7 +413,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLongTitle">
-              {{ fertilizerType + "使用" }}
+              物资使用
             </h5>
             <button
               type="button"
@@ -503,36 +436,11 @@
                             class="input-group-text"
                             id="inputGroup-sizing-lg"
                           >
-                            类型
-                          </span>
-                        </div>
-                        <select
-                          class="form-control"
-                          v-model="fertilizer.fertilizerType"
-                          disabled
-                        >
-                          <option
-                            v-for="(fertilizerType,
-                            index) in fertilizerTypeList"
-                            :key="index"
-                            :value="fertilizerType"
-                          >
-                            {{ fertilizerType }}
-                          </option>
-                        </select>
-                      </div>
-                      <br />
-                      <div class="input-group input-group-lg">
-                        <div class="input-group-prepend">
-                          <span
-                            class="input-group-text"
-                            id="inputGroup-sizing-lg"
-                          >
-                            {{ fertilizerType + "名" }}
+                            物资名
                           </span>
                         </div>
                         <input
-                          v-model="fertilizer.name"
+                          v-model="restaurantMaterial.name"
                           disabled
                           type="text"
                           class="form-control"
@@ -551,7 +459,7 @@
                           </span>
                         </div>
                         <input
-                          v-model="fertilizer.amount"
+                          v-model="restaurantMaterial.amount"
                           type="text"
                           class="form-control"
                           aria-label="Sizing example input"
@@ -573,7 +481,7 @@
                           </span>
                         </div>
                         <input
-                          v-model="fertilizer.unit"
+                          v-model="restaurantMaterial.unit"
                           disabled
                           type="text"
                           class="form-control"
@@ -589,12 +497,7 @@
           </div>
           <div class="modal-footer">
             <div class="col-lg-12" style="text-align:center">
-              <input
-                type="button"
-                value="提交"
-                class="btn btn-primary"
-                @click="farmUseModel"
-              />
+              <input type="button" value="提交" class="btn btn-primary" />
             </div>
           </div>
         </div>
@@ -604,7 +507,7 @@
     <!-- model -->
     <div
       class="modal fade"
-      id="addFertilizer"
+      id="addRestaurantMaterial"
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalCenterTitle"
@@ -637,35 +540,7 @@
                             class="input-group-text"
                             id="inputGroup-sizing-lg"
                           >
-                            类型
-                          </span>
-                        </div>
-                        <select
-                          class="form-control"
-                          v-model="fertilizer.fertilizerType"
-                          @change="changeFertilizerType"
-                        >
-                          <option
-                            v-for="(fertilizerType,
-                            index) in fertilizerTypeList"
-                            :key="index"
-                            :value="fertilizerType"
-                          >
-                            {{ fertilizerType }}
-                          </option>
-                        </select>
-                      </div>
-                      <p style="color: red;">
-                        {{ fertilizerTypeMessage }}
-                      </p>
-                      <br />
-                      <div class="input-group input-group-lg">
-                        <div class="input-group-prepend">
-                          <span
-                            class="input-group-text"
-                            id="inputGroup-sizing-lg"
-                          >
-                            {{ fertilizerType + "名" }}
+                            物资名
                           </span>
                         </div>
                         <input
@@ -673,7 +548,7 @@
                           class="form-control"
                           aria-label="Sizing example input"
                           aria-describedby="inputGroup-sizing-lg"
-                          v-model="fertilizer.name"
+                          v-model="restaurantMaterial.name"
                           @keyup="nameWrite"
                         />
                       </div>
@@ -691,7 +566,7 @@
                           </span>
                         </div>
                         <input
-                          v-model="fertilizer.amount"
+                          v-model="restaurantMaterial.amount"
                           type="text"
                           class="form-control"
                           aria-label="Sizing example input"
@@ -713,7 +588,7 @@
                           </span>
                         </div>
                         <input
-                          v-model="fertilizer.safeAmount"
+                          v-model="restaurantMaterial.safeAmount"
                           type="text"
                           class="form-control"
                           aria-label="Sizing example input"
@@ -735,7 +610,7 @@
                           </span>
                         </div>
                         <input
-                          v-model="fertilizer.unit"
+                          v-model="restaurantMaterial.unit"
                           type="text"
                           class="form-control"
                           aria-label="Sizing example input"
@@ -758,7 +633,7 @@
                 type="button"
                 value="提交"
                 class="btn btn-primary"
-                @click="addFertilizerModel"
+                @click="addRestaurantMaterialModel"
               />
             </div>
           </div>
@@ -776,29 +651,22 @@
 import $ from "jquery";
 import bus from "@/util/Bus";
 import {
-  initFertilizer,
-  doPage1,
-  addPurchase1,
-  abnormalConsumptionFertilizer,
-  farmUse,
-  addFertilizer,
-  deleteFertilizer
+  addRestaurantMaterial,
+  initRestaurantMaterial,
+  doPage2
 } from "@/api/farmStaff.js";
 
 export default {
-  name: "Fertilizer",
+  name: "RestaurantMaterial",
   data: () => ({
-    fertilizerTypeList: ["饲料", "肥料"],
-    fertilizerType: "饲料",
-    fertilizerList: [],
-    fertilizer: {
+    restaurantMaterial: {
       id: null,
       name: null,
       amount: null,
       safeAmount: null,
-      unit: null,
-      fertilizerType: null
+      unit: null
     },
+    restaurantMaterialList: [],
     pageBody1: {
       page: null,
       pages: null,
@@ -807,10 +675,9 @@ export default {
     purchase: {
       amount: null,
       price: null,
-      fertilizer: null
+      restaurantMaterial: null
     },
     nowAmount: null,
-    fertilizerTypeMessage: null,
     nameMessage: null,
     amountMessage: null,
     safeAmountMessage: null,
@@ -833,177 +700,81 @@ export default {
     priceWrite() {
       this.priceMessage = null;
     },
-    changeFertilizerType() {
-      this.fertilizerTypeMessage = null;
-    },
-    fertilizerTypeChange() {
-      initFertilizer(this.fertilizerType);
-    },
-    doPage1(page) {
+    doPage2(page) {
       this.pageBody1.page = page;
-      doPage1(this.pageBody1, this.fertilizerType);
+      doPage2(this.pageBody1);
     },
-    addPurchase(fertilizer) {
-      this.amountMessage = null;
-      this.priceMessage = null;
-      this.fertilizer = JSON.parse(JSON.stringify(fertilizer));
-      this.purchase.price = null;
-      this.purchase.amount = null;
-    },
-    purchaseModel() {
-      if ((this.purchase.amount == null) | (this.purchase.price == null)) {
-        if (this.purchase.amount == null) {
-          this.amountMessage = "请输入采购数量！";
-        }
-        if (this.purchase.price == null) {
-          this.priceMessage = "请输入采购单价！";
-        }
-      } else {
-        let p = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
-        // let p1 = /^(0|\+?[1-9][0-9]*)$/;
-        if (!p.test(this.purchase.amount) | !p.test(this.purchase.price)) {
-          if (!p.test(this.purchase.amount)) {
-            this.amountMessage = "请输入正数！";
-          }
-          if (!p.test(this.purchase.price)) {
-            this.priceMessage = "请输入正数！";
-          }
-        } else {
-          this.purchase.fertilizer = this.fertilizer;
-          addPurchase1(this.purchase);
-          $("#purchase").modal("hide");
-          this.fertilizerType = this.fertilizer.fertilizerType;
-        }
-      }
-    },
-    abnormalConsumptionFertilizer(fertilizer) {
-      this.nowAmount = fertilizer.amount;
-      this.amountMessage = null;
-      this.fertilizer = JSON.parse(JSON.stringify(fertilizer));
-      this.fertilizer.amount = null;
-    },
-    consumptionModel() {
-      if (this.fertilizer.amount == null) {
-        this.amountMessage = "请输入消耗数量！";
-      } else {
-        let p = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
-        if (!p.test(this.fertilizer.amount)) {
-          this.amountMessage = "请输入正数！";
-        } else if (this.fertilizer.amount > this.nowAmount) {
-          this.amountMessage = "库存不足";
-        } else {
-          abnormalConsumptionFertilizer(this.fertilizer);
-          $("#consumption").modal("hide");
-          this.fertilizerType = this.fertilizer.fertilizerType;
-        }
-      }
-    },
-    farmUse(fertilizer) {
-      this.nowAmount = fertilizer.amount;
-      this.amountMessage = null;
-      this.fertilizer = JSON.parse(JSON.stringify(fertilizer));
-      this.fertilizer.amount = null;
-    },
-    farmUseModel() {
-      if (this.fertilizer.amount == null) {
-        this.amountMessage = "请输入消耗数量！";
-      } else {
-        let p = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
-        if (!p.test(this.fertilizer.amount)) {
-          this.amountMessage = "请输入正数！";
-        } else if (this.fertilizer.amount > this.nowAmount) {
-          this.amountMessage = "库存不足";
-        } else {
-          farmUse(this.fertilizer);
-          $("#farmUse").modal("hide");
-          this.fertilizerType = this.fertilizer.fertilizerType;
-        }
-      }
-    },
-    addFertilizer() {
-      this.fertilizer.id = null;
-      this.fertilizer.name = null;
-      this.fertilizer.amount = null;
-      this.fertilizer.safeAmount = null;
-      this.fertilizer.unit = null;
-      this.fertilizer.fertilizerType = null;
+    addRestaurantMaterial() {
+      this.restaurantMaterial.id = null;
+      this.restaurantMaterial.name = null;
+      this.restaurantMaterial.amount = null;
+      this.restaurantMaterial.safeAmount = null;
+      this.restaurantMaterial.unit = null;
       this.nameMessage = null;
       this.amountMessage = null;
       this.safeAmountMessage = null;
       this.unitMessge = null;
-      this.fertilizerTypeMessage = null;
     },
-    addFertilizerModel() {
+    addRestaurantMaterialModel() {
       if (
-        this.fertilizer.name == null ||
-        this.fertilizer.amount == null ||
-        this.fertilizer.safeAmount == null ||
-        this.fertilizer.unit == null ||
-        this.fertilizer.fertilizerType == null
+        this.restaurantMaterial.name == null ||
+        this.restaurantMaterial.amount == null ||
+        this.restaurantMaterial.safeAmount == null ||
+        this.restaurantMaterial.unit == null
       ) {
-        if (this.fertilizer.name == null) {
+        if (this.restaurantMaterial.name == null) {
           this.nameMessage = "请输入名称！";
         }
-        if (this.fertilizer.amount == null) {
+        if (this.restaurantMaterial.amount == null) {
           this.amountMessage = "请输入库存！";
         }
-        if (this.fertilizer.safeAmount == null) {
+        if (this.restaurantMaterial.safeAmount == null) {
           this.safeAmountMessage = "请输入安全库存！";
         }
-        if (this.fertilizer.unit == null) {
+        if (this.restaurantMaterial.unit == null) {
           this.unitMessge = "请输入单位！";
-        }
-        if (this.fertilizer.fertilizerType == null) {
-          this.fertilizerTypeMessage = "请选择类型！";
         }
       } else {
         let cn = /^[\u4E00-\u9FA5]+$/;
         let re = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
         if (
-          !cn.test(this.fertilizer.name) ||
-          !cn.test(this.fertilizer.unit) ||
-          !re.test(this.fertilizer.amount) ||
-          !re.test(this.fertilizer.safeAmount)
+          !cn.test(this.restaurantMaterial.name) ||
+          !cn.test(this.restaurantMaterial.unit) ||
+          !re.test(this.restaurantMaterial.amount) ||
+          !re.test(this.restaurantMaterial.safeAmount)
         ) {
-          if (!cn.test(this.fertilizer.name)) {
-            console.log(this.fertilizer.name);
+          if (!cn.test(this.restaurantMaterial.name)) {
+            console.log(this.restaurantMaterial.name);
 
             this.nameMessage = "请输入中文！";
           }
-          if (!cn.test(this.fertilizer.unit)) {
+          if (!cn.test(this.restaurantMaterial.unit)) {
             this.unitMessge = "请输入中文！";
           }
-          if (!re.test(this.fertilizer.amount)) {
+          if (!re.test(this.restaurantMaterial.amount)) {
             this.amountMessage = "请输入正数！";
           }
-          if (!re.test(this.fertilizer.safeAmount)) {
+          if (!re.test(this.restaurantMaterial.safeAmount)) {
             this.safeAmountMessage = "请输入正数！";
           }
         } else {
-          addFertilizer(this.fertilizer);
-          $("#addFertilizer").modal("hide");
-          this.fertilizerType = this.fertilizer.fertilizerType;
+          addRestaurantMaterial(this.restaurantMaterial);
+          $("#addRestaurantMaterial").modal("hide");
         }
-      }
-    },
-    deleteFertilizer(fertilizer) {
-      let con = confirm(`是否删除：${fertilizer.name}`);
-      if (con == true) {
-        deleteFertilizer(fertilizer);
       }
     }
   },
   created() {
-    initFertilizer(this.fertilizerType);
-    bus.$on(bus.fertilizerList, data => {
-      this.fertilizerList = data;
+    initRestaurantMaterial();
+    bus.$on(bus.restaurantMaterialList, data => {
+      this.restaurantMaterialList = data;
     });
     bus.$on(bus.pageBody1, data => {
       this.pageBody1 = data;
     });
   },
   beforeDestroy() {
-    bus.$off(bus.fertilizerList);
+    bus.$off(bus.restaurantMaterialList);
     bus.$off(bus.pageBody1);
   }
 };

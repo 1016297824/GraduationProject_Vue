@@ -163,3 +163,61 @@ export function farmUse(fertilizer) {
     initFertilizer(fertilizer.fertilizerType);
   });
 }
+
+// 新建采购信息（饲料肥料）
+export function addFertilizer(fertilizer) {
+  axios.post("farmStaff/addFertilizer", fertilizer).then(response => {
+    setTimeout(() => {
+      alert(response.data.message);
+    }, 200);
+    initFertilizer(fertilizer.fertilizerType);
+  });
+}
+
+// 删除采购信息（饲料肥料）
+export function deleteFertilizer(fertilizer) {
+  axios.post("farmStaff/deleteFertilizer", fertilizer).then(response => {
+    setTimeout(() => {
+      alert(response.data.message);
+    }, 200);
+    initFertilizer(fertilizer.fertilizerType);
+  });
+}
+
+// 添加餐厅物资信息
+export function addRestaurantMaterial(restaurantMaterial) {
+  axios
+    .post("farmStaff/addRestaurantMaterial", restaurantMaterial)
+    .then(response => {
+      setTimeout(() => {
+        alert(response.data.message);
+      }, 200);
+      initRestaurantMaterial();
+    });
+}
+
+// 初始化餐厅物资信息
+export function initRestaurantMaterial() {
+  axios.get("farmStaff/initRestaurantMaterial").then(response => {
+    setTimeout(() => {
+      bus.$emit(
+        bus.restaurantMaterialList,
+        response.data.restaurantMaterialList
+      );
+      bus.$emit(bus.pageBody1, response.data.pageBody1);
+    }, 200);
+  });
+}
+
+// 餐厅物资分页
+export function doPage2(pageBody1) {
+  axios.post("/farmStaff/doPage2", pageBody1).then(response => {
+    setTimeout(() => {
+      bus.$emit(
+        bus.restaurantMaterialList,
+        response.data.restaurantMaterialList
+      );
+      bus.$emit(bus.pageBody1, response.data.pageBody1);
+    }, 200);
+  });
+}
