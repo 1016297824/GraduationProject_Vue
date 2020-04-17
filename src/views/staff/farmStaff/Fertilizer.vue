@@ -310,7 +310,7 @@
                         </div>
                       </div>
                       <p style="color: red;">
-                        {{ amountMessage }}
+                        {{ priceMessage }}
                       </p>
                       <br />
                     </div>

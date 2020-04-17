@@ -84,8 +84,10 @@
                         value="采购"
                         class="btn btn-primary"
                         data-toggle="modal"
-                        data-target="#purchase"
-                        @click="addPurchase(restaurantMaterial)"
+                        data-target="#addRestaurantMaterialPurchase"
+                        @click="
+                          addRestaurantMaterialPurchase(restaurantMaterial)
+                        "
                       />
                       {{ &nbsp; }}
                       <input
@@ -164,7 +166,7 @@
     <!-- model -->
     <div
       class="modal fade"
-      id="purchase"
+      id="addRestaurantMaterialPurchase"
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalCenterTitle"
@@ -197,7 +199,7 @@
                             class="input-group-text"
                             id="inputGroup-sizing-lg"
                           >
-                            农产品名
+                            物资名
                           </span>
                         </div>
                         <input
@@ -278,7 +280,7 @@
                         </div>
                       </div>
                       <p style="color: red;">
-                        {{ amountMessage }}
+                        {{ priceMessage }}
                       </p>
                       <br />
                     </div>
@@ -289,7 +291,12 @@
           </div>
           <div class="modal-footer">
             <div class="col-lg-12" style="text-align:center">
-              <input type="button" value="提交" class="btn btn-primary" />
+              <input
+                type="button"
+                value="提交"
+                class="btn btn-primary"
+                @click="addRestaurantMaterialPurchaseModel"
+              />
             </div>
           </div>
         </div>
@@ -653,7 +660,8 @@ import bus from "@/util/Bus";
 import {
   addRestaurantMaterial,
   initRestaurantMaterial,
-  doPage2
+  doPage2,
+  addRestaurantMaterialPurchase
 } from "@/api/farmStaff.js";
 
 export default {
@@ -760,6 +768,38 @@ export default {
         } else {
           addRestaurantMaterial(this.restaurantMaterial);
           $("#addRestaurantMaterial").modal("hide");
+        }
+      }
+    },
+    addRestaurantMaterialPurchase(restaurantMaterial) {
+      this.amountMessage = null;
+      this.priceMessage = null;
+      this.restaurantMaterial = JSON.parse(JSON.stringify(restaurantMaterial));
+      this.purchase.price = null;
+      this.purchase.amount = null;
+    },
+    addRestaurantMaterialPurchaseModel() {
+      if ((this.purchase.amount == null) | (this.purchase.price == null)) {
+        if (this.purchase.amount == null) {
+          this.amountMessage = "请输入采购数量！";
+        }
+        if (this.purchase.price == null) {
+          this.priceMessage = "请输入采购单价！";
+        }
+      } else {
+        let p = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        // let p1 = /^(0|\+?[1-9][0-9]*)$/;
+        if (!p.test(this.purchase.amount) | !p.test(this.purchase.price)) {
+          if (!p.test(this.purchase.amount)) {
+            this.amountMessage = "请输入正数！";
+          }
+          if (!p.test(this.purchase.price)) {
+            this.priceMessage = "请输入正数！";
+          }
+        } else {
+          this.purchase.restaurantMaterial = this.restaurantMaterial;
+          addRestaurantMaterialPurchase(this.purchase);
+          $("#addRestaurantMaterialPurchase").modal("hide");
         }
       }
     }

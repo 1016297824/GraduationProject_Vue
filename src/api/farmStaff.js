@@ -211,7 +211,7 @@ export function initRestaurantMaterial() {
 
 // 餐厅物资分页
 export function doPage2(pageBody1) {
-  axios.post("/farmStaff/doPage2", pageBody1).then(response => {
+  axios.post("farmStaff/doPage2", pageBody1).then(response => {
     setTimeout(() => {
       bus.$emit(
         bus.restaurantMaterialList,
@@ -220,4 +220,16 @@ export function doPage2(pageBody1) {
       bus.$emit(bus.pageBody1, response.data.pageBody1);
     }, 200);
   });
+}
+
+// 采购餐厅物资
+export function addRestaurantMaterialPurchase(purchase) {
+  axios
+    .post("farmStaff/addRestaurantMaterialPurchase", purchase)
+    .then(response => {
+      setTimeout(() => {
+        alert(response.data.message);
+      }, 200);
+      initRestaurantMaterial();
+    });
 }
