@@ -95,7 +95,7 @@
                         value="异常消耗"
                         class="btn btn-primary"
                         data-toggle="modal"
-                        data-target="#consumption"
+                        data-target="#consumptionRestaurantMaterial"
                         @click="
                           abnormalConsumptionRestaurantMaterial(
                             restaurantMaterial
@@ -113,7 +113,7 @@
                       <input
                         type="button"
                         value="删除"
-                        class="btn"
+                        class="btn btn-light"
                         @click="deleteRestaurantMaterial(restaurantMaterial)"
                       />
                     </td>
@@ -306,7 +306,7 @@
     <!-- model -->
     <div
       class="modal fade"
-      id="consumption"
+      id="consumptionRestaurantMaterial"
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalCenterTitle"
@@ -358,7 +358,7 @@
                             class="input-group-text"
                             id="inputGroup-sizing-lg"
                           >
-                            异常消耗
+                            异常消耗数量
                           </span>
                         </div>
                         <input
@@ -400,7 +400,12 @@
           </div>
           <div class="modal-footer">
             <div class="col-lg-12" style="text-align:center">
-              <input type="button" value="提交" class="btn btn-primary" />
+              <input
+                type="button"
+                value="提交"
+                class="btn btn-primary"
+                @click="consumptionRestaurantMaterialModel"
+              />
             </div>
           </div>
         </div>
@@ -661,7 +666,9 @@ import {
   addRestaurantMaterial,
   initRestaurantMaterial,
   doPage2,
-  addRestaurantMaterialPurchase
+  addRestaurantMaterialPurchase,
+  deleteRestaurantMaterial,
+  consumptionRestaurantMaterial
 } from "@/api/farmStaff.js";
 
 export default {
@@ -800,6 +807,35 @@ export default {
           this.purchase.restaurantMaterial = this.restaurantMaterial;
           addRestaurantMaterialPurchase(this.purchase);
           $("#addRestaurantMaterialPurchase").modal("hide");
+        }
+      }
+    },
+    deleteRestaurantMaterial(restaurantMaterial) {
+      let con = confirm(`是否删除：${restaurantMaterial.name}？`);
+      if (con == true) {
+        deleteRestaurantMaterial(restaurantMaterial);
+      }
+    },
+    abnormalConsumptionRestaurantMaterial(restaurantMaterial) {
+      this.nowAmount = restaurantMaterial.amount;
+      this.amountMessage = null;
+      this.restaurantMaterial = JSON.parse(JSON.stringify(restaurantMaterial));
+      this.restaurantMaterial.amount = null;
+    },
+    consumptionRestaurantMaterialModel() {
+      if (this.restaurantMaterial.amount == null) {
+        this.amountMessage = "请输入消耗数量！";
+      } else {
+        let p = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        if (!p.test(this.restaurantMaterial.amount)) {
+          this.amountMessage = "请输入正数！";
+        } else if (this.restaurantMaterial.amount > this.nowAmount) {
+          console.log(this.restaurantMaterial.amount + "/" + this.nowAmount);
+
+          this.amountMessage = "库存不足";
+        } else {
+          consumptionRestaurantMaterial(this.restaurantMaterial);
+          $("#consumptionRestaurantMaterial").modal("hide");
         }
       }
     }

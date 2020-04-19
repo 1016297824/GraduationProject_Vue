@@ -233,3 +233,27 @@ export function addRestaurantMaterialPurchase(purchase) {
       initRestaurantMaterial();
     });
 }
+
+// 删除农场物资
+export function deleteRestaurantMaterial(restaurantMaterial) {
+  axios
+    .post("farmStaff/deleteRestaurantMaterial", restaurantMaterial)
+    .then(response => {
+      setTimeout(() => {
+        alert(response.data.message);
+      }, 200);
+      initRestaurantMaterial();
+    });
+}
+
+// 异常消耗（餐厅物资）
+export function consumptionRestaurantMaterial(restaurantMaterial) {
+  axios
+    .post("farmStaff/consumptionRestaurantMaterial", restaurantMaterial)
+    .then(response => {
+      setTimeout(() => {
+        alert(response.data.message);
+      }, 200);
+      initRestaurantMaterial();
+    });
+}

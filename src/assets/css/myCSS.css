@@ -1,0 +1,20 @@
+html {
+  height: 100%;
+}
+
+body {
+  height: 100%;
+}
+
+.bg {
+  min-height: 100%;
+  background-image: url("../imgs/background (1).jpg");
+  background-position: center 0;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  -webkit-background-size: cover;
+  -o-background-size: cover;
+  -moz-background-size: cover;
+  -ms-background-size: cover;
+}

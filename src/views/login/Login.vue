@@ -6,11 +6,15 @@
 
     <!-- 主体 -->
     <div class="container">
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
       <div class="row">
         <div class="col-lg-12">
           <div class="row">
             <div class="col-lg-6">
-              <br />
               <br />
               <img
                 alt=""

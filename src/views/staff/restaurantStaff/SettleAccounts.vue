@@ -57,7 +57,7 @@
                     <input
                       type="button"
                       value="取消订单"
-                      class="btn"
+                      class="btn btn-light"
                       @click="deleteReserve(reserve.no)"
                     />
                   </td>

@@ -118,7 +118,7 @@
                       <input
                         type="button"
                         value="删除"
-                        class="btn"
+                        class="btn btn-light"
                         @click="deleteFertilizer(fertilizer)"
                       />
                     </td>
@@ -413,7 +413,7 @@
                             class="input-group-text"
                             id="inputGroup-sizing-lg"
                           >
-                            异常消耗
+                            异常消耗数量
                           </span>
                         </div>
                         <input

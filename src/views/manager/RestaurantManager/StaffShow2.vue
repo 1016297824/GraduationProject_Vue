@@ -55,7 +55,7 @@
                       <input
                         type="button"
                         value="解雇"
-                        class="btn"
+                        class="btn  btn-light"
                         @click="deleteStaff(staff.name, staff.username)"
                       />
                     </td>

@@ -17,7 +17,7 @@
                   <span>(9:00~21:00)</span>
                   <input
                     type="button"
-                    class="btn offset-lg-3"
+                    class="btn btn-light offset-lg-3"
                     style="float:right"
                     value="返回"
                     @click="back"

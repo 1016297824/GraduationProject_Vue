@@ -57,7 +57,7 @@
                     <input
                       type="button"
                       value="取消"
-                      class="btn"
+                      class="btn btn-light"
                       @click="deleteRepair(repair)"
                     />
                   </td>

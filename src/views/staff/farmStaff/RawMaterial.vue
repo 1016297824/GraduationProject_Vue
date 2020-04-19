@@ -240,7 +240,7 @@
                             class="input-group-text"
                             id="inputGroup-sizing-lg"
                           >
-                            异常消耗
+                            异常消耗数量
                           </span>
                         </div>
                         <input
