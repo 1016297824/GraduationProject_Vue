@@ -44,8 +44,8 @@
           </ul>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-light" href="reportForm1">
-            报表打印
+          <a class="nav-link text-light" href="sale">
+            产品销售
           </a>
         </li>
         <li class="nav-item dropdown">

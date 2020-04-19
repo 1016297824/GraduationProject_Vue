@@ -23,6 +23,7 @@ export default new Vue({
     repairList: "repairList",
     productList: "productList",
     fertilizerList: "fertilizerList",
-    restaurantMaterialList: "restaurantMaterialList"
+    restaurantMaterialList: "restaurantMaterialList",
+    saleList: "saleList"
   })
 });

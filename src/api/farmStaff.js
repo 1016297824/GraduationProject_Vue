@@ -257,3 +257,24 @@ export function consumptionRestaurantMaterial(restaurantMaterial) {
       initRestaurantMaterial();
     });
 }
+
+// 使用饲料肥料
+export function useRestaurantMaterial(restaurantMaterial) {
+  axios
+    .post("farmStaff/useRestaurantMaterial", restaurantMaterial)
+    .then(response => {
+      setTimeout(() => {
+        alert(response.data.message);
+      }, 200);
+      initRestaurantMaterial();
+    });
+}
+
+// 添加销售信息
+export function addSaleList(saleList) {
+  axios.post("farmStaff/addSaleList", saleList).then(response => {
+    setTimeout(() => {
+      alert(response.data.message);
+    }, 200);
+  });
+}

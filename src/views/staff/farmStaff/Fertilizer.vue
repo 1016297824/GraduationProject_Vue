@@ -859,14 +859,14 @@ export default {
           this.priceMessage = "请输入采购单价！";
         }
       } else {
-        let p = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        let p = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
         // let p1 = /^(0|\+?[1-9][0-9]*)$/;
         if (!p.test(this.purchase.amount) | !p.test(this.purchase.price)) {
           if (!p.test(this.purchase.amount)) {
-            this.amountMessage = "请输入正数！";
+            this.amountMessage = "请输入正数（最高小数点后两位）！";
           }
           if (!p.test(this.purchase.price)) {
-            this.priceMessage = "请输入正数！";
+            this.priceMessage = "请输入正数（最高小数点后两位）！";
           }
         } else {
           this.purchase.fertilizer = this.fertilizer;
@@ -886,9 +886,9 @@ export default {
       if (this.fertilizer.amount == null) {
         this.amountMessage = "请输入消耗数量！";
       } else {
-        let p = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        let p = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
         if (!p.test(this.fertilizer.amount)) {
-          this.amountMessage = "请输入正数！";
+          this.amountMessage = "请输入正数（最高小数点后两位）！";
         } else if (this.fertilizer.amount > this.nowAmount) {
           this.amountMessage = "库存不足";
         } else {
@@ -908,9 +908,9 @@ export default {
       if (this.fertilizer.amount == null) {
         this.amountMessage = "请输入消耗数量！";
       } else {
-        let p = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        let p = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
         if (!p.test(this.fertilizer.amount)) {
-          this.amountMessage = "请输入正数！";
+          this.amountMessage = "请输入正数（最高小数点后两位）！";
         } else if (this.fertilizer.amount > this.nowAmount) {
           this.amountMessage = "库存不足";
         } else {
@@ -958,7 +958,7 @@ export default {
         }
       } else {
         let cn = /^[\u4E00-\u9FA5]+$/;
-        let re = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        let re = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
         if (
           !cn.test(this.fertilizer.name) ||
           !cn.test(this.fertilizer.unit) ||
@@ -974,10 +974,10 @@ export default {
             this.unitMessge = "请输入中文！";
           }
           if (!re.test(this.fertilizer.amount)) {
-            this.amountMessage = "请输入正数！";
+            this.amountMessage = "请输入正数（最高小数点后两位）！";
           }
           if (!re.test(this.fertilizer.safeAmount)) {
-            this.safeAmountMessage = "请输入正数！";
+            this.safeAmountMessage = "请输入正数（最高小数点后两位）！";
           }
         } else {
           addFertilizer(this.fertilizer);

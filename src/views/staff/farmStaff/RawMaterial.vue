@@ -719,11 +719,11 @@ export default {
       } else {
         var re = /^(0|\+?[1-9][0-9]*)$/;
         if (this.productType == "鱼类") {
-          re = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+          re = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
         }
         if (!re.test(this.product.amount)) {
           if (this.productType == "鱼类") {
-            this.amountMessage1 = "请输入正数！";
+            this.amountMessage1 = "请输入正数（最高小数点后两位）！";
           } else {
             this.amountMessage1 = "请输入正整数！";
           }
@@ -757,21 +757,21 @@ export default {
           this.priceMessage = "请输入采购单价！";
         }
       } else {
-        let p = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        let p = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
         let re = /^(0|\+?[1-9][0-9]*)$/;
         if (this.productType == "鱼类") {
-          re = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+          re = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
         }
         if (!re.test(this.purchase.amount) | !p.test(this.purchase.price)) {
           if (!re.test(this.purchase.amount)) {
             if (this.productType == "鱼类") {
-              this.amountMessage2 = "请输入正数！";
+              this.amountMessage2 = "请输入正数（最高小数点后两位）！";
             } else {
               this.amountMessage2 = "请输入正整数！";
             }
           }
           if (!p.test(this.purchase.price)) {
-            this.priceMessage = "请输入正数！";
+            this.priceMessage = "请输入正数（最高小数点后两位）！";
           }
         } else {
           this.purchase.product = this.product;
@@ -796,7 +796,7 @@ export default {
       if (this.product.amount == null) {
         this.amountMessage2 = "请输入生产数量！";
       } else {
-        let re = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        let re = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
         if (this.productType == "家禽") {
           re = /^(0|\+?[1-9][0-9]*)$/;
         }
@@ -804,7 +804,7 @@ export default {
           if (this.productType == "家禽") {
             this.amountMessage2 = "请输入正整数！";
           } else {
-            this.amountMessage2 = "请输入正数！";
+            this.amountMessage2 = "请输入正数（最高小数点后两位）！";
           }
         } else if (this.product.amount > this.nowAmount) {
           this.amountMessage2 = "库存不足！";

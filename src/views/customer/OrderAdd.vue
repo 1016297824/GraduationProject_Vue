@@ -212,34 +212,42 @@
             </div>
           </div>
           <div class="modal-footer">
-            <div class="col-lg-7" align="left">
-              <div class="input-group">
-                <span class="input-group-addon">菜名</span>
-                <input
-                  type="text"
-                  class="form-control"
-                  readonly
-                  v-model="menu.name"
-                />
+            <div class="row">
+              <div class="col-lg-6" align="left">
+                <div class="input-group input-group-ms">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-ms">
+                      菜名
+                    </span>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control"
+                    aria-label="Sizing example input"
+                    aria-describedby="inputGroup-sizing-ms"
+                    readonly
+                    v-model="menu.name"
+                  />
+                </div>
               </div>
-            </div>
-            <div class="col-lg-3" align="center">
-              <a href="#" @click="decreaseCount">
-                <span class="iconfont icon-icon-test1"></span>
-              </a>
-              {{ count }}
-              <a href="#" @click="addCount">
-                <span class="iconfont icon-icon-test2"></span>
-              </a>
-            </div>
-            <div class="col-lg-2" align="right">
-              <button
-                type="button"
-                class="btn btn-primary btn-sm"
-                @click="addMenu"
-              >
-                确认
-              </button>
+              <div class="col-lg-3" align="center">
+                <a href="#" @click="decreaseCount">
+                  <span class="iconfont icon-icon-test1"></span>
+                </a>
+                {{ count }}
+                <a href="#" @click="addCount">
+                  <span class="iconfont icon-icon-test2"></span>
+                </a>
+              </div>
+              <div class="col-lg-3" align="right">
+                <button
+                  type="button"
+                  class="btn btn-primary btn-sm"
+                  @click="addMenu"
+                >
+                  确认
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -392,8 +400,12 @@ export default {
       let totalPrice = 0;
       if (this.orderingList.length != 0) {
         for (let i = 0; i < this.orderingList.length; i++) {
-          totalPrice +=
-            this.orderingList[i].count * this.orderingList[i].menu.price;
+          totalPrice =
+            (totalPrice * 10000 +
+              this.orderingList[i].count *
+                100 *
+                (this.orderingList[i].menu.price * 100)) /
+            10000;
         }
         return totalPrice;
       } else {

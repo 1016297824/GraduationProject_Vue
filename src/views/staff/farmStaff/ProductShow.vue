@@ -727,7 +727,7 @@ export default {
         }
       } else {
         let cn = /^[\u4E00-\u9FA5]+$/;
-        let re = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        let re = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
         if (this.productType == "家禽") {
           re = /^(0|\+?[1-9][0-9]*)$/;
         }
@@ -738,7 +738,7 @@ export default {
           if (this.productType == "家禽") {
             this.amountMessage = "请输入正整数！";
           } else {
-            this.amountMessage = "请输入正数！";
+            this.amountMessage = "请输入正数（最高小数点后两位）！";
           }
         } else if (
           !cn.test(this.product.unit) ||
@@ -782,6 +782,7 @@ export default {
       }
     },
     abnormalConsumption(product) {
+      this.nowAmount = product.amount;
       this.typeMessage = null;
       this.nameMessage = null;
       this.amountMessage = null;
@@ -789,14 +790,13 @@ export default {
       this.amountMessage2 = null;
       this.unitMessage = null;
       this.product = JSON.parse(JSON.stringify(product));
-      this.nowAmount = this.product.amount;
       this.product.amount = null;
     },
     doModel1() {
       if (this.product.amount == null) {
         this.amountMessage1 = "请输入消耗数量！";
       } else {
-        let re = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        let re = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
         if (this.productType == "家禽") {
           re = /^(0|\+?[1-9][0-9]*)$/;
         }
@@ -807,7 +807,7 @@ export default {
           if (this.productType == "家禽") {
             this.amountMessage1 = "请输入正整数！";
           } else {
-            this.amountMessage1 = "请输入正数！";
+            this.amountMessage1 = "请输入正数（最高小数点后两位）！";
           }
         } else if (this.product.amount > this.nowAmount) {
           this.amountMessage1 = "库存不足！";
@@ -832,7 +832,7 @@ export default {
       if (this.product.amount == null) {
         this.amountMessage2 = "请输入生产数量！";
       } else {
-        let re = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/;
+        let re = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
         if (this.productType == "家禽") {
           re = /^(0|\+?[1-9][0-9]*)$/;
         }
@@ -840,7 +840,7 @@ export default {
           if (this.productType == "家禽") {
             this.amountMessage2 = "请输入正整数！";
           } else {
-            this.amountMessage2 = "请输入正数！";
+            this.amountMessage2 = "请输入正数（最高小数点后两位）！";
           }
         } else {
           produce(this.product);
