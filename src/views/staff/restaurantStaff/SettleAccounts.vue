@@ -245,6 +245,40 @@ export default {
         settleAccounts(this.reserveNo);
         $("#order").modal("hide");
       }
+    },
+    accMul(arg1, arg2) {
+      var m = 0,
+        s1 = arg1.toString(),
+        s2 = arg2.toString();
+      try {
+        m += s1.split(".")[1].length;
+      } catch (e) {
+        console.log("error");
+      }
+      try {
+        m += s2.split(".")[1].length;
+      } catch (e) {
+        console.log("error");
+      }
+      return (
+        (Number(s1.replace(".", "")) * Number(s2.replace(".", ""))) /
+        Math.pow(10, m)
+      );
+    },
+    accAdd(arg1, arg2) {
+      var r1, r2, m;
+      try {
+        r1 = arg1.toString().split(".")[1].length;
+      } catch (e) {
+        r1 = 0;
+      }
+      try {
+        r2 = arg2.toString().split(".")[1].length;
+      } catch (e) {
+        r2 = 0;
+      }
+      m = Math.pow(10, Math.max(r1, r2));
+      return (arg1 * m + arg2 * m) / m;
     }
   },
   created() {
@@ -264,8 +298,11 @@ export default {
       let totalPrice = 0;
       if (this.orderingList.length != 0) {
         for (let i = 0; i < this.orderingList.length; i++) {
-          totalPrice +=
-            this.orderingList[i].count * this.orderingList[i].menu.price;
+          let tp = this.accMul(
+            this.orderingList[i].count,
+            this.orderingList[i].menu.price
+          );
+          totalPrice = this.accAdd(totalPrice, tp);
         }
         return totalPrice;
       } else {

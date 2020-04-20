@@ -417,7 +417,45 @@ export default {
       this.saleList.splice(index, 1);
     },
     addSaleList() {
-      addSaleList(this.saleList);
+      let con = confirm("是否提交？");
+      if (con == true) {
+        addSaleList(this.saleList);
+        this.saleList = [];
+      }
+    },
+    accMul(arg1, arg2) {
+      var m = 0,
+        s1 = arg1.toString(),
+        s2 = arg2.toString();
+      try {
+        m += s1.split(".")[1].length;
+      } catch (e) {
+        console.log("error");
+      }
+      try {
+        m += s2.split(".")[1].length;
+      } catch (e) {
+        console.log("error");
+      }
+      return (
+        (Number(s1.replace(".", "")) * Number(s2.replace(".", ""))) /
+        Math.pow(10, m)
+      );
+    },
+    accAdd(arg1, arg2) {
+      var r1, r2, m;
+      try {
+        r1 = arg1.toString().split(".")[1].length;
+      } catch (e) {
+        r1 = 0;
+      }
+      try {
+        r2 = arg2.toString().split(".")[1].length;
+      } catch (e) {
+        r2 = 0;
+      }
+      m = Math.pow(10, Math.max(r1, r2));
+      return (arg1 * m + arg2 * m) / m;
     }
   },
   computed: {
@@ -425,10 +463,8 @@ export default {
       let totalPrice = 0;
       if (this.saleList.length != 0) {
         for (let i = 0; i < this.saleList.length; i++) {
-          totalPrice =
-            (totalPrice * 10000 +
-              this.saleList[i].amount * 100 * (this.saleList[i].price * 100)) /
-            10000;
+          let tp = this.accMul(this.saleList[i].amount, this.saleList[i].price);
+          totalPrice = this.accAdd(totalPrice, tp);
         }
         return totalPrice;
       } else {
