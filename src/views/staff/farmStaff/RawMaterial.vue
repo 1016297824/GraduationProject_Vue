@@ -719,7 +719,7 @@ export default {
       } else {
         var re = /^(0|\+?[1-9][0-9]*)$/;
         if (this.productType == "鱼类") {
-          re = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
+          re = /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/;
         }
         if (!re.test(this.product.amount)) {
           if (this.productType == "鱼类") {
@@ -757,10 +757,10 @@ export default {
           this.priceMessage = "请输入采购单价！";
         }
       } else {
-        let p = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
+        let p = /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/;
         let re = /^(0|\+?[1-9][0-9]*)$/;
         if (this.productType == "鱼类") {
-          re = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
+          re = /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/;
         }
         if (!re.test(this.purchase.amount) | !p.test(this.purchase.price)) {
           if (!re.test(this.purchase.amount)) {
@@ -796,7 +796,7 @@ export default {
       if (this.product.amount == null) {
         this.amountMessage2 = "请输入生产数量！";
       } else {
-        let re = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
+        let re = /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/;
         if (this.productType == "家禽") {
           re = /^(0|\+?[1-9][0-9]*)$/;
         }

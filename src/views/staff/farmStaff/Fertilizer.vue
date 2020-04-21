@@ -859,7 +859,7 @@ export default {
           this.priceMessage = "请输入采购单价！";
         }
       } else {
-        let p = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
+        let p = /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/;
         // let p1 = /^(0|\+?[1-9][0-9]*)$/;
         if (!p.test(this.purchase.amount) | !p.test(this.purchase.price)) {
           if (!p.test(this.purchase.amount)) {
@@ -886,7 +886,7 @@ export default {
       if (this.fertilizer.amount == null) {
         this.amountMessage = "请输入消耗数量！";
       } else {
-        let p = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
+        let p = /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/;
         if (!p.test(this.fertilizer.amount)) {
           this.amountMessage = "请输入正数（最高小数点后两位）！";
         } else if (this.fertilizer.amount > this.nowAmount) {
@@ -908,7 +908,7 @@ export default {
       if (this.fertilizer.amount == null) {
         this.amountMessage = "请输入消耗数量！";
       } else {
-        let p = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
+        let p = /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/;
         if (!p.test(this.fertilizer.amount)) {
           this.amountMessage = "请输入正数（最高小数点后两位）！";
         } else if (this.fertilizer.amount > this.nowAmount) {
@@ -958,7 +958,7 @@ export default {
         }
       } else {
         let cn = /^[\u4E00-\u9FA5]+$/;
-        let re = /^(([1-9]{1}\\d*)|([0]{1}))(\\.(\\d){0,2})?$/;
+        let re = /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/;
         if (
           !cn.test(this.fertilizer.name) ||
           !cn.test(this.fertilizer.unit) ||

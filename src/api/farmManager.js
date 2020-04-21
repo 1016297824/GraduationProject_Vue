@@ -118,3 +118,54 @@ export function downloadDaySaleExcel(choosedDate) {
       link.click();
     });
 }
+
+// 导出农场月收入excel
+export function downloadMonthSaleExcel(choosedDate) {
+  axios
+    .post("/farmManager/downloadMonthSaleExcel", choosedDate, {
+      responseType: "blob"
+    })
+    .then(response => {
+      let getDate = response.headers["content-disposition"];
+      let fileName = "农场收入(" + getDate + ").xls";
+      let objectUrl = URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.download = fileName;
+      link.href = objectUrl;
+      link.click();
+    });
+}
+
+// 导出农场日支出
+export function downloadDayPurchaseExcel(choosedDate) {
+  axios
+    .post("/farmManager/downloadDayPurchaseExcel", choosedDate, {
+      responseType: "blob"
+    })
+    .then(response => {
+      let getDate = response.headers["content-disposition"];
+      let fileName = "农场支出(" + getDate + ").xls";
+      let objectUrl = URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.download = fileName;
+      link.href = objectUrl;
+      link.click();
+    });
+}
+
+// 导出农场月支出
+export function downloadMonthPurchaseExcel(choosedDate) {
+  axios
+    .post("/farmManager/downloadMonthPurchaseExcel", choosedDate, {
+      responseType: "blob"
+    })
+    .then(response => {
+      let getDate = response.headers["content-disposition"];
+      let fileName = "农场支出(" + getDate + ").xls";
+      let objectUrl = URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.download = fileName;
+      link.href = objectUrl;
+      link.click();
+    });
+}
