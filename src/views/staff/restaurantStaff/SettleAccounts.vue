@@ -304,7 +304,7 @@ export default {
           );
           totalPrice = this.accAdd(totalPrice, tp);
         }
-        return totalPrice;
+        return totalPrice.toFixed(2);
       } else {
         return null;
       }

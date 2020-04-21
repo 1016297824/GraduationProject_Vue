@@ -291,6 +291,7 @@
 import $ from "jquery";
 import bus from "@/util/Bus";
 import { initProduct, doPage, addSaleList } from "@/api/farmStaff.js";
+
 export default {
   name: "Sale",
   data: () => ({
@@ -351,6 +352,8 @@ export default {
       this.sale.amount = null;
       this.sale.price = null;
       initProduct(this.productType);
+      this.amountMessage = null;
+      this.priceMessage = null;
     },
     choosedProduct(product) {
       this.nowAmount = product.amount;
@@ -466,7 +469,8 @@ export default {
           let tp = this.accMul(this.saleList[i].amount, this.saleList[i].price);
           totalPrice = this.accAdd(totalPrice, tp);
         }
-        return totalPrice;
+
+        return totalPrice.toFixed(2);
       } else {
         return null;
       }

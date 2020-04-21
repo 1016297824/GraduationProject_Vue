@@ -101,3 +101,20 @@ export function downloadAttendanceExcel(choosedDate) {
       link.click();
     });
 }
+
+// 导出农场日收入excel
+export function downloadDaySaleExcel(choosedDate) {
+  axios
+    .post("/farmManager/downloadDaySaleExcel", choosedDate, {
+      responseType: "blob"
+    })
+    .then(response => {
+      let getDate = response.headers["content-disposition"];
+      let fileName = "农场收入(" + getDate + ").xls";
+      let objectUrl = URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.download = fileName;
+      link.href = objectUrl;
+      link.click();
+    });
+}

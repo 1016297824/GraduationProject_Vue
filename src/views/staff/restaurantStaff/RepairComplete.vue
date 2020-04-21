@@ -162,15 +162,29 @@
           </div>
           <div class="modal-footer">
             <div class="col-lg-5" align="left">
-              <div class="input-group">
-                <span class="input-group-addon">花费：</span>
+              <div class="input-group input-group-sm">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">
+                    单价
+                  </span>
+                </div>
                 <input
                   type="text"
                   class="form-control"
+                  aria-label="Sizing example input"
+                  aria-describedby="inputGroup-sizing-sm"
                   v-model="repair.price"
+                  @keyup="writePrice"
                 />
-                <span class="input-group-addon">{{ &nbsp; }}元</span>
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="inputGroup-sizing-sm">
+                    元
+                  </span>
+                </div>
               </div>
+              <p style="color: red;">
+                {{ priceMessage }}
+              </p>
             </div>
             <div class="col-lg-5" align="center"></div>
             <div class="col-lg-2" align="right">
@@ -220,9 +234,13 @@ export default {
       cause: null,
       state: null,
       price: null
-    }
+    },
+    priceMessage: null
   }),
   methods: {
+    writePrice() {
+      this.priceMessage = null;
+    },
     doPage(page) {
       this.pageBody1.page = page;
       doPage1(this.pageBody1);
@@ -234,15 +252,28 @@ export default {
       }
     },
     checkRepair(repair) {
-      this.repair = repair;
+      this.priceMessage = null;
+      this.repair = JSON.parse(JSON.stringify(repair));
     },
     completeRepair() {
-      let con = confirm(
-        `完成：\n编号：${this.repair.id}\n花费：${this.repair.price}`
-      );
-      if (con == true) {
-        completeRepair(this.repair);
-        $("#repair").modal("hide");
+      let result = true;
+      let re = /^(([1-9]{1}\d*)|(0{1}))(\.\d{1,2})?$/;
+      if (!re.test(this.repair.price)) {
+        this.priceMessage = "请输入正数（小数点后最多两位）！";
+        result = false;
+      }
+      if (this.repair.price == 0) {
+        this.priceMessage = "输入数字不能为0！";
+        result = false;
+      }
+      if (result == true) {
+        let con = confirm(
+          `完成：\n编号：${this.repair.id}\n花费：${this.repair.price}`
+        );
+        if (con == true) {
+          completeRepair(this.repair);
+          $("#repair").modal("hide");
+        }
       }
     }
   },
