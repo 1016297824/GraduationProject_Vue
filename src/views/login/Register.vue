@@ -140,7 +140,12 @@ export default {
       } else if (this.customer.password != this.password1) {
         this.password1Message = "两次输入密码不一致，请再次确认！";
       } else {
-        register(this.customer);
+        let re = /^1(3|4|5|6|7|8|9)\d{9}$/;
+        if (!re.test(this.customer.username)) {
+          this.phoneMessage = "请输入正确的手机号！";
+        } else {
+          register(this.customer);
+        }
       }
     },
     writeUsername: function() {
