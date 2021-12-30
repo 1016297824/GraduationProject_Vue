@@ -15,7 +15,7 @@
 export default {
   name: "SuperManager",
   components: {
-    supermanagerNavbar: () => import("@/components/Header/SuperManagerNavbar"),
+    supermanagerNavbar: () => import("@/components/Header/SupermanagerNavbar"),
     footerNavbar: () => import("@/components/FooterNavbar")
   }
 };
