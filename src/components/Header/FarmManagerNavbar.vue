@@ -41,7 +41,7 @@
             </li>
             <div class="dropdown-divider"></div>
             <li>
-              <a class="dropdown-item" href="#" @click="loginOut"> 退出登录 </a>
+              <a class="dropdown-item" @click="loginOut"> 退出登录 </a>
             </li>
           </ul>
         </li>
